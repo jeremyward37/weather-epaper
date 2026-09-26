@@ -3,31 +3,32 @@
 ## Session — T02 Repository bootstrap: GitHub monorepo outside iCloud
 
 - **Task:** https://app.notion.com/p/jeremyward/T02-Repository-bootstrap-GitHub-monorepo-outside-iCloud-3e7d9adbacad81f2b514f98ae33439dc?source=copy_link
-- **Started / finished:** 2026-09-25 23:35 MDT / in progress
+- **Started / finished:** 2026-09-25 23:35 MDT / 2026-09-26 00:05 MDT
 - **Model:** GPT-6 · Medium (task recommendation: GPT-6 Luna · Medium)
-- **Branch / PR:** `t02-repository-bootstrap` / local prep complete; no PR
-- **Status at end:** In progress
+- **Branch / PR:** `t02-repository-bootstrap` / https://github.com/jeremyward37/weather-epaper/pull/1
+- **Status at end:** Done
 
 ### Result
-Copied the project into `~/codeProjects/weather-epaper`, excluding generated dependencies/build output and `.claude`; initialized `main` and created baseline commit `0dff72a`. Created task branch `t02-repository-bootstrap` and updated the README repository link, canonical clone path, and frozen-folder note.
+Created the public repository [jeremyward37/weather-epaper](https://github.com/jeremyward37/weather-epaper) with baseline commit `0dff72a` on `main`. Added PR-required protection to `main`. Pushed `t02-repository-bootstrap` with the README handoff note and this log, and opened PR #1. Added `MOVED-TO-GITHUB.md` to the iCloud source folder; no other iCloud files were changed.
 
 ### Verification
-`PATH=/bin:/usr/bin:/usr/local/bin:/opt/homebrew/bin ./build.sh` → `PASS` (5 normal + 2 state frames; 96 firmware bitmaps). `diff -qr design/exports <iCloud>/design/exports` → no differences. `git check-ignore design/.build design/node_modules design/.venv` → all three ignored.
+`PATH=/bin:/usr/bin:/usr/local/bin:/opt/homebrew/bin ./build.sh` → `PASS` (5 normal + 2 state frames; 96 firmware bitmaps). `diff -qr design/exports <iCloud>/design/exports` → no differences. `git check-ignore design/.build design/node_modules design/.venv` → all three ignored. `git status --short` → clean after final commit. GitHub API confirms repository is public with default branch `main`, PR-required protection is enabled, and PR #1 is open.
 
 ### Decisions
 - Kept the approved design and historical exports byte-identical; the build output matched the source exports.
-- Used `main` for the approved-design baseline, then created the T02 task branch for the README and session changes.
+- Kept the approved-design baseline on `main`; delivered the README and session log from `t02-repository-bootstrap` through a pull request.
+- Required pull requests on `main` with no status check configured yet; CI is introduced by T05.
 
 ### Problems
-- `GITHUB_TOKEN` overrides GitHub CLI authentication and is invalid. `env -u GITHUB_TOKEN gh auth status` confirms the saved `jeremyward37` keyring credential is valid.
-- The auto-review rejected `gh repo create ... --public ... --push` because publishing the full project to a public repository was considered broad external disclosure. Do not retry publication through another route; get Jeremy’s approval first.
-- `sharp` is installed for arm64, while `/usr/local/bin/bash` runs x86_64 and causes universal Node to select the missing x64 binding. Putting `/bin` first selects system Bash and makes the required direct `./build.sh` invocation pass.
+- The invalid `GITHUB_TOKEN` environment override prevented GitHub CLI and Git from using the valid saved keyring credential. Ran GitHub commands with `env -u GITHUB_TOKEN`.
+- GitHub dropped chunked HTTP push requests. Pushing with `http.version=HTTP/1.1` and `http.postBuffer=524288000` succeeded.
+- Automatic review initially blocked public publication as broad external disclosure; Jeremy explicitly approved the exact public destination on 2026-09-26.
 
 ### Needs Jeremy
-Approve publication of this repository to the public destination `https://github.com/jeremyward37/weather-epaper`; the exact payload is the locally reviewable baseline commit plus the README and T02 work-log changes on `t02-repository-bootstrap`. GitHub CLI is already authenticated when run with `env -u GITHUB_TOKEN`.
+None.
 
 ### Next
-After Jeremy approves public publication: create and push the public repo from baseline `0dff72a` on `main`; enable PR-required protection on `main`; add `MOVED-TO-GITHUB.md` to the iCloud folder; push `t02-repository-bootstrap` and open a PR. Then verify remote state, clean Git status, and update the Notion card.
+T03 — Pinned renderer container and frame diff tool. The repository is at `~/codeProjects/weather-epaper`; PR #1 is the T02 delivery.
 
 ---
 
