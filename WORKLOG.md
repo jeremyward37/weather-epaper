@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T03 Pinned renderer container and frame diff tool
+
+- **Task:** https://app.notion.com/p/jeremyward/T03-Pinned-renderer-container-and-frame-diff-tool-3e7d9adbacad81d8944bf5365c0dc2c5?source=copy_link
+- **Started / finished:** 2026-09-26 00:09 MDT / in progress
+- **Model:** GPT-5 · Medium (task recommendation: GPT-6 Sol · Medium)
+- **Branch / PR:** `t03-pinned-renderer` / pending
+- **Status at end:** In progress
+
+### Result
+In progress.
+
+### Verification
+In progress.
+
+### Decisions
+- Branched T03 from the completed `t02-repository-bootstrap` branch because dependency PR #1 is still open and clean against `main`.
+
+### Problems
+- The local Docker CLI is installed, but the OrbStack Docker daemon was not running at session start.
+
+### Needs Jeremy
+None currently.
+
+### Next
+Complete T03 only; do not start T04, T05, or T06 in this session.
+
+---
+
 ## Session — T02 Repository bootstrap: GitHub monorepo outside iCloud
 
 - **Task:** https://app.notion.com/p/jeremyward/T02-Repository-bootstrap-GitHub-monorepo-outside-iCloud-3e7d9adbacad81f2b514f98ae33439dc?source=copy_link

@@ -11,13 +11,17 @@ cd "$(dirname "$0")"
 if [ -z "${NODE_PATH:-}" ] && [ -d design/node_modules ]; then
   export NODE_PATH="$PWD/design/node_modules"
 fi
-PY=python3
-if [ -x design/.venv/bin/python ]; then PY=design/.venv/bin/python; fi
+NODE_CMD=(node)
+if [ "$(uname -s)" = Darwin ] && /usr/bin/arch -arm64 node -p 'process.arch' >/dev/null 2>&1; then
+  NODE_CMD=(/usr/bin/arch -arm64 node)
+fi
+PY="${WEATHER_EPAPER_PYTHON:-python3}"
+if [ -z "${WEATHER_EPAPER_PYTHON:-}" ] && [ -x design/.venv/bin/python ]; then PY=design/.venv/bin/python; fi
 # A Rosetta shell can launch a universal Python as x86_64 while the venv's Pillow is arm64.
 PY_CMD=("$PY")
 if [ "$(uname -s)" = Darwin ] && /usr/bin/arch -arm64 "$PY" -c 'import PIL' >/dev/null 2>&1; then
   PY_CMD=(/usr/bin/arch -arm64 "$PY")
 fi
-node design/build.js "$@"
+"${NODE_CMD[@]}" design/build.js "$@"
 "${PY_CMD[@]}" design/threshold.py
 "${PY_CMD[@]}" design/verify.py "$@"

@@ -65,7 +65,15 @@ design/
 
 ## Build and verify
 
-Prerequisites, once:
+The canonical renderer is the pinned Linux container. It requires Docker and Git; the script builds the image when its locked inputs change, runs the frame-diff tests, regenerates the design, and compares all seven frames with the committed exports:
+
+```bash
+./tools/render.sh
+```
+
+It prints one row per canonical frame and exits successfully only when `design/verify.py` passes and every row has zero differing pixels. During the T03 re-baseline review it intentionally exits nonzero; see [`docs/rebaseline-report.md`](docs/rebaseline-report.md).
+
+The host build remains available for quick local iteration, but it is not the cross-machine reference. Its prerequisites, once, are:
 
 ```bash
 cd design && npm install && cd ..
