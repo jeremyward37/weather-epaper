@@ -1,0 +1,48 @@
+{
+  "id": "widths",
+  "description": "Archived six consecutive hourly slots for the historical normal-6hour-widths render; not part of the selected design",
+  "hourly": [
+    {
+      "time": "1 PM",
+      "temp": 108,
+      "icon": "rainDay",
+      "precip": 100,
+      "type": "Rain"
+    },
+    {
+      "time": "2 PM",
+      "temp": 107,
+      "icon": "rainDay",
+      "precip": 100,
+      "type": "Rain"
+    },
+    {
+      "time": "3 PM",
+      "temp": -12,
+      "icon": "snowDay",
+      "precip": 100,
+      "type": "Snow"
+    },
+    {
+      "time": "4 PM",
+      "temp": -9,
+      "icon": "mixDay",
+      "precip": 100,
+      "type": "Mix"
+    },
+    {
+      "time": "5 PM",
+      "temp": 100,
+      "icon": "thunderDay",
+      "precip": 100,
+      "type": "Thunder"
+    },
+    {
+      "time": "6 PM",
+      "temp": 99,
+      "icon": "rainDay",
+      "precip": 100,
+      "type": "Rain"
+    }
+  ]
+}

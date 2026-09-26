@@ -1,0 +1,48 @@
+{
+  "id": "winter",
+  "description": "Archived six consecutive hourly slots for the historical normal-6hour-winter render; not part of the selected design",
+  "hourly": [
+    {
+      "time": "7 AM",
+      "temp": -4,
+      "icon": "snowNight",
+      "precip": 100,
+      "type": "Snow"
+    },
+    {
+      "time": "8 AM",
+      "temp": -3,
+      "icon": "snowDay",
+      "precip": 100,
+      "type": "Snow"
+    },
+    {
+      "time": "9 AM",
+      "temp": -1,
+      "icon": "mixDay",
+      "precip": 100,
+      "type": "Mix"
+    },
+    {
+      "time": "10 AM",
+      "temp": 1,
+      "icon": "mixDay",
+      "precip": 100,
+      "type": "Mix"
+    },
+    {
+      "time": "11 AM",
+      "temp": 2,
+      "icon": "snowDay",
+      "precip": 100,
+      "type": "Snow"
+    },
+    {
+      "time": "12 PM",
+      "temp": 3,
+      "icon": "snowDay",
+      "precip": 100,
+      "type": "Snow"
+    }
+  ]
+}

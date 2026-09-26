@@ -1,0 +1,6 @@
+{
+  "baseFixture": "widths",
+  "description": "Longest advisory title plus worst-case weather widths",
+  "name": "Winter Weather Advisory",
+  "until": "Thu 6:00 AM"
+}

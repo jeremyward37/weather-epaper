@@ -1,0 +1,16 @@
+{
+  "name": "weather-epaper-design",
+  "private": true,
+  "description": "SVG-to-1-bit raster pipeline for the 400x300 e-paper weather display mockups",
+  "engines": { "node": ">=16" },
+  "scripts": {
+    "build": "node build.js",
+    "build:all": "node build.js --all",
+    "threshold": "python3 threshold.py",
+    "verify": "python3 verify.py",
+    "all": "npm run build && npm run threshold && npm run verify"
+  },
+  "dependencies": {
+    "sharp": "^0.32.6"
+  }
+}

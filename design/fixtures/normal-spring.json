@@ -1,0 +1,71 @@
+{
+  "id": "spring",
+  "description": "Mixed spring night; hourly row crosses midnight and includes 5% and thunder",
+  "localNow": "2026-04-22T21:58:00-06:00",
+  "lastUpdate": "4/22 9:58 PM",
+  "lowBattery": false,
+  "current": {
+    "temp": 61,
+    "icon": "partlyNight"
+  },
+  "sun": {
+    "event": "civilDawn",
+    "time": "6:08 AM"
+  },
+  "daily": [
+    {
+      "day": "Thu",
+      "high": 72,
+      "low": 45,
+      "icon": "partlyDay",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "day": "Fri",
+      "high": 67,
+      "low": 42,
+      "icon": "rainDay",
+      "precip": 60,
+      "type": "Rain"
+    },
+    {
+      "day": "Sat",
+      "high": 63,
+      "low": 39,
+      "icon": "thunderDay",
+      "precip": 40,
+      "type": "Thunder"
+    }
+  ],
+  "threeHourly": [
+    {
+      "time": "12 AM",
+      "temp": 54,
+      "icon": "rainNight",
+      "precip": 35,
+      "type": "Rain"
+    },
+    {
+      "time": "3 AM",
+      "temp": 47,
+      "icon": "partlyNight",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "time": "6 AM",
+      "temp": 44,
+      "icon": "partlyNight",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "time": "9 AM",
+      "temp": 57,
+      "icon": "showersDay",
+      "precip": 5,
+      "type": "Rain"
+    }
+  ]
+}

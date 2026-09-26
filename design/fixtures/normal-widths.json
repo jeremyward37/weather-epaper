@@ -1,0 +1,71 @@
+{
+  "id": "widths",
+  "description": "Deliberately synthetic worst-case widths for temperature, precipitation, and footer",
+  "localNow": "2026-12-31T12:58:00-07:00",
+  "lastUpdate": "12/31 12:58 PM",
+  "lowBattery": false,
+  "current": {
+    "temp": 108,
+    "icon": "clearDay"
+  },
+  "sun": {
+    "event": "civilDusk",
+    "time": "9:45 PM"
+  },
+  "daily": [
+    {
+      "day": "Fri",
+      "high": 108,
+      "low": 88,
+      "icon": "rainDay",
+      "precip": 100,
+      "type": "Rain"
+    },
+    {
+      "day": "Sat",
+      "high": -12,
+      "low": -24,
+      "icon": "snowDay",
+      "precip": 100,
+      "type": "Snow"
+    },
+    {
+      "day": "Sun",
+      "high": 104,
+      "low": 87,
+      "icon": "thunderDay",
+      "precip": 100,
+      "type": "Thunder"
+    }
+  ],
+  "threeHourly": [
+    {
+      "time": "3 PM",
+      "temp": -12,
+      "icon": "snowDay",
+      "precip": 100,
+      "type": "Snow"
+    },
+    {
+      "time": "6 PM",
+      "temp": 99,
+      "icon": "rainDay",
+      "precip": 100,
+      "type": "Rain"
+    },
+    {
+      "time": "9 PM",
+      "temp": 100,
+      "icon": "thunderDay",
+      "precip": 100,
+      "type": "Thunder"
+    },
+    {
+      "time": "12 AM",
+      "temp": 89,
+      "icon": "rainNight",
+      "precip": 100,
+      "type": "Rain"
+    }
+  ]
+}

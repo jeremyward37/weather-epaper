@@ -1,0 +1,6 @@
+{
+  "description": "First boot before Wi-Fi configuration",
+  "network": "WeatherStation-Setup",
+  "password": "firstlight",
+  "address": "192.168.4.1"
+}

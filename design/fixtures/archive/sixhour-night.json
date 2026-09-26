@@ -1,0 +1,48 @@
+{
+  "id": "night",
+  "description": "Archived six consecutive hourly slots for the historical normal-6hour-night render; not part of the selected design",
+  "hourly": [
+    {
+      "time": "11 PM",
+      "temp": 47,
+      "icon": "clearNight",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "time": "12 AM",
+      "temp": 45,
+      "icon": "mostlyClearNight",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "time": "1 AM",
+      "temp": 44,
+      "icon": "partlyNight",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "time": "2 AM",
+      "temp": 42,
+      "icon": "partlyNight",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "time": "3 AM",
+      "temp": 41,
+      "icon": "showersNight",
+      "precip": 5,
+      "type": "Rain"
+    },
+    {
+      "time": "4 AM",
+      "temp": 40,
+      "icon": "partlyNight",
+      "precip": 0,
+      "type": null
+    }
+  ]
+}

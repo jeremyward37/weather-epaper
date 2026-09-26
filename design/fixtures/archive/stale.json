@@ -1,0 +1,7 @@
+{
+  "baseFixture": "summer",
+  "description": "Fetch failed; keep the last successful weather values and show a 120-minute-old timestamp",
+  "localNow": "2026-07-15T16:58:00-06:00",
+  "lastGoodUpdate": "7/15 2:58 PM",
+  "ageMinutes": 120
+}

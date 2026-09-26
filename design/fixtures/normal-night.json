@@ -1,0 +1,71 @@
+{
+  "id": "night",
+  "description": "Clear-night current and partly-cloudy-night hourly icons; low-battery footer overlay",
+  "localNow": "2026-09-24T22:58:00-06:00",
+  "lastUpdate": "9/24 10:58 PM",
+  "lowBattery": true,
+  "current": {
+    "temp": 48,
+    "icon": "clearNight"
+  },
+  "sun": {
+    "event": "civilDawn",
+    "time": "6:41 AM"
+  },
+  "daily": [
+    {
+      "day": "Fri",
+      "high": 68,
+      "low": 39,
+      "icon": "partlyDay",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "day": "Sat",
+      "high": 65,
+      "low": 37,
+      "icon": "showersDay",
+      "precip": 20,
+      "type": "Rain"
+    },
+    {
+      "day": "Sun",
+      "high": 63,
+      "low": 35,
+      "icon": "rainDay",
+      "precip": 45,
+      "type": "Rain"
+    }
+  ],
+  "threeHourly": [
+    {
+      "time": "12 AM",
+      "temp": 45,
+      "icon": "mostlyClearNight",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "time": "3 AM",
+      "temp": 41,
+      "icon": "showersNight",
+      "precip": 5,
+      "type": "Rain"
+    },
+    {
+      "time": "6 AM",
+      "temp": 38,
+      "icon": "clearNight",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "time": "9 AM",
+      "temp": 51,
+      "icon": "partlyDay",
+      "precip": 0,
+      "type": null
+    }
+  ]
+}

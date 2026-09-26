@@ -1,0 +1,20 @@
+{
+  "description": "Mixed spring day, sample data for checkpoint-one concepts",
+  "current": {"temp": 72, "icon": "partlyDay"},
+  "sun": {"event": "civilDusk", "time": "8:12 PM"},
+  "hourly": [
+    {"time":"5 PM","temp":70,"icon":"partlyDay","precip":0,"type":null},
+    {"time":"6 PM","temp":68,"icon":"cloudyDay","precip":5,"type":"Rain"},
+    {"time":"7 PM","temp":65,"icon":"rainDay","precip":40,"type":"Rain"},
+    {"time":"8 PM","temp":62,"icon":"thunderDay","precip":70,"type":"Thunder"},
+    {"time":"9 PM","temp":59,"icon":"rainNight","precip":30,"type":"Rain"},
+    {"time":"10 PM","temp":56,"icon":"partlyNight","precip":0,"type":null}
+  ],
+  "daily": [
+    {"day":"Thu","high":75,"low":49,"icon":"partlyDay","precip":0,"type":null},
+    {"day":"Fri","high":69,"low":44,"icon":"rainDay","precip":60,"type":"Rain"},
+    {"day":"Sat","high":63,"low":39,"icon":"thunderDay","precip":40,"type":"Thunder"},
+    {"day":"Sun","high":67,"low":41,"icon":"cloudyDay","precip":0,"type":null},
+    {"day":"Mon","high":72,"low":46,"icon":"partlyDay","precip":5,"type":"Rain"}
+  ]
+}

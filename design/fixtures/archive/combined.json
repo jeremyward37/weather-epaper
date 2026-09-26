@@ -1,0 +1,7 @@
+{
+  "baseFixture": "winter",
+  "description": "Stale cached forecast and low battery together (both footer overlays)",
+  "lastGoodUpdate": "12/31 4:58 AM",
+  "ageMinutes": 120,
+  "lowBattery": true
+}

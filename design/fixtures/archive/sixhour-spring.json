@@ -1,0 +1,48 @@
+{
+  "id": "spring",
+  "description": "Archived six consecutive hourly slots for the historical normal-6hour-spring render; not part of the selected design",
+  "hourly": [
+    {
+      "time": "10 PM",
+      "temp": 59,
+      "icon": "partlyNight",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "time": "11 PM",
+      "temp": 56,
+      "icon": "showersNight",
+      "precip": 5,
+      "type": "Rain"
+    },
+    {
+      "time": "12 AM",
+      "temp": 54,
+      "icon": "rainNight",
+      "precip": 35,
+      "type": "Rain"
+    },
+    {
+      "time": "1 AM",
+      "temp": 51,
+      "icon": "thunderNight",
+      "precip": 75,
+      "type": "Thunder"
+    },
+    {
+      "time": "2 AM",
+      "temp": 49,
+      "icon": "rainNight",
+      "precip": 45,
+      "type": "Rain"
+    },
+    {
+      "time": "3 AM",
+      "temp": 47,
+      "icon": "partlyNight",
+      "precip": 0,
+      "type": null
+    }
+  ]
+}

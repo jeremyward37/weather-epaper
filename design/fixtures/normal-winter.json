@@ -1,0 +1,71 @@
+{
+  "id": "winter",
+  "description": "Winter morning; negative current temperature and 100% snow/mix in every slot",
+  "localNow": "2026-12-31T06:58:00-07:00",
+  "lastUpdate": "12/31 6:58 AM",
+  "lowBattery": false,
+  "current": {
+    "temp": -4,
+    "icon": "snowNight"
+  },
+  "sun": {
+    "event": "civilDawn",
+    "time": "7:21 AM"
+  },
+  "daily": [
+    {
+      "day": "Fri",
+      "high": 8,
+      "low": -11,
+      "icon": "snowDay",
+      "precip": 100,
+      "type": "Snow"
+    },
+    {
+      "day": "Sat",
+      "high": 13,
+      "low": -8,
+      "icon": "mixDay",
+      "precip": 100,
+      "type": "Mix"
+    },
+    {
+      "day": "Sun",
+      "high": 17,
+      "low": -6,
+      "icon": "snowDay",
+      "precip": 100,
+      "type": "Snow"
+    }
+  ],
+  "threeHourly": [
+    {
+      "time": "9 AM",
+      "temp": -1,
+      "icon": "mixDay",
+      "precip": 100,
+      "type": "Mix"
+    },
+    {
+      "time": "12 PM",
+      "temp": 3,
+      "icon": "snowDay",
+      "precip": 100,
+      "type": "Snow"
+    },
+    {
+      "time": "3 PM",
+      "temp": 5,
+      "icon": "snowDay",
+      "precip": 100,
+      "type": "Snow"
+    },
+    {
+      "time": "6 PM",
+      "temp": -2,
+      "icon": "snowNight",
+      "precip": 100,
+      "type": "Snow"
+    }
+  ]
+}

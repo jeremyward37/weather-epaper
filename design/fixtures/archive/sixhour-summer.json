@@ -1,0 +1,48 @@
+{
+  "id": "summer",
+  "description": "Archived six consecutive hourly slots for the historical normal-6hour-summer render; not part of the selected design",
+  "hourly": [
+    {
+      "time": "5 PM",
+      "temp": 96,
+      "icon": "clearDay",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "time": "6 PM",
+      "temp": 94,
+      "icon": "clearDay",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "time": "7 PM",
+      "temp": 90,
+      "icon": "mostlyClearDay",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "time": "8 PM",
+      "temp": 86,
+      "icon": "mostlyClearDay",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "time": "9 PM",
+      "temp": 81,
+      "icon": "mostlyClearDay",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "time": "10 PM",
+      "temp": 77,
+      "icon": "clearNight",
+      "precip": 0,
+      "type": null
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "id": "summer",
+  "description": "Summer afternoon; all precipitation chances zero",
+  "localNow": "2026-07-15T16:58:00-06:00",
+  "lastUpdate": "7/15 4:58 PM",
+  "lowBattery": false,
+  "current": {
+    "temp": 97,
+    "icon": "clearDay"
+  },
+  "sun": {
+    "event": "civilDusk",
+    "time": "9:32 PM"
+  },
+  "daily": [
+    {
+      "day": "Thu",
+      "high": 99,
+      "low": 68,
+      "icon": "clearDay",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "day": "Fri",
+      "high": 101,
+      "low": 70,
+      "icon": "clearDay",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "day": "Sat",
+      "high": 98,
+      "low": 67,
+      "icon": "mostlyClearDay",
+      "precip": 0,
+      "type": null
+    }
+  ],
+  "threeHourly": [
+    {
+      "time": "6 PM",
+      "temp": 94,
+      "icon": "clearDay",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "time": "9 PM",
+      "temp": 81,
+      "icon": "mostlyClearDay",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "time": "12 AM",
+      "temp": 73,
+      "icon": "clearNight",
+      "precip": 0,
+      "type": null
+    },
+    {
+      "time": "3 AM",
+      "temp": 66,
+      "icon": "clearNight",
+      "precip": 0,
+      "type": null
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Weather station — design review</title>
+  <style>
+    :root{color-scheme:light;font-family:system-ui,sans-serif;color:#171717;background:#f2f2f0}
+    body{margin:0 auto;max-width:1650px;padding:24px}
+    h1{font-size:24px;margin:0 0 5px} h2{font-size:19px;margin:0 0 7px}
+    p{line-height:1.45;margin:6px 0 18px}.muted{color:#555}
+    section{background:white;border:1px solid #d8d8d4;border-radius:8px;margin:20px 0;padding:18px}
+    .views{display:flex;align-items:flex-start;gap:24px;overflow-x:auto;padding-bottom:8px}
+    figure{margin:0;flex:none} figcaption{font-size:12px;color:#555;margin-bottom:7px}
+    img{display:block;image-rendering:pixelated;border:1px solid #aaa;max-width:none}
+    .physical{width:85mm;height:auto}.one{width:400px;height:300px}.three{width:1200px;height:900px}
+    code{font-size:.9em}.ruler{width:85mm;border-top:2px solid #111;margin:8px 0 0;font-size:11px;text-align:center}
+  </style>
+</head>
+<body>
+  <h1>Weather station — four-mark forecast</h1>
+  <p class="muted">Checkpoint 3 design review · E3 layout. The hourly forecast shows the next four future marks from 12 AM, 3 AM, 6 AM, 9 AM, 12 PM, 3 PM, 6 PM, and 9 PM local time. The first mark is strictly later than the current time. Each frame is 400 × 300 px and black and white only. The 85 mm view uses CSS millimeters; compare its ruler with a real ruler because screens may scale physical units differently.</p>
+  <section><h2>Summer afternoon</h2><div class="views"><figure><figcaption>Approx. physical width · 85 mm</figcaption><img class="physical" src="exports/normal/normal-summer.png" alt="Summer screen at approximate physical size"><div class="ruler">85 mm</div></figure><figure><figcaption>Native · 400 × 300</figcaption><img class="one" src="exports/normal/normal-summer.png" alt="Summer screen at native size"></figure><figure><figcaption>Nearest-neighbor · 3×</figcaption><img class="three" src="exports/preview@3x/normal-summer.png" alt="Summer screen enlarged three times"></figure></div></section>
+  <section><h2>Winter morning</h2><div class="views"><figure><figcaption>Approx. physical width · 85 mm</figcaption><img class="physical" src="exports/normal/normal-winter.png" alt="Winter screen at approximate physical size"></figure><figure><figcaption>Native · 400 × 300</figcaption><img class="one" src="exports/normal/normal-winter.png" alt="Winter screen at native size"></figure><figure><figcaption>Nearest-neighbor · 3×</figcaption><img class="three" src="exports/preview@3x/normal-winter.png" alt="Winter screen enlarged three times"></figure></div></section>
+  <section><h2>Mixed spring night</h2><div class="views"><figure><figcaption>Approx. physical width · 85 mm</figcaption><img class="physical" src="exports/normal/normal-spring.png" alt="Spring screen at approximate physical size"></figure><figure><figcaption>Native · 400 × 300</figcaption><img class="one" src="exports/normal/normal-spring.png" alt="Spring screen at native size"></figure><figure><figcaption>Nearest-neighbor · 3×</figcaption><img class="three" src="exports/preview@3x/normal-spring.png" alt="Spring screen enlarged three times"></figure></div></section>
+  <section><h2>Worst-case widths</h2><div class="views"><figure><figcaption>Approx. physical width · 85 mm</figcaption><img class="physical" src="exports/normal/normal-widths.png" alt="Width stress screen at approximate physical size"></figure><figure><figcaption>Native · 400 × 300</figcaption><img class="one" src="exports/normal/normal-widths.png" alt="Width stress screen at native size"></figure><figure><figcaption>Nearest-neighbor · 3×</figcaption><img class="three" src="exports/preview@3x/normal-widths.png" alt="Width stress screen enlarged three times"></figure></div></section>
+  <section><h2>Night and low battery</h2><div class="views"><figure><figcaption>Approx. physical width · 85 mm</figcaption><img class="physical" src="exports/normal/normal-night.png" alt="Night screen at approximate physical size"></figure><figure><figcaption>Native · 400 × 300</figcaption><img class="one" src="exports/normal/normal-night.png" alt="Night screen at native size"></figure><figure><figcaption>Nearest-neighbor · 3×</figcaption><img class="three" src="exports/preview@3x/normal-night.png" alt="Night screen enlarged three times"></figure></div></section>
+  <h2>Other display states</h2>
+  <p class="muted">These apply the approved four-mark layout. The low-battery state adds only a footer glyph. A failed fetch keeps the last good frame on the panel, so its footer timestamp is the only staleness indicator. The severe-weather alert state and the <code>DATA STALE</code> badge were removed from scope on 2026-09-25; their renders are kept under <code>exports/archive/</code>.</p>
+  <section><h2>Wi-Fi setup / first boot</h2><div class="views"><figure><figcaption>Approx. physical width · 85 mm</figcaption><img class="physical" src="exports/states/state-setup.png" alt="Wi-Fi setup at physical size"></figure><figure><figcaption>Native · 400 × 300</figcaption><img class="one" src="exports/states/state-setup.png" alt="Wi-Fi setup at native size"></figure><figure><figcaption>Nearest-neighbor · 3×</figcaption><img class="three" src="exports/preview@3x/state-setup.png" alt="Wi-Fi setup enlarged"></figure></div></section>
+  <section><h2>Low battery</h2><div class="views"><figure><figcaption>Approx. physical width · 85 mm</figcaption><img class="physical" src="exports/states/state-low-battery.png" alt="Low battery screen at physical size"></figure><figure><figcaption>Native · 400 × 300</figcaption><img class="one" src="exports/states/state-low-battery.png" alt="Low battery screen at native size"></figure><figure><figcaption>Nearest-neighbor · 3×</figcaption><img class="three" src="exports/preview@3x/state-low-battery.png" alt="Low battery screen enlarged"></figure></div></section>
+  <h2>Earlier concept exploration</h2>
+  <p class="muted">These are retained for reference; E3 was selected for refinement.</p>
+  <section>
+    <h2>Compare E1, E2, and E3 at native size</h2>
+    <div class="views">
+      <figure><figcaption>E1 · no dotted dividers</figcaption><img class="one" src="exports/archive/concept-E1.png" alt="E1 without dotted dividers"></figure>
+      <figure><figcaption>E2 · top divider only</figcaption><img class="one" src="exports/archive/concept-E2.png" alt="E2 with top dotted divider only"></figure>
+      <figure><figcaption>E3 · top and center dividers</figcaption><img class="one" src="exports/archive/concept-E3.png" alt="E3 with top and center dotted dividers"></figure>
+    </div>
+  </section>
+  <section>
+    <h2>E1 · No dotted dividers</h2>
+    <p>Whitespace alone separates the current area, hourly list, and daily list. The solid footer rule remains.</p>
+    <div class="views">
+      <figure><figcaption>Approx. physical width · 85 mm</figcaption><img class="physical" src="exports/archive/concept-E1.png" alt="E1 at approximate physical size"></figure>
+      <figure><figcaption>Native · 400 × 300</figcaption><img class="one" src="exports/archive/concept-E1.png" alt="E1 at native pixel size"></figure>
+      <figure><figcaption>Nearest-neighbor · 3×</figcaption><img class="three" src="exports/archive/preview@3x/concept-E1.png" alt="E1 enlarged three times"></figure>
+    </div>
+  </section>
+  <section>
+    <h2>E2 · Top divider only</h2>
+    <p>One dotted line separates current conditions from the two forecast lists. Whitespace separates the lists and their periods.</p>
+    <div class="views">
+      <figure><figcaption>Approx. physical width · 85 mm</figcaption><img class="physical" src="exports/archive/concept-E2.png" alt="E2 at approximate physical size"></figure>
+      <figure><figcaption>Native · 400 × 300</figcaption><img class="one" src="exports/archive/concept-E2.png" alt="E2 at native pixel size"></figure>
+      <figure><figcaption>Nearest-neighbor · 3×</figcaption><img class="three" src="exports/archive/preview@3x/concept-E2.png" alt="E2 enlarged three times"></figure>
+    </div>
+  </section>
+  <section>
+    <h2>E3 · Top and center dividers</h2>
+    <p>Removes the period separators while retaining the dotted top and center rules from E.</p>
+    <div class="views">
+      <figure><figcaption>Approx. physical width · 85 mm</figcaption><img class="physical" src="exports/archive/concept-E3.png" alt="E3 at approximate physical size"></figure>
+      <figure><figcaption>Native · 400 × 300</figcaption><img class="one" src="exports/archive/concept-E3.png" alt="E3 at native pixel size"></figure>
+      <figure><figcaption>Nearest-neighbor · 3×</figcaption><img class="three" src="exports/archive/preview@3x/concept-E3.png" alt="E3 enlarged three times"></figure>
+    </div>
+  </section>
+  <h2>Earlier concepts</h2>
+  <section>
+    <h2>Compare C, D, and E at native size</h2>
+    <div class="views">
+      <figure><figcaption>C · ruled ledger</figcaption><img class="one" src="exports/archive/concept-C.png" alt="Concept C"></figure>
+      <figure><figcaption>D · quiet ledger</figcaption><img class="one" src="exports/archive/concept-D.png" alt="Concept D"></figure>
+      <figure><figcaption>E · top hero and two lists</figcaption><img class="one" src="exports/archive/concept-E.png" alt="Concept E"></figure>
+    </div>
+  </section>
+  <section>
+    <h2>A · Horizontal bands</h2>
+    <p>Most open and closest to the quiet reference: a large current reading, then separate six-hour and five-day bands. The daily band is the tightest area.</p>
+    <div class="views">
+      <figure><figcaption>Approx. physical width · 85 mm</figcaption><img class="physical" src="exports/archive/concept-A.png" alt="Concept A at approximate physical size"><div class="ruler">85 mm</div></figure>
+      <figure><figcaption>Native · 400 × 300</figcaption><img class="one" src="exports/archive/concept-A.png" alt="Concept A at native pixel size"></figure>
+      <figure><figcaption>Nearest-neighbor · 3×</figcaption><img class="three" src="exports/archive/preview@3x/concept-A.png" alt="Concept A enlarged three times"></figure>
+    </div>
+  </section>
+  <section>
+    <h2>B · Hero with hourly grid</h2>
+    <p>Current conditions get the left half of the top field while six hours form a compact two-row grid on the right. The five days have a full-width lower band.</p>
+    <div class="views">
+      <figure><figcaption>Approx. physical width · 85 mm</figcaption><img class="physical" src="exports/archive/concept-B.png" alt="Concept B at approximate physical size"></figure>
+      <figure><figcaption>Native · 400 × 300</figcaption><img class="one" src="exports/archive/concept-B.png" alt="Concept B at native pixel size"></figure>
+      <figure><figcaption>Nearest-neighbor · 3×</figcaption><img class="three" src="exports/archive/preview@3x/concept-B.png" alt="Concept B enlarged three times"></figure>
+    </div>
+  </section>
+  <section>
+    <h2>C · Two-column ledger</h2>
+    <p>Current conditions and five days stack on the left; six hours read as a vertical list on the right. The forecast is easiest to scan sequentially, but the type is more compressed.</p>
+    <div class="views">
+      <figure><figcaption>Approx. physical width · 85 mm</figcaption><img class="physical" src="exports/archive/concept-C.png" alt="Concept C at approximate physical size"></figure>
+      <figure><figcaption>Native · 400 × 300</figcaption><img class="one" src="exports/archive/concept-C.png" alt="Concept C at native pixel size"></figure>
+      <figure><figcaption>Nearest-neighbor · 3×</figcaption><img class="three" src="exports/archive/preview@3x/concept-C.png" alt="Concept C enlarged three times"></figure>
+    </div>
+  </section>
+  <section>
+    <h2>D · Quiet ledger</h2>
+    <p>Keeps C's left current/day column and right hourly list. The current temperature grows and the hourly rules disappear, giving the right column more breathing room.</p>
+    <div class="views">
+      <figure><figcaption>Approx. physical width · 85 mm</figcaption><img class="physical" src="exports/archive/concept-D.png" alt="Concept D at approximate physical size"></figure>
+      <figure><figcaption>Native · 400 × 300</figcaption><img class="one" src="exports/archive/concept-D.png" alt="Concept D at native pixel size"></figure>
+      <figure><figcaption>Nearest-neighbor · 3×</figcaption><img class="three" src="exports/archive/preview@3x/concept-D.png" alt="Concept D enlarged three times"></figure>
+    </div>
+  </section>
+  <section>
+    <h2>E · Top hero, two lists</h2>
+    <p>Moves the current reading across the full top width. Below it, hourly and daily forecasts keep C's vertical-list rhythm in balanced columns.</p>
+    <div class="views">
+      <figure><figcaption>Approx. physical width · 85 mm</figcaption><img class="physical" src="exports/archive/concept-E.png" alt="Concept E at approximate physical size"></figure>
+      <figure><figcaption>Native · 400 × 300</figcaption><img class="one" src="exports/archive/concept-E.png" alt="Concept E at native pixel size"></figure>
+      <figure><figcaption>Nearest-neighbor · 3×</figcaption><img class="three" src="exports/archive/preview@3x/concept-E.png" alt="Concept E enlarged three times"></figure>
+    </div>
+  </section>
+  <section><h2>Asset audit</h2><p>Candidate type and icon sizes after 1-bit threshold. Forecast icons at 20 px lose small marks; 24 px reads better, while the four simplified precipitation glyphs stay distinct at 14 px.</p><div class="views"><figure><figcaption>Native · 400 × 300</figcaption><img class="one" src="exports/archive/audit-font-icon.png" alt="1-bit type and icon audit"></figure><figure><figcaption>Nearest-neighbor · 3×</figcaption><img class="three" src="exports/archive/preview@3x/audit-font-icon.png" alt="Type and icon audit enlarged"></figure></div></section>
+</body>
+</html>
