@@ -12,7 +12,7 @@ This repository holds the **approved design** (mockups, a pixel-exact handoff sp
 - **No further design work is planned.** The gap before the first frame shows the setup screen; no extra state.
 - Full scope, decisions, and open items: [docs/scope.md](docs/scope.md).
 - **Development planned 2026-09-25.** Tasks are cards in Jeremy's Notion *Dev Tasks* database and are listed in order in `docs/dev-plan.md`. Build to `design/spec.md`, review with `design/review-instructions.md`.
-- **Repository:** public GitHub monorepo `jeremyward37/weather-epaper`, cloned to `~/codeProjects/weather-epaper` (created by task T02). The iCloud Drive folder is a frozen copy after that.
+- **Repository:** public GitHub monorepo [jeremyward37/weather-epaper](https://github.com/jeremyward37/weather-epaper), cloned to `~/codeProjects/weather-epaper`. The iCloud Drive folder is frozen; work in the canonical clone.
 - Working convention: software is built with OpenAI Codex, one task per session; every session appends to `WORKLOG.md` and updates its Notion card.
 
 ## Read in this order

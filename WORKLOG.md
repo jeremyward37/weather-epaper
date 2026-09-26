@@ -1,5 +1,37 @@
 # Work log
 
+## Session — T02 Repository bootstrap: GitHub monorepo outside iCloud
+
+- **Task:** https://app.notion.com/p/jeremyward/T02-Repository-bootstrap-GitHub-monorepo-outside-iCloud-3e7d9adbacad81f2b514f98ae33439dc?source=copy_link
+- **Started / finished:** 2026-09-25 23:35 MDT / in progress
+- **Model:** GPT-6 · Medium (task recommendation: GPT-6 Luna · Medium)
+- **Branch / PR:** `t02-repository-bootstrap` / local prep complete; no PR
+- **Status at end:** In progress
+
+### Result
+Copied the project into `~/codeProjects/weather-epaper`, excluding generated dependencies/build output and `.claude`; initialized `main` and created baseline commit `0dff72a`. Created task branch `t02-repository-bootstrap` and updated the README repository link, canonical clone path, and frozen-folder note.
+
+### Verification
+`PATH=/bin:/usr/bin:/usr/local/bin:/opt/homebrew/bin ./build.sh` → `PASS` (5 normal + 2 state frames; 96 firmware bitmaps). `diff -qr design/exports <iCloud>/design/exports` → no differences. `git check-ignore design/.build design/node_modules design/.venv` → all three ignored.
+
+### Decisions
+- Kept the approved design and historical exports byte-identical; the build output matched the source exports.
+- Used `main` for the approved-design baseline, then created the T02 task branch for the README and session changes.
+
+### Problems
+- `GITHUB_TOKEN` overrides GitHub CLI authentication and is invalid. `env -u GITHUB_TOKEN gh auth status` confirms the saved `jeremyward37` keyring credential is valid.
+- The auto-review rejected `gh repo create ... --public ... --push` because publishing the full project to a public repository was considered broad external disclosure. Do not retry publication through another route; get Jeremy’s approval first.
+- `sharp` is installed for arm64, while `/usr/local/bin/bash` runs x86_64 and causes universal Node to select the missing x64 binding. Putting `/bin` first selects system Bash and makes the required direct `./build.sh` invocation pass.
+
+### Needs Jeremy
+Approve publication of this repository to the public destination `https://github.com/jeremyward37/weather-epaper`; the exact payload is the locally reviewable baseline commit plus the README and T02 work-log changes on `t02-repository-bootstrap`. GitHub CLI is already authenticated when run with `env -u GITHUB_TOKEN`.
+
+### Next
+After Jeremy approves public publication: create and push the public repo from baseline `0dff72a` on `main`; enable PR-required protection on `main`; add `MOVED-TO-GITHUB.md` to the iCloud folder; push `t02-repository-bootstrap` and open a PR. Then verify remote state, clean Git status, and update the Notion card.
+
+---
+
+
 One entry per agent session, newest at the top. Every task in `docs/dev-plan.md` requires an entry here **and** matching notes on its Notion card. Jeremy reads this file to understand what happened without replaying a session, so write for a reader who was not there.
 
 ## Rules for agents
