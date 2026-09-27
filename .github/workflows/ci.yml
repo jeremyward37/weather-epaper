@@ -96,6 +96,11 @@ jobs:
             node --test
           fi
 
+      - name: Regenerate embedded setup frame and require a clean diff
+        run: |
+          node server/bin/pack-setup.js
+          git diff --exit-code -- firmware/assets/setup_frame.h
+
       - name: Generate frame diff PNGs after failure
         if: failure()
         shell: bash
