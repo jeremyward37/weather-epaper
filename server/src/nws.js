@@ -85,7 +85,8 @@ export async function fetchAll(config, { fetchImpl = fetch, now = new Date(), la
   need(observation.temperature?.value == null || observation.temperature.unitCode === 'wmoUnit:degC', 'observation: temperature is not Celsius');
   return {
     hourly, daily, observation,
-    meta: { fetchedAt: now.toISOString(), grid: { id: links.gridId, x: links.gridX, y: links.gridY }, station: config.station,
+    meta: { fetchedAt: now.toISOString(), dataUpdateTime: hourlyResponse.body.properties.updateTime,
+      grid: { id: links.gridId, x: links.gridX, y: links.gridY }, station: config.station,
       lastModified: { point: point.lastModified, hourly: hourlyResponse.lastModified, daily: dailyResponse.lastModified, observation: observationResponse.lastModified } },
   };
 }

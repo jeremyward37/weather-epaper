@@ -1,5 +1,38 @@
 # Work log
 
+## Session — T11 Render job CLI: fetch → fixture → render both frames → bundle
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad815ba249ccc611a0594e
+- **Started / finished:** 2026-09-27 11:49 MDT / 12:10 MDT
+- **Model:** GPT-6 · High
+- **Branch / PR:** `t11-render-job` / https://github.com/jeremyward37/weather-epaper/pull/12
+- **Status at end:** Done
+
+### Result
+Added `server/bin/render.js` and `server/src/job.js` to join timing, NWS fetch, normalization, validation, two-state rendering, 1-bit PNG encoding, and the T10 bundle. A sibling staging directory keeps an existing output untouched on fetch, normalization, rendering, or bundle failures. Added the pinned Pillow PNG re-encoder, fixture-mode byte check, CI step, offline failure tests, and local-run documentation.
+
+### Verification
+`./tools/fixture-check.sh` passed six zero-pixel and byte-identical comparisons. Pinned `./tools/render.sh` printed `PASS` and seven zero-diff rows. Node 24 `node --test server/test` with bundled Pillow on `PATH` passed 356 tests; `cd server && npm test` also passed. A live NWS run inside the pinned container produced both 15,000-byte framebuffers and the review bundle; `index.html` loaded both frames and metadata through a local HTTP server. `framediff.py --region 136,281,14,10` reported 100 glyph pixels inside and zero outside; each raw framebuffer decoded to its corresponding PNG with zero differences. Simulated 500s, future `Last-Modified`, out-of-range temperature, and a partial bundle write exited 2 without changing the previous output. `git diff --check` passed. GitHub Actions `build` passed on PR #12, including run 36339359628.
+
+### Decisions
+- Started from the T09 branch tip, which contains the completed T08 and T10 dependencies. Kept the primary checkout and its unrelated local edit untouched.
+- Fixture mode honors the fixture's own `lowBattery` field because the approved `normal-night.png` contains the glyph; live mode explicitly renders both variants.
+- Re-encode thresholded frames with the pinned Pillow version so fixture output matches the approved PNG bytes, not only its pixels.
+- Set the footer to the successful render time, and record NWS hourly `updateTime` separately in bundle metadata.
+
+### Problems
+- The first fixture run found 100 differing night-frame pixels because `normal-night.json` includes the low-battery glyph; honoring the fixture state resolved it. In-memory PNG pixels matched the exports but file bytes differed until the pinned Pillow re-save.
+- The sandbox restricted direct Docker-socket and local HTTP binding; the approved elevated runs completed the checks.
+- The card's literal `node --test server/test` initially failed because Node did not resolve the test directory. Added a package entrypoint that loads the same test files; it now passes with the bundled Python/Pillow on `PATH`.
+
+### Needs Jeremy
+Review and merge the T11 pull request after CI passes.
+
+### Next
+T12 can schedule and publish the staged bundle after T11 merges. Do not start T12 in this session.
+
+---
+
 ## Session — T09 Time logic: three-hour marks, daily labels, civil twilight, formatting
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad814fa0e2f5dc1770fcef
