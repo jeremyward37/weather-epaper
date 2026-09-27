@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T12 Scheduled publish: GitHub Actions cron to GitHub Pages
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81bd91adf4876d1bbf55
+- **Started / finished:** 2026-09-27 12:56 MDT / in progress
+- **Model:** GPT-6 Sol · Medium
+- **Branch / PR:** t12-scheduled-publish
+- **Status at end:** In progress
+
+### Result
+In progress.
+
+### Verification
+Pending.
+
+### Decisions
+- Working in a separate T12 worktree to preserve an existing `.gitignore` change in the canonical checkout.
+
+### Problems
+- The T12 card's local-time schedule conflicts with `docs/scope.md` §9's older UTC-aligned schedule; reconciling while implementing.
+
+### Needs Jeremy
+Pending.
+
+### Next
+Pending.
+
+---
+
 ## Session — T11 Render job CLI: fetch → fixture → render both frames → bundle
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad815ba249ccc611a0594e

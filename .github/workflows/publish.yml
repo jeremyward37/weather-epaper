@@ -1,0 +1,85 @@
+name: Publish weather frame
+
+on:
+  schedule:
+    - cron: '47 4 * * *'
+      timezone: America/Denver
+    - cron: '17,47 5-21 * * *'
+      timezone: America/Denver
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Check local publish window
+        id: window
+        shell: bash
+        run: |
+          publish="$(node server/bin/publish-window.js "${{ github.event_name }}")"
+          echo "publish=$publish" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        if: steps.window.outputs.publish == 'true'
+        uses: docker/setup-buildx-action@v3
+
+      - name: Prepare renderer image identity
+        if: steps.window.outputs.publish == 'true'
+        id: renderer
+        shell: bash
+        run: |
+          sharp_version="$(sed -n 's/.*"sharp": "\([^"]*\)".*/\1/p' design/package.json)"
+          pillow_version="$(sed -n 's/^Pillow==//p' design/requirements.txt)"
+          image_key="$(git hash-object tools/render.Dockerfile design/package.json design/requirements.txt | git hash-object --stdin | cut -c1-12)"
+          echo "image=weather-epaper-render:${image_key}" >> "$GITHUB_OUTPUT"
+          echo "sharp=${sharp_version}" >> "$GITHUB_OUTPUT"
+          echo "pillow=${pillow_version}" >> "$GITHUB_OUTPUT"
+
+      - name: Build pinned renderer from Actions cache
+        if: steps.window.outputs.publish == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: tools/render.Dockerfile
+          load: true
+          tags: ${{ steps.renderer.outputs.image }}
+          build-args: |
+            SHARP_VERSION=${{ steps.renderer.outputs.sharp }}
+            PILLOW_VERSION=${{ steps.renderer.outputs.pillow }}
+          cache-from: type=gha,scope=weather-epaper-render
+          cache-to: type=gha,scope=weather-epaper-render,mode=max
+
+      - name: Render complete publish bundle
+        if: steps.window.outputs.publish == 'true'
+        shell: bash
+        run: |
+          docker run --rm --user "$(id -u):$(id -g)" \
+            --volume "$PWD:/work" --tmpfs /work/design/node_modules --workdir /work \
+            "${{ steps.renderer.outputs.image }}" node server/bin/render.js --out public/
+
+      - name: Upload Pages artifact
+        if: steps.window.outputs.publish == 'true'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: public/
+
+      - name: Deploy to GitHub Pages
+        if: steps.window.outputs.publish == 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4
