@@ -87,3 +87,11 @@ Made by Jeremy in the planning session that produced `../docs/dev-plan.md`. Thes
 - **Repository is public.** Jeremy may switch it later; a private repo meters Actions minutes and needs GitHub Pro for Pages.
 - **Execution convention:** one Codex session per task; tasks live in Jeremy's Notion *Dev Tasks* database and are listed in `../docs/dev-plan.md`; every session appends an entry to `WORKLOG.md`.
 
+## T03 renderer feedback — 2026-09-26
+
+These adjustments are on the draft re-baseline branch; Jeremy has not yet approved the complete seven-frame container output.
+
+- The normal/low-battery footer logo remains at its approved bottom-right anchor. Difference-bounded review crops had hidden unchanged footer pixels, so the revised 3× review images show each complete frame. The setup screen keeps its approved large centered logo and no footer, as Jeremy clarified.
+- Enable Raleway lining numerals in the pinned font configuration so the digits in `108°`, `48°`, and `61°` have aligned cap heights rather than oldstyle ascenders/descenders.
+- Move the `FIRST LIGHT` / `LAST LIGHT` label's visible center from y=31 to y=38. Right-anchor the event time at x=370 so the current fixtures all leave 32 px of visible right margin.
+- The pinned renderer still produces a 5 px minimum hourly gap in the width fixture, against the approved 7 px requirement. The check remains unchanged pending explicit re-baseline approval.

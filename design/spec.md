@@ -33,10 +33,10 @@ All text is black, regular weight `400`, and left anchored unless another anchor
 | Element | Font / bitmap | Anchor / target |
 |---|---|---|
 | Current condition | Weather Icons, 66 × 66 px bitmap | Left of box `x=10`; visible ink `cy=55` |
-| Current temperature | Raleway Regular 76 px | Left `x=82`; visible ink `cy=55` |
-| Sun label | Lato Regular 14 px, uppercase | Left `x=255`; visible ink `cy=31` |
+| Current temperature | Raleway Regular 76 px, lining numerals | Left `x=82`; visible ink `cy=55` |
+| Sun label | Lato Regular 14 px, uppercase | Left `x=255`; visible ink `cy=38` |
 | Sun event icon | Weather Icons, 30 × 30 px bitmap | Left of box `x=255`; visible ink `cy=64` |
-| Sun event time | Lato Regular 22 px | Left `x=293`; visible ink `cy=64` |
+| Sun event time | Lato Regular 22 px | Right anchor `x=370`; visible ink `cy=64` |
 | Hourly time | Lato Regular 18 px | Left `x=8`; row centers `121,161,201,241` |
 | Hourly temperature | Lato Regular 22 px | Left `x=70`; same row centers |
 | Hourly condition | Weather Icons, 32 × 32 px bitmap | Left of box `x=119`; same row centers |

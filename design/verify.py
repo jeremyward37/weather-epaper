@@ -129,7 +129,7 @@ def main():
         path = ROOT / 'exports/normal' / f'normal-{identifier}.png'
         image = check_png(path)
         aligned([ink_box(image, (10, 10, 76, 93)), ink_box(image, (82, 10, 244, 93))], 55, f'{identifier} current')
-        aligned([ink_box(image, (255, 45, 285, 86)), ink_box(image, (293, 45, 395, 86))], 64, f'{identifier} sun')
+        aligned([ink_box(image, (255, 45, 285, 86)), ink_box(image, (286, 45, 395, 86))], 64, f'{identifier} sun')
         min_gap = min(min_gap, check_rows(image, identifier))
         aligned([ink_box(image, (7, 275, 22, 298)), ink_box(image, (27, 275, 130, 298)), ink_box(image, (375, 275, 395, 298))], 285.5, f'{identifier} footer')
         svg = (ROOT / '.build/svg' / f'normal-{identifier}.svg').read_text()
