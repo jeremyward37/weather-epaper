@@ -1,5 +1,37 @@
 # Work log
 
+## Session — T05 CI: build in container, zero-diff gate, verify PASS
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81898570d8ce8ff8056a
+- **Started / finished:** 2026-09-26 21:02 MDT / 2026-09-26 21:12 MDT
+- **Model:** GPT-6 · Medium
+- **Branch / PR:** `t05-ci-build-gate` / https://github.com/jeremyward37/weather-epaper/pull/4
+- **Status at end:** In progress
+
+### Result
+Added `.github/workflows/ci.yml` for pull requests and pushes to `main`. It builds the pinned renderer with GitHub Actions layer caching, runs `tools/render.sh`, `design/verify.py`, and Python tests, conditionally runs Node tests when test directories exist, and uploads per-frame diff PNGs on failure. Configured strict protection on `main` for the GitHub Actions `build` check (app ID 15368); GitHub displays it as `CI / build (pull_request)`. PR #4 is green. Temporary proof PR #5 was closed after its fixture drift failed the render gate and uploaded the `frame-diffs` artifact.
+
+### Verification
+- Ruby YAML parse, `bash -n tools/render.sh`, and `git diff --check` passed.
+- `/Users/jeremyward/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest discover -s tools -p 'test_*.py'` → 6 tests passed.
+- GitHub Actions run [36290539488](https://github.com/jeremyward37/weather-epaper/actions/runs/36290539488) on PR #4 passed: pinned image build, render with zero differing pixels for all seven frames, `design/verify.py`, `python -m pytest tools/`, and both conditional Node-test steps.
+- Proof run [36290630680](https://github.com/jeremyward37/weather-epaper/actions/runs/36290630680) failed at `tools/render.sh` after the fixture temperature changed from 97 to 98; the `frame-diffs` artifact was uploaded successfully.
+- GitHub branch protection reports strict required check `build` from app ID 15368; after this correction, PR #4 reports merge state `CLEAN`.
+
+### Decisions
+- Base T05 on `origin/main` at the merged T03 commit `df69df1`, keeping the unrelated `.gitignore` edit in the original checkout untouched.
+- Require the raw Actions check-run name `build` from GitHub Actions app ID 15368; GitHub formats it in the PR UI as `CI / build (pull_request)`.
+- Keep the task In progress until PR #4 is merged and its push-to-`main` CI run passes.
+
+### Problems
+- The local Docker CLI had no running daemon, so container verification ran on GitHub Actions. The CI run passed.
+
+### Needs Jeremy
+Approve merging PR #4. After merge, confirm the `main` push run passes before setting T05 to Done.
+
+### Next
+After approval, merge PR #4 and verify the main-branch CI run; do not start T06 or T07.
+
 ## Session — T03 approved renderer re-baseline
 
 - **Task:** https://app.notion.com/p/jeremyward/T03-Pinned-renderer-container-and-frame-diff-tool-3e7d9adbacad81d8944bf5365c0dc2c5?source=copy_link
