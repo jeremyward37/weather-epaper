@@ -12,17 +12,18 @@
 Added pure `server/src/timing.js` with the six time APIs and vendored SunCalc 1.9.0 for civil twilight. The returned time, day, and event fields match the normal fixture schema. Added `server/test/timing.test.js`, API notes in `server/README.md`, and the SunCalc license.
 
 ### Verification
-Node 24 `node --test` with the bundled Python on `PATH` passed all 342 server tests, including seven new timing tests. `./tools/render.sh` printed `PASS` and zero differing pixels for all seven canonical frames after merging current `main`. GitHub CI pending PR creation.
+Node 24 `node --test 'test/*.test.js'` with the bundled Python on `PATH` passed all 351 server tests, including seven new timing tests and T08's newly merged tests. `./tools/render.sh` printed `PASS` and zero differing pixels for all seven canonical frames after merging current `main`. GitHub CI pending PR update.
 
 ### Decisions
 - Based this branch on T06's completed renderer commit in a separate worktree; the primary checkout has an unrelated local edit.
 - Enumerate real UTC instants for marks and refresh slots; use `Intl.DateTimeFormat` in `America/Denver` for all labels and local-date arithmetic, so DST gaps and repeated hours retain chronological order.
 - Treat `10:00 PM` as the last eligible refresh instant; the next slot after it is `5:00 AM` the following local date.
 - Merged current `main` after T10 landed, keeping its ES module server layout and prior work-log entries.
+- Merged current `main` again after T08 landed, retaining the fetch CLI, package scripts, docs, and both earlier log entries.
 - Vendored SunCalc 1.9.0 so the existing CI can run timing tests without a new dependency installation step.
 
 ### Problems
-The host Node 16 cannot run `node --test`, and its older Pillow breaks T10's framediff tests. Used the bundled Node 24 and Python/Pillow runtime. An initial host `./build.sh` could not write the managed worktree under sandbox permissions; the required build passed inside the pinned container through `./tools/render.sh`. GitHub rejected the first push because the available token cannot edit workflow files; removed that change and vendored SunCalc with its license instead.
+The host Node 16 cannot run `node --test`, and its older Pillow breaks T10's framediff tests. Used the bundled Node 24 and Python/Pillow runtime. An initial host `./build.sh` could not write the managed worktree under sandbox permissions; the required build passed inside the pinned container through `./tools/render.sh`. GitHub rejected the first push because the available token cannot edit workflow files; removed that change and vendored SunCalc with its license instead. T08 merged while PR #11 was opening, briefly making it conflict; merged current main and resolved three text conflicts.
 
 ### Needs Jeremy
 None.
