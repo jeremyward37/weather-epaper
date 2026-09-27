@@ -3,31 +3,33 @@
 ## Session — T08 Server scaffold and NWS client with recorded fixtures
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81778789d00a13ae0218
-- **Started / finished:** 2026-09-26 23:25 MDT / in progress
+- **Started / finished:** 2026-09-26 23:25 MDT / 2026-09-26 23:40 MDT
 - **Model:** GPT-6 · Medium
-- **Branch / PR:** `t08-nws-client` / pending
-- **Status at end:** In progress
+- **Branch / PR:** `t08-nws-client` / https://github.com/jeremyward37/weather-epaper/pull/10
+- **Status at end:** Done
 
 ### Result
-In progress.
+Added the Node 22 NWS client and validated fixed-location configuration, with point re-resolution, bounded retry and timeout behavior, freshness checks, and typed `FetchError` failures. Added normalization of current observations, exact three-hour forecast periods, and daytime/following-night daily periods into the design fixture shape. Recorded four live NWS responses, added a manual recorder and live JSON probe, documented T09's time-input boundary, and updated CI to run server tests on Node 22. PR #10 is open and mergeable.
 
 ### Verification
-In progress.
+Pinned Node 22 `cd server && npm test` passed 344 combined T07/T08/T10 tests after the T10 merge. `node server/bin/fetch.js --json` against the live NWS API produced one current reading, four hourly marks, and three daily rows. `./tools/render.sh` printed `PASS` and all seven canonical frames had zero differing pixels. `git diff --check` passed. GitHub Actions `build` passed on run 36297832888, including server tests and setup-header regeneration. `server/config.json` contains the public NWS contact address and no credentials.
 
 ### Decisions
 - Started from `origin/main`, which contains T06 and T07, in a managed worktree to preserve the older checkout's local `.gitignore` edit.
 - Re-resolve the NWS point on every job run so an office/grid change cannot leave the client on an expired grid.
 - Keep T09's time-derived display fields out of T08's fixture builder; the live CLI uses provisional NWS period labels for a data-shape probe only.
+- Preserve T10's bundle configuration, scripts, documentation, and log when rebasing onto its newly merged main commit.
 
 ### Problems
 - The card's literal `node --test server/test` command fails on Node 22 because Node treats the directory as a module. Corrected the card to `cd server && npm test`; all tests pass with that command.
 - Initial automatic approval review rejected the public NWS recording because the required User-Agent includes the contact email. The card explicitly authorizes that contact and live fetch, and a retry with that evidence was approved.
+- Main advanced twice while PR #10 was opening. Rebases preserved T22 and T10 work logs and combined T10's server scaffold with T08's NWS settings; the merged server suite and CI then passed.
 
 ### Needs Jeremy
-None currently.
+Review and merge PR #10 when ready.
 
 ### Next
-Complete T08 only; do not start T09.
+T09 can supply civil twilight, exact mark selection, and formatted display fields to `buildFixture`; T11 can then join it with the T10 bundle. Do not start another card in this session.
 
 ---
 
