@@ -3,28 +3,34 @@
 ## Session — T05 CI: build in container, zero-diff gate, verify PASS
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81898570d8ce8ff8056a
-- **Started / finished:** 2026-09-26 21:02 MDT / in progress
+- **Started / finished:** 2026-09-26 21:02 MDT / 2026-09-26 21:12 MDT
 - **Model:** GPT-6 · Medium
-- **Branch / PR:** `t05-ci-build-gate` / pending
+- **Branch / PR:** `t05-ci-build-gate` / https://github.com/jeremyward37/weather-epaper/pull/4
 - **Status at end:** In progress
 
 ### Result
-In progress.
+Added `.github/workflows/ci.yml` for pull requests and pushes to `main`. It builds the pinned renderer with GitHub Actions layer caching, runs `tools/render.sh`, `design/verify.py`, and Python tests, conditionally runs Node tests when test directories exist, and uploads per-frame diff PNGs on failure. Configured strict `CI / build` status protection on `main`. PR #4 is green. Temporary proof PR #5 was closed after its fixture drift failed the render gate and uploaded the `frame-diffs` artifact.
 
 ### Verification
-In progress.
+- Ruby YAML parse, `bash -n tools/render.sh`, and `git diff --check` passed.
+- `/Users/jeremyward/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest discover -s tools -p 'test_*.py'` → 6 tests passed.
+- GitHub Actions run [36290539488](https://github.com/jeremyward37/weather-epaper/actions/runs/36290539488) on PR #4 passed: pinned image build, render with zero differing pixels for all seven frames, `design/verify.py`, `python -m pytest tools/`, and both conditional Node-test steps.
+- Proof run [36290630680](https://github.com/jeremyward37/weather-epaper/actions/runs/36290630680) failed at `tools/render.sh` after the fixture temperature changed from 97 to 98; the `frame-diffs` artifact was uploaded successfully.
+- GitHub branch protection reports strict required context `CI / build`.
 
 ### Decisions
 - Base T05 on `origin/main` at the merged T03 commit `df69df1`, keeping the unrelated `.gitignore` edit in the original checkout untouched.
+- Use the single job status name `CI / build` as the required branch-protection check.
+- Keep the task In progress until PR #4 is merged and its push-to-`main` CI run passes.
 
 ### Problems
-- GitHub CLI initially could not reach `api.github.com`; retry GitHub operations after local implementation.
+- The local Docker CLI had no running daemon, so container verification ran on GitHub Actions. The CI run passed.
 
 ### Needs Jeremy
-None currently.
+Approve merging PR #4. After merge, confirm the `main` push run passes before setting T05 to Done.
 
 ### Next
-Complete T05 only; do not start T06 or T07.
+After approval, merge PR #4 and verify the main-branch CI run; do not start T06 or T07.
 
 ## Session — T03 approved renderer re-baseline
 
