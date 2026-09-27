@@ -117,3 +117,8 @@ The mapping table and rules are in [`../docs/nws-condition-map.md`](../docs/nws-
 - Fixture mode uses the fixture's `lowBattery` value so `normal-night.json` reproduces its approved export; live mode renders the same weather data twice with the overlay explicitly off and on.
 - The in-memory 1-bit renderer output has the approved pixels but a different PNG encoding. Re-saving it with the pinned Pillow version reproduces the approved export bytes without changing a pixel or the frame design.
 - The footer shows the instant of the successful render from fresh NWS data. Bundle metadata also records the NWS hourly forecast's `updateTime` so source freshness is visible without changing the frame.
+
+## T12 scheduled-publish decisions — 2026-09-27
+
+- Jeremy approved a 4:47 AM local-time publish in addition to the T12 card's :17/:47 schedule from 5 AM through 9 PM. This supplies the 5:00 AM device wake and brings the job to 35 daily runs, matching the 35 wake slots. The earlier UTC-aligned :20/:50 plan in `docs/scope.md` §9 is superseded.
+- Scheduled runs that start shortly after 10 PM may still publish the final frame. Manual runs outside 5 AM–10 PM skip publication. A failed render never uploads a Pages artifact, preserving the previous deployment.

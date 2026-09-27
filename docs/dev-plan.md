@@ -16,7 +16,7 @@ Token bands on the cards: **Low** under 300k tokens, **Med** 300k–1M, **High**
 ## Architecture the tasks build
 
 ```
-NWS api.weather.gov ──► GitHub Actions cron (America/Denver, :17 and :47, 5 AM–10 PM)
+NWS api.weather.gov ──► GitHub Actions cron (America/Denver, 4:47 AM then :17/:47, 5–9 PM)
                           runs server/bin/render.js inside the pinned render container
                           = design/lib renderer → 1-bit PNG → 15,000-byte framebuffer
                           publishes frame.bin + frame-lowbat.bin + PNGs + meta.json
