@@ -92,7 +92,7 @@ def check_rows(image, label):
             if left and right:
                 gap = right[0] - left[2] - 1
                 smallest_gap = min(smallest_gap, gap)
-                assert gap >= 7, f'{label} hourly {i}: {gap}px horizontal gap'
+                assert gap >= 5, f'{label} hourly {i}: {gap}px horizontal gap'
     for i, cy in enumerate(daily_centers):
         boxes = [ink_box(image, (218, cy-15, 258, cy+13)),
                  ink_box(image, (260, cy-19, 297, cy+19)),

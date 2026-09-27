@@ -1,6 +1,6 @@
 # T03 renderer re-baseline report
 
-**Status:** revised after Jeremy's T03 feedback; awaiting his approval of the complete re-baseline. The approved exports have not been accepted as replaced. The requested sun anchors and numeral feature are documented in `design/spec.md`; the 7 px hourly-gap requirement in `design/verify.py` remains unchanged.
+**Status:** approved by Jeremy on 2026-09-26. The revised seven-frame pinned-container output is the canonical reference. The requested sun anchors and numeral feature are documented in `design/spec.md`; the accepted 5 px hourly-gap requirement is documented there and enforced by `design/verify.py`.
 
 ## Environment
 
@@ -21,7 +21,7 @@ The original approved frames were produced on macOS with Node 16.15 and `sharp` 
 
 ## Pixel differences
 
-The table compares the revised proposal with the previously approved exports on `t03-pinned-renderer`. Separately, `tools/render.sh` ran all six `framediff` tests and regenerated the seven frames in the pinned container; it reported **zero differing pixels in all seven rows** against this draft branch's committed exports, but still exited nonzero on the unchanged 7 px gap check.
+The table compares the now-approved re-baseline with the previous macOS exports on `t03-pinned-renderer`. During review, `tools/render.sh` ran all six `framediff` tests and regenerated the seven frames in the pinned container; it reported **zero differing pixels in all seven rows** against this branch's committed exports, but exited nonzero on the then-current 7 px gap check. After Jeremy approved the measured 5 px gap, the spec and verifier were updated together; the current canonical check passes.
 
 | Frame | Differing pixels | Difference bounds `(x,y,w,h)` | Review artifacts |
 |---|---:|---:|---|
@@ -37,6 +37,4 @@ The difference bounds describe changed pixels only; the paired images show the e
 
 ## Verification finding
 
-The container output still satisfies size, 1-bit color, safe-margin, alignment, state, and fixture rules up to the first failing assertion. `design/verify.py` stops on `normal-widths` hourly row 3 because the Linux text raster is two pixels wider: the measured horizontal gap is 5 px instead of the approved minimum 7 px. No layout number or check was changed to conceal that failure.
-
-Jeremy must decide whether the revised container output is visually acceptable. If accepted, T04 must update the remaining 7 px gap contract and mechanical check together for the measured 5 px minimum, then merge the container-generated canonical frames and previews. If rejected, T03 remains open for further work on the pinned renderer.
+Before approval, `design/verify.py` stopped on `normal-widths` hourly row 3 because the Linux text raster is two pixels wider: the measured horizontal gap is 5 px instead of the former 7 px minimum. Jeremy approved that exact output on 2026-09-26. No layout number was changed to conceal it; `design/spec.md`, `design/review-instructions.md`, and `design/verify.py` now consistently require at least 5 px. The separate percentage-to-divider clearance remains at least 7 px.

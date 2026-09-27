@@ -1,13 +1,13 @@
 # Weather display implementation spec
 
-**Status:** **Design approved.** Checkpoint 3 closed 2026-09-25: Jeremy approved the setup and low-battery screens, which with the checkpoint 2 normal state completes the design. The setup screen's `Password: firstlight` line was added after that review and approved by Jeremy the same day. Updated 2026-09-25 for the scope decisions recorded in `../docs/scope.md` and `decisions.md`. The canonical reference is the set of 400 × 300, 1-bit PNGs in `exports/normal/normal-{summer,winter,spring,widths,night}.png` and `exports/states/state-{setup,low-battery}.png`. The source generator is `build.js`. Jeremy approved the four fixed three-hour mark normal layout, including the final 5 px leftward adjustment of the hourly icons, and verified physical legibility of the exports on 2026-09-25.
+**Status:** **Design approved.** Checkpoint 3 closed 2026-09-25: Jeremy approved the setup and low-battery screens, which with the checkpoint 2 normal state completes the design. The setup screen's `Password: firstlight` line was added after that review and approved by Jeremy the same day. Updated 2026-09-26 after Jeremy approved the seven-frame pinned-container re-baseline and its T03 feedback revisions. The canonical reference is the set of 400 × 300, 1-bit PNGs in `exports/normal/normal-{summer,winter,spring,widths,night}.png` and `exports/states/state-{setup,low-battery}.png`. The source generator is `build.js`. Jeremy approved the four fixed three-hour mark normal layout, including the final 5 px leftward adjustment of the hourly icons, and verified physical legibility of the original exports on 2026-09-25.
 
 ## Rendering contract
 
 Project scope, architecture, data source, and schedule live in `../docs/scope.md`. This file defines only what the frame looks like. The points below are the parts of that scope the renderer must honor.
 
 - Frames are rendered on a server with the same pipeline that produces these exports (`build.js` layout → rasterize → threshold) and must be pixel-identical to the export for the same data. The fixtures in `fixtures/` are the renderer's test vectors. The device draws nothing of its own.
-- **Reference environment (decided 2026-09-25):** the renderer runs in a pinned container image so every machine produces identical bytes. If that image cannot reproduce the current exports exactly, the exports are re-baselined from it once, with Jeremy's explicit re-approval; after that the container output is the reference and any drift is a defect.
+- **Reference environment (decided 2026-09-25, re-baselined 2026-09-26):** the renderer runs in the pinned `tools/render.Dockerfile` container so every machine produces identical bytes. Jeremy approved the one-time re-baseline; the committed container output is now the reference and any drift is a defect. Run `./tools/render.sh` for the canonical build and seven-frame diff gate.
 - Panel: 400 × 300 px landscape, pure black `#000000` on pure white `#FFFFFF`. No gray, antialiasing, or animation.
 - Canvas coordinates use origin `(0,0)` at the upper left. Content pixels remain at least 4 px from every edge. Solid rules are inset 5 px (`x=5..395`); dotted dividers are inset 6 px (`x=6..394`). Both are intentional.
 - Fonts in use are Lato Regular and Raleway Regular only (`assets/fonts/`). Montserrat and Roboto Mono are vendored for the archived audit sheet and are not needed by the renderer.
@@ -50,7 +50,7 @@ All text is black, regular weight `400`, and left anchored unless another anchor
 | Low-battery glyph | 14 × 14 px bitmap | Left of box `x=136`; visible ink `cy=285.5` |
 | Footer logo | Sovereign Aperture, 20 × 20 px bitmap | Box left `x=375` and right `x=395`; visible ink `cy=285.5` |
 
-The minimum measured horizontal gap among hourly elements in the five approved fixtures is **7 px**. The synthetic width fixture also leaves at least 7 px between the final hourly percentage and the dotted divider. The logo is right justified to the 5 px content inset via its box; its actual black pixels have their own internal clear space.
+The minimum measured horizontal gap among hourly elements in the five approved, container-rendered fixtures is **5 px**. The synthetic width fixture still leaves at least 7 px between the final hourly percentage and the dotted divider. The logo is right justified to the 5 px content inset via its box; its actual black pixels have their own internal clear space.
 
 ## Content and formatting
 
