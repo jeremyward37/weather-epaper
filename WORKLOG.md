@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T06 Extract the renderer into an importable library
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81cdadc3f7d3b72edb37
+- **Started / finished:** 2026-09-26 22:44 MDT / in progress
+- **Model:** GPT-6 · High
+- **Branch / PR:** `codex/t06-render-library` / pending
+- **Status at end:** In progress
+
+### Result
+In progress.
+
+### Verification
+Baseline `./tools/render.sh` → `PASS`, with zero differing pixels in all seven frames.
+
+### Decisions
+- Used a separate managed worktree from merged `origin/main` because the primary checkout has an unrelated local `.gitignore` edit.
+
+### Problems
+None.
+
+### Needs Jeremy
+None.
+
+### Next
+Complete T06 only; do not start another card in this session.
+
+---
+
 ## Session — T05 CI: build in container, zero-diff gate, verify PASS
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81898570d8ce8ff8056a
