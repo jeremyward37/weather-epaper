@@ -1,5 +1,34 @@
 # Work log
 
+## Session — T07 PR conflict resolution after T06 merge
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad813c90aecad2b0214c39
+- **Started / finished:** 2026-09-26 23:12 MDT / 2026-09-26 23:13 MDT
+- **Model:** GPT-6 Sol · High
+- **Branch / PR:** `t07-condition-mapper` / https://github.com/jeremyward37/weather-epaper/pull/6
+- **Status at end:** Done
+
+### Result
+Merged T06 from `main` into T07 PR #6. Resolved the sole textual conflict in `WORKLOG.md`: the complete T06 agent entry is present verbatim, followed by the original T07 entry and all earlier sessions. T06's renderer changes and T07's mapper and documentation coexist; the icon map and decisions retain both tasks' updates.
+
+### Verification
+The T06 entry matches `origin/main:WORKLOG.md` verbatim and appears once; the original T07 entry also appears once. Pinned Node 22 `node --test server/test` passed 331 tests and `node --test design/test` passed 3. `./tools/render.sh` printed `PASS`, with all seven canonical frames showing zero differing pixels. `git diff --check` and `git diff --cached --check` passed.
+
+### Decisions
+- Merge the completed T06 `main` into T07, keeping both original session entries and the T06 agent's notes verbatim.
+
+### Problems
+- PR #6 became conflicted after T06 PR #7 merged; `WORKLOG.md` contains the only textual conflict.
+- The first direct design-test invocation used a read-only Docker mount, but T06's renderer writes generated font configuration during import. The exact CI invocation with a writable worktree and masked `node_modules` passed all three tests.
+
+### Needs Jeremy
+Review and merge [PR #6](https://github.com/jeremyward37/weather-epaper/pull/6) when ready.
+
+### Next
+T08 can start after T07 merges; T06 is already integrated. Do not start it in this session.
+
+---
+
 ## Session — T06 Extract the renderer into an importable library
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81cdadc3f7d3b72edb37
@@ -28,6 +57,37 @@ Review and merge PR #7 when ready.
 
 ### Next
 After PR #7 is merged, T09 and T10 can use `design/lib/render.js` directly. T08 also depends on T07. Do not start another card in this session.
+
+---
+
+## Session — T07 NWS condition mapping table and pure mapper module
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad813c90aecad2b0214c39
+- **Started / finished:** 2026-09-26 22:46 MDT / 2026-09-26 22:55 MDT
+- **Model:** GPT-6 Sol · High
+- **Branch / PR:** `t07-condition-mapper` / https://github.com/jeremyward37/weather-epaper/pull/6
+- **Status at end:** Done
+
+### Result
+Added `docs/nws-condition-map.md` with all 34 NWS codes and ordered mapping rules, `server/src/conditions.js` as a pure mapper, and dated raw SLC forecast/hourly fixtures with 331 test vectors. Updated `design/icon-map.md` to point to the table and recorded mapping choices in `design/decisions.md`. PR #6 is clean against `main` and its required CI check is green.
+
+### Verification
+Pinned Node 22 `node --test server/test` and CI's `cd server && node --test` each passed 331 tests. `./tools/render.sh` printed `PASS`, all six Python frame-diff tests passed, and all seven canonical frame rows had zero differing pixels. `git diff --check` passed. GitHub Actions [run 36295689723](https://github.com/jeremyward37/weather-epaper/actions/runs/36295689723) passed its required `build` check.
+
+### Decisions
+- T07 depends only on T02, so implementation proceeds independently of the active T06 worktree.
+- A dual daily icon uses the higher embedded chance, with the second half winning ties; the period chance remains the displayed value.
+- Positive chance with a generic icon is promoted using forecast wording, then the 34 °F fallback. Hail with positive chance uses `thunder` to satisfy the approved icon/type validator; the hail bitmap remains available at zero chance.
+
+### Problems
+- The standard shell cannot write Git refs in the canonical repository's protected `.git`; branch creation required an approved escalation.
+- Rebasing onto the newly merged T05 CI workflow conflicted in `WORKLOG.md`; both session entries were preserved and the rebase completed.
+
+### Needs Jeremy
+Review and merge [PR #6](https://github.com/jeremyward37/weather-epaper/pull/6) when ready. No hardware step is needed.
+
+### Next
+T08 can begin after T06 and T07 are integrated. Use `mapPeriod()` with the period's PoP value and a civil `isDay` computed by T09; no fetch or time logic was added in T07.
 
 ---
 
@@ -62,6 +122,8 @@ Approve merging PR #4. After merge, confirm the `main` push run passes before se
 
 ### Next
 After approval, merge PR #4 and verify the main-branch CI run; do not start T06 or T07.
+
+---
 
 ## Session — T03 approved renderer re-baseline
 
