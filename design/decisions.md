@@ -2,6 +2,12 @@
 
 Status: **Design approved.** Checkpoint 3 closed 2026-09-25: Jeremy approved the setup and low-battery screens, which with the checkpoint 2 normal state completes the design. The setup screen's `Password: firstlight` line was added after that review and approved by Jeremy the same day. E3 with four fixed three-hour marks is the selected design.
 
+## T06 renderer extraction — 2026-09-26
+
+- Exported the layout as a CommonJS module in `lib/render.js` so the Node server can call it directly. `build.js` is the file-writing CLI over the same functions; no anchors, font sizes, or frame pixels changed.
+- The `lowBattery` API option takes precedence over the fixture field. This preserves the approved night low-battery fixture while allowing the server to produce both variants from one data object.
+- The Node `toOneBitPng` function emits a grayscale, bit-depth-1 PNG at luminance cutoff 160. The CLI retains Python `threshold.py` for its existing export and preview workflow.
+
 ## Selection and content
 
 Jeremy chose the two-column ledger family, E’s full-width current area, and E3’s single dotted horizontal line below current conditions plus a dotted vertical line between forecast columns. There are no forecast row dividers. The early concepts remain in `exports/archive/`.
