@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T10 Frame packer: 1-bit PNG to raw framebuffer, decoder, publish bundle
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8187b4a0c4aebf59bda7
+- **Started / finished:** 2026-09-26 23:25 MDT / in progress
+- **Model:** GPT-6 Sol · Medium
+- **Branch / PR:** `t10-frame-packer` / pending
+- **Status at end:** In progress
+
+### Result
+In progress.
+
+### Verification
+In progress.
+
+### Decisions
+- Use the T06-complete `origin/main` as the branch base; keep the unrelated change in the primary checkout untouched.
+
+### Problems
+None.
+
+### Needs Jeremy
+None.
+
+### Next
+Complete T10 only; do not start T11 or T14 in this session.
+
+---
+
 ## Session — T07 PR conflict resolution after T06 merge
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad813c90aecad2b0214c39
