@@ -3,16 +3,16 @@
 ## Session — T11 Render job CLI: fetch → fixture → render both frames → bundle
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad815ba249ccc611a0594e
-- **Started / finished:** 2026-09-27 11:49 MDT / in progress
+- **Started / finished:** 2026-09-27 11:49 MDT / 12:04 MDT
 - **Model:** GPT-6 · High
-- **Branch / PR:** `t11-render-job` / pending
-- **Status at end:** In progress
+- **Branch / PR:** `t11-render-job` / https://github.com/jeremyward37/weather-epaper/pull/12
+- **Status at end:** Done
 
 ### Result
 Added `server/bin/render.js` and `server/src/job.js` to join timing, NWS fetch, normalization, validation, two-state rendering, 1-bit PNG encoding, and the T10 bundle. A sibling staging directory keeps an existing output untouched on fetch, normalization, rendering, or bundle failures. Added the pinned Pillow PNG re-encoder, fixture-mode byte check, CI step, offline failure tests, and local-run documentation.
 
 ### Verification
-`./tools/fixture-check.sh` passed six zero-pixel and byte-identical comparisons. Pinned `./tools/render.sh` printed `PASS` and seven zero-diff rows. Node 24 `node --test test/*.test.js` passed 356 tests. A live NWS run inside the pinned container produced both 15,000-byte framebuffers and the review bundle; `index.html` loaded both frames and metadata through a local HTTP server. `framediff.py --region 136,281,14,10` reported 100 glyph pixels inside and zero outside; each raw framebuffer decoded to its corresponding PNG with zero differences. Simulated 500s, future `Last-Modified`, out-of-range temperature, and a partial bundle write exited 2 without changing the previous output. `git diff --check` passed. CI pending.
+`./tools/fixture-check.sh` passed six zero-pixel and byte-identical comparisons. Pinned `./tools/render.sh` printed `PASS` and seven zero-diff rows. Node 24 `node --test test/*.test.js` passed 356 tests. A live NWS run inside the pinned container produced both 15,000-byte framebuffers and the review bundle; `index.html` loaded both frames and metadata through a local HTTP server. `framediff.py --region 136,281,14,10` reported 100 glyph pixels inside and zero outside; each raw framebuffer decoded to its corresponding PNG with zero differences. Simulated 500s, future `Last-Modified`, out-of-range temperature, and a partial bundle write exited 2 without changing the previous output. `git diff --check` passed. GitHub Actions `build` passed on run 36339226764 for PR #12.
 
 ### Decisions
 - Started from the T09 branch tip, which contains the completed T08 and T10 dependencies. Kept the primary checkout and its unrelated local edit untouched.
