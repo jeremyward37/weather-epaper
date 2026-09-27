@@ -1,0 +1,131 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Save committed frames for failure diffs
+        shell: bash
+        run: |
+          reference_dir="$RUNNER_TEMP/weather-epaper-reference"
+          frames=(
+            design/exports/normal/normal-summer.png
+            design/exports/normal/normal-winter.png
+            design/exports/normal/normal-spring.png
+            design/exports/normal/normal-widths.png
+            design/exports/normal/normal-night.png
+            design/exports/states/state-setup.png
+            design/exports/states/state-low-battery.png
+          )
+          for frame in "${frames[@]}"; do
+            mkdir -p "$reference_dir/$(dirname "$frame")"
+            git show "HEAD:$frame" > "$reference_dir/$frame"
+          done
+          echo "WEATHER_EPAPER_REFERENCE_DIR=$reference_dir" >> "$GITHUB_ENV"
+
+      - name: Install Python verification dependencies
+        run: python -m pip install -r design/requirements.txt pytest
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Prepare renderer image identity
+        id: renderer
+        shell: bash
+        run: |
+          sharp_version="$(sed -n 's/.*"sharp": "\([^"]*\)".*/\1/p' design/package.json)"
+          pillow_version="$(sed -n 's/^Pillow==//p' design/requirements.txt)"
+          image_key="$(git hash-object tools/render.Dockerfile design/package.json design/requirements.txt | git hash-object --stdin | cut -c1-12)"
+          echo "image=weather-epaper-render:${image_key}" >> "$GITHUB_OUTPUT"
+          echo "sharp=${sharp_version}" >> "$GITHUB_OUTPUT"
+          echo "pillow=${pillow_version}" >> "$GITHUB_OUTPUT"
+
+      - name: Build pinned renderer (GitHub Actions layer cache)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: tools/render.Dockerfile
+          load: true
+          tags: ${{ steps.renderer.outputs.image }}
+          build-args: |
+            SHARP_VERSION=${{ steps.renderer.outputs.sharp }}
+            PILLOW_VERSION=${{ steps.renderer.outputs.pillow }}
+          cache-from: type=gha,scope=weather-epaper-render
+          cache-to: type=gha,scope=weather-epaper-render,mode=max
+
+      - name: Render, verify, and require zero pixel differences
+        run: ./tools/render.sh
+
+      - name: Verify design exports
+        run: python design/verify.py
+
+      - name: Run Python tool tests
+        run: python -m pytest tools/
+
+      - name: Run design Node tests when present
+        shell: bash
+        run: |
+          if [ -d design/test ] || [ -d design/tests ]; then
+            cd design
+            node --test
+          fi
+
+      - name: Run server Node tests when present
+        shell: bash
+        run: |
+          if [ -d server/test ] || [ -d server/tests ]; then
+            cd server
+            node --test
+          fi
+
+      - name: Generate frame diff PNGs after failure
+        if: failure()
+        shell: bash
+        run: |
+          diff_dir="$RUNNER_TEMP/weather-epaper-diffs"
+          mkdir -p "$diff_dir"
+          frames=(
+            design/exports/normal/normal-summer.png
+            design/exports/normal/normal-winter.png
+            design/exports/normal/normal-spring.png
+            design/exports/normal/normal-widths.png
+            design/exports/normal/normal-night.png
+            design/exports/states/state-setup.png
+            design/exports/states/state-low-battery.png
+          )
+          for frame in "${frames[@]}"; do
+            set +e
+            python tools/framediff.py "$WEATHER_EPAPER_REFERENCE_DIR/$frame" "$frame" --out "$diff_dir/$(basename "$frame")"
+            status=$?
+            set -e
+            if [ "$status" -gt 1 ]; then
+              exit "$status"
+            fi
+          done
+
+      - name: Upload frame diff PNGs after failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frame-diffs
+          path: ${{ runner.temp }}/weather-epaper-diffs/*.png
+          if-no-files-found: ignore

@@ -1,5 +1,31 @@
 # Work log
 
+## Session — T05 CI: build in container, zero-diff gate, verify PASS
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81898570d8ce8ff8056a
+- **Started / finished:** 2026-09-26 21:02 MDT / in progress
+- **Model:** GPT-6 · Medium
+- **Branch / PR:** `t05-ci-build-gate` / pending
+- **Status at end:** In progress
+
+### Result
+In progress.
+
+### Verification
+In progress.
+
+### Decisions
+- Base T05 on `origin/main` at the merged T03 commit `df69df1`, keeping the unrelated `.gitignore` edit in the original checkout untouched.
+
+### Problems
+- GitHub CLI initially could not reach `api.github.com`; retry GitHub operations after local implementation.
+
+### Needs Jeremy
+None currently.
+
+### Next
+Complete T05 only; do not start T06 or T07.
+
 ## Session — T03 approved renderer re-baseline
 
 - **Task:** https://app.notion.com/p/jeremyward/T03-Pinned-renderer-container-and-frame-diff-tool-3e7d9adbacad81d8944bf5365c0dc2c5?source=copy_link
