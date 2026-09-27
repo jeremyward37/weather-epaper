@@ -15,14 +15,14 @@ const source = path.join(root,'assets/source'); // vendored masters; see assets/
 const iconDir = path.join(root, 'assets/icons');
 const srcDir = path.join(root, '.build/svg');
 const rawDir = path.join(root, '.build/raw');
-const sharp = require('sharp');
 for (const dir of [iconDir, srcDir, rawDir]) fs.mkdirSync(dir, {recursive:true});
 for (const dir of [iconDir, srcDir, rawDir]) {
   for (const entry of fs.readdirSync(dir)) fs.rmSync(path.join(dir, entry), {recursive:true, force:true});
 }
 const fontConfig = path.join(root,'.build/fonts.conf');
-fs.writeFileSync(fontConfig, `<?xml version="1.0"?><!DOCTYPE fontconfig SYSTEM "fonts.dtd"><fontconfig><dir>${fontDir}</dir><cachedir>/tmp/weather-epaper-font-cache</cachedir></fontconfig>`);
+fs.writeFileSync(fontConfig, `<?xml version="1.0"?><!DOCTYPE fontconfig SYSTEM "fonts.dtd"><fontconfig><dir>${fontDir}</dir><cachedir>/tmp/weather-epaper-font-cache</cachedir><match target="font"><edit name="hinting" mode="assign"><bool>false</bool></edit></match></fontconfig>`);
 process.env.FONTCONFIG_FILE = fontConfig;
+const sharp = require('sharp');
 
 const names = {
   clearDay:'wi-day-sunny', clearNight:'wi-night-clear', mostlyClearDay:'wi-day-sunny-overcast', mostlyClearNight:'wi-night-alt-partly-cloudy',

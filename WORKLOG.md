@@ -1,5 +1,39 @@
 # Work log
 
+## Session — T03 Pinned renderer container and frame diff tool
+
+- **Task:** https://app.notion.com/p/jeremyward/T03-Pinned-renderer-container-and-frame-diff-tool-3e7d9adbacad81d8944bf5365c0dc2c5?source=copy_link
+- **Started / finished:** 2026-09-26 00:09 MDT / 2026-09-26 00:25 MDT
+- **Model:** GPT-5 · Medium (task recommendation: GPT-6 Sol · Medium)
+- **Branch / PR:** `t03-pinned-renderer` / https://github.com/jeremyward37/weather-epaper/pull/2; proposed frames: `t03-rebaseline` / https://github.com/jeremyward37/weather-epaper/pull/3
+- **Status at end:** In progress
+
+### Result
+Added the locked Node 22 renderer image, `tools/render.sh`, and `tools/framediff.py` with PNG/raw decoding, both polarities and bit orders, region accounting, diff output, and six synthetic tests. The pinned Linux renderer does not reproduce the approved macOS text raster: all seven frames differ, so `docs/rebaseline-report.md` and paired review artifacts document the proposed container baseline. Draft PR #2 holds the tooling; draft PR #3 isolates the proposed seven-frame re-baseline. T03 remains in progress pending Jeremy's T04 decision.
+
+### Verification
+`design/.venv/bin/python -m unittest discover -s tools -p 'test_*.py'` → 6 tests passed. Host `./build.sh` → `PASS` (5 normal + 2 state frames; 96 bitmaps). Container `./tools/render.sh` → six tests passed and a seven-row table; it exited 1 because the frame differences were 4,520–7,631 pixels and `design/verify.py` measured a 5 px worst-case hourly gap against the approved 7 px minimum. Pixel comparison of all 96 generated icon bitmaps → zero differing pixels.
+
+### Decisions
+- Branched T03 from the completed `t02-repository-bootstrap` branch because dependency PR #1 is still open and clean against `main`.
+- Pinned `node:22.23.3-bookworm-slim` at digest `sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c`, `sharp` 0.33.5 from the npm lockfile, Python 3.11.2, and Pillow 12.3.0.
+- Kept the approved exports unchanged on the tooling branch. Put only the proposed container frames and 3× previews on `t03-rebaseline` so T04 review cannot implicitly change the design contract.
+- Did not loosen `design/verify.py` or change layout numbers. The 5 px gap needs explicit approval and a coordinated `design/spec.md` / verifier update if accepted.
+
+### Problems
+- OrbStack was not running at session start; started it and verified the Docker engine.
+- The mounted macOS `node_modules` shadowed the container's Linux `sharp`; `tools/render.sh` now masks it with a container tmpfs and uses the locked image dependency.
+- The host's `/usr/local/bin/bash` runs under Rosetta, making Node select the wrong `sharp` binary; `build.sh` now forces native arm64 Node on macOS, matching its existing Python safeguard.
+- Linux Pango/FreeType text rasterization remained different after isolating fonts, loading fontconfig before `sharp`, and disabling hinting. The residual difference triggers the documented T04 re-baseline path.
+
+### Needs Jeremy
+Review draft PR #3 under T04 and approve or reject the container-rendered text. The measurable contract change is a worst-case hourly gap of 5 px instead of 7 px.
+
+### Next
+T04 — Jeremy reviews the diff masks and 3× approved/container crops in `docs/rebaseline-report.md`. If approved, update `design/spec.md` and `design/verify.py` together, merge the re-baseline, rerun `tools/render.sh` to zero diff, and then mark T03 Done. Do not start T05 or T06 first.
+
+---
+
 ## Session — T02 Repository bootstrap: GitHub monorepo outside iCloud
 
 - **Task:** https://app.notion.com/p/jeremyward/T02-Repository-bootstrap-GitHub-monorepo-outside-iCloud-3e7d9adbacad81f2b514f98ae33439dc?source=copy_link

@@ -1,2 +1,2 @@
 # Used by design/threshold.py and design/verify.py
-Pillow>=10
+Pillow==12.3.0
