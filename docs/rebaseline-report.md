@@ -21,7 +21,7 @@ The original approved frames were produced on macOS with Node 16.15 and `sharp` 
 
 ## Pixel differences
 
-`tools/render.sh` ran all six `framediff` tests, regenerated the seven frames in the pinned container, and printed this table before exiting nonzero:
+The table compares the revised proposal with the previously approved exports on `t03-pinned-renderer`. Separately, `tools/render.sh` ran all six `framediff` tests and regenerated the seven frames in the pinned container; it reported **zero differing pixels in all seven rows** against this draft branch's committed exports, but still exited nonzero on the unchanged 7 px gap check.
 
 | Frame | Differing pixels | Difference bounds `(x,y,w,h)` | Review artifacts |
 |---|---:|---:|---|
