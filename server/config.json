@@ -1,7 +1,7 @@
 {
   "whiteIsOne": true,
   "msbFirst": true,
-  "latitude": 41.25,
+  "latitude": 100,
   "longitude": -112.03,
   "grid": { "id": "SLC", "x": 98, "y": 198 },
   "station": "KOGD",
