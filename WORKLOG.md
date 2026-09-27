@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T08 follow-up: shared feedback ignore rule
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81778789d00a13ae0218
+- **Started / finished:** 2026-09-26 23:42 MDT / 2026-09-26 23:42 MDT
+- **Model:** GPT-6 · Medium
+- **Branch / PR:** `t08-nws-client` / https://github.com/jeremyward37/weather-epaper/pull/10
+- **Status at end:** Done
+
+### Result
+Copied the primary checkout's root `/feedback/` ignore rule into the T08 branch so it will be committed through PR #10. Left the primary checkout's local edit untouched.
+
+### Verification
+`git check-ignore -v feedback/example.txt` identified the new rule. `git diff --check` passed. PR #10 was mergeable before this follow-up.
+
+### Decisions
+- Keep the root-anchored rule exactly as written in the primary checkout, so only the repository's top-level feedback folder is ignored.
+
+### Problems
+None.
+
+### Needs Jeremy
+Review and merge PR #10 when ready.
+
+### Next
+No additional T08 work is planned; T09 supplies the time fields.
+
+---
+
 ## Session — T08 Server scaffold and NWS client with recorded fixtures
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81778789d00a13ae0218
