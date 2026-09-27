@@ -28,7 +28,7 @@ Enclosure and mounting are undecided. The 4 px safe margin in the design exists 
 
 **Server-side rendering; the device is a thin client.**
 
-1. A **scheduled job** runs once per refresh slot, shortly before the device wakes. It fetches weather from the NWS API, computes civil dawn/dusk, lays out the frame with the same code that produces the design exports (`design/build.js` → rasterize → threshold), and publishes two files to **static hosting**: a raw 1-bit framebuffer and a PNG.
+1. A **scheduled job** runs once per refresh slot, shortly before the device wakes. It fetches weather from the NWS API, computes civil dawn/dusk, lays out the frame with the same library that produces the design exports (`design/lib/render.js` → rasterize → threshold), and publishes two files to **static hosting**: a raw 1-bit framebuffer and a PNG.
 2. The **device** wakes on schedule, joins Wi-Fi, downloads the raw framebuffer (400 × 300 / 8 = 15,000 bytes, panel byte order, no decoder needed), writes it to the panel, reports its battery voltage, and deep-sleeps until the next slot. It draws nothing of its own.
 3. Nothing stays running. The device fetches a fixed URL under Jeremy's domain, `builtbyjer.com`.
 

@@ -81,13 +81,12 @@ jobs:
       - name: Run Python tool tests
         run: python -m pytest tools/
 
-      - name: Run design Node tests when present
+      - name: Run design Node tests in pinned renderer
         shell: bash
         run: |
-          if [ -d design/test ] || [ -d design/tests ]; then
-            cd design
-            node --test
-          fi
+          docker run --rm --user "$(id -u):$(id -g)" \
+            --volume "$PWD:/work" --tmpfs /work/design/node_modules --workdir /work \
+            "${{ steps.renderer.outputs.image }}" node --test design/test
 
       - name: Run server Node tests when present
         shell: bash

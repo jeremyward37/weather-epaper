@@ -1,5 +1,65 @@
 # Work log
 
+## Session — T07 PR conflict resolution after T06 merge
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad813c90aecad2b0214c39
+- **Started / finished:** 2026-09-26 23:12 MDT / 2026-09-26 23:13 MDT
+- **Model:** GPT-6 Sol · High
+- **Branch / PR:** `t07-condition-mapper` / https://github.com/jeremyward37/weather-epaper/pull/6
+- **Status at end:** Done
+
+### Result
+Merged T06 from `main` into T07 PR #6. Resolved the sole textual conflict in `WORKLOG.md`: the complete T06 agent entry is present verbatim, followed by the original T07 entry and all earlier sessions. T06's renderer changes and T07's mapper and documentation coexist; the icon map and decisions retain both tasks' updates.
+
+### Verification
+The T06 entry matches `origin/main:WORKLOG.md` verbatim and appears once; the original T07 entry also appears once. Pinned Node 22 `node --test server/test` passed 331 tests and `node --test design/test` passed 3. `./tools/render.sh` printed `PASS`, with all seven canonical frames showing zero differing pixels. `git diff --check` and `git diff --cached --check` passed.
+
+### Decisions
+- Merge the completed T06 `main` into T07, keeping both original session entries and the T06 agent's notes verbatim.
+
+### Problems
+- PR #6 became conflicted after T06 PR #7 merged; `WORKLOG.md` contains the only textual conflict.
+- The first direct design-test invocation used a read-only Docker mount, but T06's renderer writes generated font configuration during import. The exact CI invocation with a writable worktree and masked `node_modules` passed all three tests.
+
+### Needs Jeremy
+Review and merge [PR #6](https://github.com/jeremyward37/weather-epaper/pull/6) when ready.
+
+### Next
+T08 can start after T07 merges; T06 is already integrated. Do not start it in this session.
+
+---
+
+## Session — T06 Extract the renderer into an importable library
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81cdadc3f7d3b72edb37
+- **Started / finished:** 2026-09-26 22:44 MDT / 2026-09-26 22:56 MDT
+- **Model:** GPT-6 · High
+- **Branch / PR:** `codex/t06-render-library` / https://github.com/jeremyward37/weather-epaper/pull/7
+- **Status at end:** Done
+
+### Result
+Extracted the renderer into importable CommonJS `design/lib/render.js`; `design/build.js` is now the file-writing CLI. Added `renderNormal`, `renderSetup`, `validateNormal`, and Node `toOneBitPng` APIs, an explicit `lowBattery` override, and in-process icon and ink caches. Added three Node tests, switched the CI Node test step to the pinned renderer image, and updated the README, scope, spec, decisions, and icon map. PR #7 is open with green required CI.
+
+### Verification
+`./tools/render.sh` → `PASS`, with zero differing pixels in all seven canonical frames; `design/verify.py` printed `PASS`. `node --test design/test` in the pinned renderer image → 3 tests passed, including seven frame pixel comparisons and battery-glyph isolation. `./build.sh --all` in the pinned image → `PASS`; `concept-E3.png` and `normal-6hour-night.png` have identical SHA-256 hashes from the original and extracted CLIs. `git diff --check` passed. GitHub Actions run [36295735257](https://github.com/jeremyward37/weather-epaper/actions/runs/36295735257) passed the required `build` check on PR #7.
+
+### Decisions
+- Used a separate managed worktree from merged `origin/main` because the primary checkout has an unrelated local `.gitignore` edit.
+- Chose CommonJS to match the existing Node CLI and keep the server import direct. The low-battery option overrides the fixture field while retaining the existing state export.
+- Kept Python thresholding for the design CLI and added a Node bit-depth-1 PNG encoder for server use, with the same luminance cutoff of 160.
+- Ran the new Node tests in the pinned CI image so their pixel comparisons use the same raster environment as the canonical gate.
+
+### Problems
+The historical exports committed before the pinned renderer differ from fresh `--all` output even with the original CLI. Compared the original and extracted CLI outputs directly, confirmed identical hashes for two representative archive frames, and restored the committed archive files after the check. Rebasing over newly merged T05 caused a worklog conflict; both session entries were retained.
+
+### Needs Jeremy
+Review and merge PR #7 when ready.
+
+### Next
+After PR #7 is merged, T09 and T10 can use `design/lib/render.js` directly. T08 also depends on T07. Do not start another card in this session.
+
+---
+
 ## Session — T07 NWS condition mapping table and pure mapper module
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad813c90aecad2b0214c39

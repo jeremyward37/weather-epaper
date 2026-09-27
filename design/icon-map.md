@@ -126,9 +126,9 @@ The default build produces exactly these 96 thresholded 1-bit PNGs. All paths in
 | Support | `logo-20.png` | `logo` | 20 | `sovereign-aperture-black.svg` |
 | Support | `logo-64.png` | `logo` | 64 | `sovereign-aperture-black.svg` |
 
-`lowBattery-14.png` uses the simplified outline generated in `build.js` because direct rasterization of `battery_alert_0deg.svg` loses its outline. The SVG in the table records the design source, not a byte-for-byte raster source.
+`lowBattery-14.png` uses the simplified outline generated in `lib/render.js` because direct rasterization of `battery_alert_0deg.svg` loses its outline. The SVG in the table records the design source, not a byte-for-byte raster source.
 
-At 32 px the source flurry marks became indistinguishable from snow, and hail retained only one tiny pellet beside rain-like strokes. `build.js` now adds two wind strokes to both flurries variants and two square ice pellets to both hail variants at all live sizes. The listed Weather Icons SVG remains the cloud and precipitation source; these marks are generated overlays. The thresholded 1× and nearest-neighbor 3× bitmaps were reviewed at 32, 36, and 66 px.
+At 32 px the source flurry marks became indistinguishable from snow, and hail retained only one tiny pellet beside rain-like strokes. `lib/render.js` adds two wind strokes to both flurries variants and two square ice pellets to both hail variants at all live sizes. The listed Weather Icons SVG remains the cloud and precipitation source; these marks are generated overlays. The thresholded 1× and nearest-neighbor 3× bitmaps were reviewed at 32, 36, and 66 px.
 
 ## Historical concept glyphs
 

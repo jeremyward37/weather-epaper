@@ -46,7 +46,9 @@ firmware/                     (T14+) PlatformIO project for the ESP32-S3 board
 tools/                        (T03+) framediff.py and other cross-cutting scripts
 .github/workflows/            (T05+) CI and the scheduled publish job
 design/
-  build.js                    THE source of every mockup: draws SVGs from fixtures, rasterizes icons
+  build.js                    CLI for regenerating exports and the icon inventory
+  lib/render.js               importable renderer, fixture validation, icon/ink cache, Node 1-bit PNG conversion
+  test/                       node --test tests for fixtures, pixel identity, low-battery overlay
   threshold.py                converts raw renders to true 1-bit PNGs, writes 3x previews, routes to exports/
   verify.py                   mechanical gate: sizes, 1-bit, margins, alignment, gaps, review-page links
   package.json, requirements.txt
@@ -85,6 +87,17 @@ python3 -m venv design/.venv && design/.venv/bin/pip install -r design/requireme
 
 `build.sh` uses `design/.venv` automatically when it exists; otherwise it falls back to the system `python3`, which then needs Pillow installed some other way.
 
+Server code can import the CommonJS renderer directly. `lowBattery` overrides the legacy fixture field so both variants can be rendered from one data object:
+
+```js
+const {renderNormal, renderSetup, validateNormal, toOneBitPng} = require('./design/lib/render.js');
+validateNormal(fixture);
+const raw = await renderNormal(fixture, {lowBattery: false}); // 400 × 300 antialiased PNG Buffer
+const png = await toOneBitPng(raw); // 1-bit grayscale PNG Buffer, white when luminance >= 160
+```
+
+`renderSetup(setupFixture)` has the same raw-PNG return type. The library caches rasterized icons and ink measurements in process; the CLI writes the generated SVGs, raw PNGs, and icon inventory. Run `node --test design/test` inside the pinned renderer image to verify the library against all seven exports.
+
 Then, from the project root:
 
 ```bash
@@ -101,7 +114,7 @@ None at build time. Every icon, the refresh artwork, and a snapshot of the Sover
 
 ## Things that trip up new agents
 
-- **`design/.build/svg/` is generated.** Every SVG there is rewritten by `build.js` on each run. To change a mockup, edit `build.js` or a fixture, then rebuild.
+- **`design/.build/svg/` is generated.** Every SVG there is rewritten by `build.js` on each run. To change a mockup, edit `design/lib/render.js` or a fixture, then rebuild.
 - **Canonical fixtures carry `threeHourly` (four 3-hour marks) only.** The legacy six-slot arrays live in `design/fixtures/archive/sixhour-*.json` and are merged in only by `--all` for the archived six-hour renders.
 - **`design/exports/archive/` is not the target.** It exists so earlier options can be compared; the review instructions say to reject a six-hour or five-day implementation.
 - **`design/assets/icons/` is regenerated on each build.** Never hand-edit it. The default build contains exactly the 96 bitmaps listed in `icon-map.md`; `--all` adds historical concept samples and precipitation-type glyphs.
