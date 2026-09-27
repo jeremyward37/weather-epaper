@@ -1,5 +1,34 @@
 # Work log
 
+## Session — T03 approved renderer re-baseline
+
+- **Task:** https://app.notion.com/p/jeremyward/T03-Pinned-renderer-container-and-frame-diff-tool-3e7d9adbacad81d8944bf5365c0dc2c5?source=copy_link
+- **Started / finished:** 2026-09-26 20:49 MDT / 20:56 MDT
+- **Model:** GPT-6 · Medium
+- **Branch / PR:** `t03-rebaseline` / https://github.com/jeremyward37/weather-epaper/pull/3
+- **Status at end:** Done
+
+### Result
+Jeremy approved the revised seven-frame pinned-container re-baseline, including the measured 5 px hourly gap. Updated `spec.md` and `verify.py` together, plus review instructions, decisions, README, development plan, and the comparison report. Committed the container-generated icon PNG encodings after confirming all 96 icon pixel arrays and modes were unchanged. PR #2 (tooling) merged into `main`; PR #3 (approved frames) was verified and retargeted to `main` for final merge.
+
+### Verification
+Host `./build.sh` printed `PASS`. After committing the approved contract, `./tools/render.sh` printed `PASS`, all six framediff unit tests passed, and all seven frame rows showed zero differing pixels. The 96 regenerated icons match their previous pixels and modes. PR #3 was conflict-free against `main`. No CI workflow is configured until T05; the passing pinned build and diff gate were the pre-merge check.
+
+### Decisions
+- Jeremy's approval accepts the container's 5 px minimum hourly gap; the distinct percentage-to-divider gap remains at least 7 px. No layout coordinates changed in this approval step.
+- The seven container-generated PNGs are now the canonical byte-for-byte reference. Keep the renderer pinned; future frame drift is a defect.
+
+### Problems
+None. CI is planned for T05 and not yet configured.
+
+### Needs Jeremy
+None.
+
+### Next
+T03 complete after PR #3 lands; do not start T05 or T06 in this session.
+
+---
+
 ## Session — T03 feedback on proposed container frames
 
 - **Task:** https://app.notion.com/p/jeremyward/T03-Pinned-renderer-container-and-frame-diff-tool-3e7d9adbacad81d8944bf5365c0dc2c5?source=copy_link
