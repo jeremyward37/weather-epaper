@@ -1,6 +1,6 @@
 # Condition and precipitation icon map
 
-Status: **Design approved.** Checkpoint 3 closed 2026-09-25: Jeremy approved the setup and low-battery screens, which with the checkpoint 2 normal state completes the design. The setup screen's `Password: firstlight` line was added after that review and approved by Jeremy the same day. Under server-side rendering (decided 2026-09-25) these bitmaps are produced by the server's copy of the pipeline; the manifest below is the complete icon inventory rather than a firmware flash deliverable. The mapping from NWS forecast fields to the semantic names in the first column is still to be written. The selected layout uses a 66 px current icon, 32 px hourly condition icons, 36 px daily icons, a 30 px civil-twilight icon, a 14 px refresh icon, a 14 px low-battery icon when needed, and a 20 px footer logo. Setup uses the same logo at 64 px. The stale badge and alert state were removed from scope on 2026-09-25; no other icons are used. There is no separate precipitation-type glyph in the selected layout.
+Status: **Design approved.** Checkpoint 3 closed 2026-09-25: Jeremy approved the setup and low-battery screens, which with the checkpoint 2 normal state completes the design. The setup screen's `Password: firstlight` line was added after that review and approved by Jeremy the same day. Under server-side rendering (decided 2026-09-25) these bitmaps are produced by the server's copy of the pipeline; the manifest below is the complete icon inventory rather than a firmware flash deliverable. The mapping from NWS forecast fields to the semantic names in the first column is documented in [`../docs/nws-condition-map.md`](../docs/nws-condition-map.md). The selected layout uses a 66 px current icon, 32 px hourly condition icons, 36 px daily icons, a 30 px civil-twilight icon, a 14 px refresh icon, a 14 px low-battery icon when needed, and a 20 px footer logo. Setup uses the same logo at 64 px. The stale badge and alert state were removed from scope on 2026-09-25; no other icons are used. There is no separate precipitation-type glyph in the selected layout.
 
 | Condition | Day source | Night source |
 |---|---|---|
@@ -21,7 +21,7 @@ Status: **Design approved.** Checkpoint 3 closed 2026-09-25: Jeremy approved the
 | Hail | `wi-day-hail.svg` | `wi-night-hail.svg` |
 | Smoke | `wi-smoke.svg` | `wi-smoke.svg` |
 
-**Gaps:** the neutral overcast and smoke marks are valid in both light and dark hours. A special night haze mark is absent, so night fog is used for the combined fog/haze condition. A final firmware mapper should take condition, precipitation type, and daylight flag. When chance is positive, choose a condition icon that visibly carries its rain, snow, mix, or thunder type; a plain cloud icon with a positive rain percentage would no longer meet Jeremy's request.
+**Gaps:** the neutral overcast and smoke marks are valid in both light and dark hours. A special night haze mark is absent, so night fog is used for the combined fog/haze condition. The server mapper takes the NWS period fields and a civil daylight flag. When chance is positive, it chooses a condition icon that visibly carries its rain, snow, mix, or thunder type; a plain cloud icon with a positive rain percentage would no longer meet Jeremy's request.
 
 ## Firmware bitmap manifest
 

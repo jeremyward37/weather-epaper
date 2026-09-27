@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T07 NWS condition mapping table and pure mapper module
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad813c90aecad2b0214c39
+- **Started / finished:** 2026-09-26 22:46 MDT / in progress
+- **Model:** GPT-6 Sol · High
+- **Branch / PR:** `t07-condition-mapper` / pending
+- **Status at end:** In progress
+
+### Result
+In progress.
+
+### Verification
+In progress.
+
+### Decisions
+- T07 depends only on T02, so implementation proceeds independently of the active T06 worktree.
+
+### Problems
+- The standard shell cannot write Git refs in the canonical repository's protected `.git`; branch creation required an approved escalation.
+
+### Needs Jeremy
+None currently.
+
+### Next
+Complete T07 only; T08 remains dependent on both T06 and T07.
+
+---
+
 ## Session — T05 CI: build in container, zero-diff gate, verify PASS
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81898570d8ce8ff8056a
@@ -31,6 +59,8 @@ Approve merging PR #4. After merge, confirm the `main` push run passes before se
 
 ### Next
 After approval, merge PR #4 and verify the main-branch CI run; do not start T06 or T07.
+
+---
 
 ## Session — T03 approved renderer re-baseline
 

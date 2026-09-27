@@ -96,3 +96,12 @@ Jeremy approved the complete seven-frame pinned-container re-baseline and these 
 - Move the `FIRST LIGHT` / `LAST LIGHT` label's visible center from y=31 to y=38. Right-anchor the event time at x=370 so the current fixtures all leave 32 px of visible right margin.
 - The pinned renderer produces a 5 px minimum hourly gap in the width fixture. Jeremy explicitly accepted it with the re-baseline; `spec.md` and `verify.py` were updated together from the former 7 px minimum. The separate percentage-to-divider clearance remains at least 7 px.
 - **Exports re-baselined from the pinned container on 2026-09-26; approved by Jeremy.** All seven frames are byte-for-byte reproducible with `./tools/render.sh`.
+
+## T07 NWS mapping decisions — 2026-09-26
+
+The mapping table and rules are in [`../docs/nws-condition-map.md`](../docs/nws-condition-map.md). They select among the approved icons and do not alter a frame, anchor, or bitmap.
+
+- For a dual twelve-hour NWS icon, select the six-hour half with higher icon-embedded precipitation chance; on a tie select the second half, which represents the later part of the daytime period. The period's own chance remains the displayed value.
+- Use the caller's civil dawn/dusk `isDay` for the icon variant, even if the NWS icon URL says day or night.
+- When a period reports positive precipitation chance with a neutral condition icon, promote it to an icon carrying the forecast's precipitation type. With no type wording, use snow at 34 °F or colder and showers above 34 °F. This preserves the approved positive-chance icon rule.
+- `hailDay` and `hailNight` remain for a zero-chance hail condition; with positive chance, use the thunder icon because the approved validator permits only Rain, Snow, Mix, or Thunder names alongside a percentage.
