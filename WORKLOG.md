@@ -1,5 +1,36 @@
 # Work log
 
+## Session — T08 Server scaffold and NWS client with recorded fixtures
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81778789d00a13ae0218
+- **Started / finished:** 2026-09-26 23:25 MDT / in progress
+- **Model:** GPT-6 · Medium
+- **Branch / PR:** `t08-nws-client` / pending
+- **Status at end:** In progress
+
+### Result
+In progress.
+
+### Verification
+In progress.
+
+### Decisions
+- Started from `origin/main`, which contains T06 and T07, in a managed worktree to preserve the older checkout's local `.gitignore` edit.
+- Re-resolve the NWS point on every job run so an office/grid change cannot leave the client on an expired grid.
+- Keep T09's time-derived display fields out of T08's fixture builder; the live CLI uses provisional NWS period labels for a data-shape probe only.
+
+### Problems
+- The card's literal `node --test server/test` command fails on Node 22 because Node treats the directory as a module. Corrected the card to `cd server && npm test`; all tests pass with that command.
+- Initial automatic approval review rejected the public NWS recording because the required User-Agent includes the contact email. The card explicitly authorizes that contact and live fetch, and a retry with that evidence was approved.
+
+### Needs Jeremy
+None currently.
+
+### Next
+Complete T08 only; do not start T09.
+
+---
+
 ## Session — T10 Frame packer: 1-bit PNG to raw framebuffer, decoder, publish bundle
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad8187b4a0c4aebf59bda7
