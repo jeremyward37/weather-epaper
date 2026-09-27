@@ -9,22 +9,26 @@
 - **Status at end:** In progress
 
 ### Result
-In progress.
+Added the scheduled Pages publisher, a window guard, tests, and the publishing runbook. Configured GitHub Pages for Actions and merged PR #13 after CI passed. The first manual dispatch deployed a complete frame bundle. A follow-up branch separates rendering from deployment so branch-only failure tests can run outside the protected Pages environment.
 
 ### Verification
-Pending.
+Pinned Node 22 `node --test server/test` passed 359 tests. `./tools/render.sh server --out public/` succeeded against live NWS data; both framebuffer files were 15,000 bytes. PR #13 CI `build` passed. Manual run 36349513099 succeeded; the live `frame.bin` was 15,000 bytes and `meta.json` reported `renderedAt` 2026-09-27T20:51:02.413Z. The separated-job correction and two scheduled runs remain under verification.
 
 ### Decisions
 - Working in a separate T12 worktree to preserve an existing `.gitignore` change in the canonical checkout.
+- Jeremy approved a 4:47 AM local publish so the 5:00 AM device wake receives a new frame; the schedule now has 35 daily runs.
+- Rendering and uploading use an unprotected job; only the dependent deployment enters `github-pages`. This lets branch-only failure checks reach the renderer while preserving main-only deployments.
 
 ### Problems
-- The T12 card's local-time schedule conflicts with `docs/scope.md` §9's older UTC-aligned schedule; reconciling while implementing.
+- The T12 card's local-time schedule conflicted with `docs/scope.md` §9's older UTC-aligned schedule. Reconciled the plan and decisions after Jeremy approved the 4:47 AM addition.
+- The first push used a `GITHUB_TOKEN` without `workflow` scope; using the saved GitHub keyring credential pushed the workflow successfully.
+- The initial forced-failure dispatch was rejected before rendering because the whole job entered the protected `github-pages` environment. Split render and deploy into separate jobs to exercise the failure path.
 
 ### Needs Jeremy
-Pending.
+None at present.
 
 ### Next
-Pending.
+Verify two consecutive scheduled runs and the branch-only forced-failure behavior; then finish T12. T13 DNS remains Jeremy's separate card.
 
 ---
 
