@@ -3,28 +3,31 @@
 ## Session — T07 NWS condition mapping table and pure mapper module
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad813c90aecad2b0214c39
-- **Started / finished:** 2026-09-26 22:46 MDT / in progress
+- **Started / finished:** 2026-09-26 22:46 MDT / 2026-09-26 22:55 MDT
 - **Model:** GPT-6 Sol · High
-- **Branch / PR:** `t07-condition-mapper` / pending
-- **Status at end:** In progress
+- **Branch / PR:** `t07-condition-mapper` / https://github.com/jeremyward37/weather-epaper/pull/6
+- **Status at end:** Done
 
 ### Result
-In progress.
+Added `docs/nws-condition-map.md` with all 34 NWS codes and ordered mapping rules, `server/src/conditions.js` as a pure mapper, and dated raw SLC forecast/hourly fixtures with 331 test vectors. Updated `design/icon-map.md` to point to the table and recorded mapping choices in `design/decisions.md`. PR #6 is clean against `main` and its required CI check is green.
 
 ### Verification
-In progress.
+Pinned Node 22 `node --test server/test` and CI's `cd server && node --test` each passed 331 tests. `./tools/render.sh` printed `PASS`, all six Python frame-diff tests passed, and all seven canonical frame rows had zero differing pixels. `git diff --check` passed. GitHub Actions [run 36295689723](https://github.com/jeremyward37/weather-epaper/actions/runs/36295689723) passed its required `build` check.
 
 ### Decisions
 - T07 depends only on T02, so implementation proceeds independently of the active T06 worktree.
+- A dual daily icon uses the higher embedded chance, with the second half winning ties; the period chance remains the displayed value.
+- Positive chance with a generic icon is promoted using forecast wording, then the 34 °F fallback. Hail with positive chance uses `thunder` to satisfy the approved icon/type validator; the hail bitmap remains available at zero chance.
 
 ### Problems
 - The standard shell cannot write Git refs in the canonical repository's protected `.git`; branch creation required an approved escalation.
+- Rebasing onto the newly merged T05 CI workflow conflicted in `WORKLOG.md`; both session entries were preserved and the rebase completed.
 
 ### Needs Jeremy
-None currently.
+Review and merge [PR #6](https://github.com/jeremyward37/weather-epaper/pull/6) when ready. No hardware step is needed.
 
 ### Next
-Complete T07 only; T08 remains dependent on both T06 and T07.
+T08 can begin after T06 and T07 are integrated. Use `mapPeriod()` with the period's PoP value and a civil `isDay` computed by T09; no fetch or time logic was added in T07.
 
 ---
 
