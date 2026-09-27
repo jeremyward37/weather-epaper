@@ -9,9 +9,10 @@ the local publish window before rendering; a scheduled run may finish shortly
 after 10 PM to serve the last wake. A manual dispatch outside 5 AM–10 PM
 skips publication.
 
-The job uses the pinned renderer container, then uploads and deploys `public/`
-only after `server/bin/render.js` exits successfully. A failed NWS fetch or
-render leaves the prior Pages deployment live. The published bundle contains
+The `render` job uses the pinned renderer container and uploads `public/` only
+after `server/bin/render.js` exits successfully. The `deploy` job depends on
+that upload and alone enters the protected `github-pages` environment. A failed
+NWS fetch or render leaves the prior Pages deployment live. The published bundle contains
 `frame.bin`, `frame-lowbat.bin`, their PNG review copies, `meta.json`, and
 `index.html`. Each binary must be 15,000 bytes.
 
@@ -20,9 +21,9 @@ render leaves the prior Pages deployment live. The published bundle contains
 From the repository's Actions tab, choose **Publish weather frame** and
 **Run workflow** on `main`. For a failed run, open that run and inspect
 **Check local publish window**, **Build pinned renderer from Actions cache**,
-and **Render complete publish bundle**. The renderer prints one JSON line with
+and **Render complete publish bundle** in the `render` job. The renderer prints one JSON line with
 the failing `step` and error; its exit code is 2. **Upload Pages artifact**
-and **Deploy to GitHub Pages** should be skipped after a render failure.
+and the `deploy` job should be skipped after a render failure.
 
 With GitHub CLI access, the equivalents are:
 
