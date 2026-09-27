@@ -34,6 +34,9 @@ zone, NWS contact address, retry/timeout policy, and framebuffer polarity.
 There are no secret environment variables. The optional
 `WEATHER_EPAPER_PYTHON` environment variable selects the pinned Python used
 for PNG encoding; `tools/render.sh server` sets it to `python3` in the image.
+The acceptance test command `node --test server/test` runs the same 356 tests as
+`cd server && npm test`; outside the container, put Python with Pillow 12.3.0
+on `PATH` for the framebuffer comparison tests.
 
 ## Time logic (T09)
 
