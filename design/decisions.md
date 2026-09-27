@@ -87,3 +87,12 @@ Made by Jeremy in the planning session that produced `../docs/dev-plan.md`. Thes
 - **Repository is public.** Jeremy may switch it later; a private repo meters Actions minutes and needs GitHub Pro for Pages.
 - **Execution convention:** one Codex session per task; tasks live in Jeremy's Notion *Dev Tasks* database and are listed in `../docs/dev-plan.md`; every session appends an entry to `WORKLOG.md`.
 
+## T03 renderer feedback — 2026-09-26
+
+Jeremy approved the complete seven-frame pinned-container re-baseline and these adjustments on 2026-09-26. The exports in `exports/normal/` and `exports/states/` are now the canonical container output.
+
+- The normal/low-battery footer logo remains at its approved bottom-right anchor. Difference-bounded review crops had hidden unchanged footer pixels, so the revised 3× review images show each complete frame. The setup screen keeps its approved large centered logo and no footer, as Jeremy clarified.
+- Enable Raleway lining numerals in the pinned font configuration so the digits in `108°`, `48°`, and `61°` have aligned cap heights rather than oldstyle ascenders/descenders.
+- Move the `FIRST LIGHT` / `LAST LIGHT` label's visible center from y=31 to y=38. Right-anchor the event time at x=370 so the current fixtures all leave 32 px of visible right margin.
+- The pinned renderer produces a 5 px minimum hourly gap in the width fixture. Jeremy explicitly accepted it with the re-baseline; `spec.md` and `verify.py` were updated together from the former 7 px minimum. The separate percentage-to-divider clearance remains at least 7 px.
+- **Exports re-baselined from the pinned container on 2026-09-26; approved by Jeremy.** All seven frames are byte-for-byte reproducible with `./tools/render.sh`.

@@ -1,5 +1,63 @@
 # Work log
 
+## Session — T03 approved renderer re-baseline
+
+- **Task:** https://app.notion.com/p/jeremyward/T03-Pinned-renderer-container-and-frame-diff-tool-3e7d9adbacad81d8944bf5365c0dc2c5?source=copy_link
+- **Started / finished:** 2026-09-26 20:49 MDT / 20:56 MDT
+- **Model:** GPT-6 · Medium
+- **Branch / PR:** `t03-rebaseline` / https://github.com/jeremyward37/weather-epaper/pull/3
+- **Status at end:** Done
+
+### Result
+Jeremy approved the revised seven-frame pinned-container re-baseline, including the measured 5 px hourly gap. Updated `spec.md` and `verify.py` together, plus review instructions, decisions, README, development plan, and the comparison report. Committed the container-generated icon PNG encodings after confirming all 96 icon pixel arrays and modes were unchanged. PR #2 (tooling) merged into `main`; PR #3 (approved frames) was verified and retargeted to `main` for final merge.
+
+### Verification
+Host `./build.sh` printed `PASS`. After committing the approved contract, `./tools/render.sh` printed `PASS`, all six framediff unit tests passed, and all seven frame rows showed zero differing pixels. The 96 regenerated icons match their previous pixels and modes. PR #3 was conflict-free against `main`. No CI workflow is configured until T05; the passing pinned build and diff gate were the pre-merge check.
+
+### Decisions
+- Jeremy's approval accepts the container's 5 px minimum hourly gap; the distinct percentage-to-divider gap remains at least 7 px. No layout coordinates changed in this approval step.
+- The seven container-generated PNGs are now the canonical byte-for-byte reference. Keep the renderer pinned; future frame drift is a defect.
+
+### Problems
+None. CI is planned for T05 and not yet configured.
+
+### Needs Jeremy
+None.
+
+### Next
+T03 complete after PR #3 lands; do not start T05 or T06 in this session.
+
+---
+
+## Session — T03 feedback on proposed container frames
+
+- **Task:** https://app.notion.com/p/jeremyward/T03-Pinned-renderer-container-and-frame-diff-tool-3e7d9adbacad81d8944bf5365c0dc2c5?source=copy_link
+- **Started / finished:** 2026-09-26 20:35 MDT / 20:43 MDT
+- **Model:** GPT-6 · Medium
+- **Branch / PR:** `t03-rebaseline` / https://github.com/jeremyward37/weather-epaper/pull/3
+- **Status at end:** In progress
+
+### Result
+Revised draft PR #3 after Jeremy's feedback. Replaced difference-bounded 3× review crops with full-frame 3× views so the unchanged footer logo is visible. Kept the setup screen's approved centered logo/no footer per Jeremy's clarification. Enabled Raleway lining numerals, moved the light-event label down 7 px, and right-anchored the time to leave a consistent 32 px visible right margin. Recorded the requested anchors in the draft spec and updated the re-baseline report and decisions.
+
+### Verification
+`./build.sh` on the host printed `PASS` after correcting right-anchor text centering. `./tools/render.sh` passed all six framediff unit tests and printed zero differing pixels for all seven revised frames versus the draft-branch exports. It still exits 1 because `design/verify.py` stops on the documented 5 px hourly gap in `normal-widths` versus the approved 7 px minimum. The review report lists the revised frames' differences from the previously approved exports: 5,036–7,459 pixels across normal frames, 5,274 in low battery, and 5,738 in setup. No hourly-gap threshold was loosened.
+
+### Decisions
+- The footer logo was always present on normal and low-battery frames; review crops had hidden unchanged pixels. Jeremy confirmed that setup should remain as approved, with its centered logo and no footer.
+- The numeral and sun-event adjustments are candidate design changes on the unmerged re-baseline branch. Full acceptance remains with Jeremy/T04.
+
+### Problems
+The pinned Linux raster still leaves only 5 px between two elements in the synthetic width fixture, below the approved 7 px requirement.
+
+### Needs Jeremy
+Review the revised full-frame images in PR #3 and approve or reject the container re-baseline, including the 5 px minimum gap. Do not merge before that decision.
+
+### Next
+T04 approval or further T03 revision; do not begin T05 or T06 in this session.
+
+---
+
 ## Session — T03 Pinned renderer container and frame diff tool
 
 - **Task:** https://app.notion.com/p/jeremyward/T03-Pinned-renderer-container-and-frame-diff-tool-3e7d9adbacad81d8944bf5365c0dc2c5?source=copy_link

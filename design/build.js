@@ -20,7 +20,7 @@ for (const dir of [iconDir, srcDir, rawDir]) {
   for (const entry of fs.readdirSync(dir)) fs.rmSync(path.join(dir, entry), {recursive:true, force:true});
 }
 const fontConfig = path.join(root,'.build/fonts.conf');
-fs.writeFileSync(fontConfig, `<?xml version="1.0"?><!DOCTYPE fontconfig SYSTEM "fonts.dtd"><fontconfig><dir>${fontDir}</dir><cachedir>/tmp/weather-epaper-font-cache</cachedir><match target="font"><edit name="hinting" mode="assign"><bool>false</bool></edit></match></fontconfig>`);
+fs.writeFileSync(fontConfig, `<?xml version="1.0"?><!DOCTYPE fontconfig SYSTEM "fonts.dtd"><fontconfig><dir>${fontDir}</dir><cachedir>/tmp/weather-epaper-font-cache</cachedir><match target="font"><edit name="hinting" mode="assign"><bool>false</bool></edit></match><match target="font"><test name="family" compare="eq"><string>Raleway</string></test><edit name="fontfeatures" mode="append"><string>lnum=1</string></edit></match></fontconfig>`);
 process.env.FONTCONFIG_FILE = fontConfig;
 const sharp = require('sharp');
 
@@ -82,10 +82,10 @@ async function img(name,x,y,size) {return `<image x="${x}" y="${y}" width="${siz
 function svg(body) {return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="#fff"/>${body}</svg>`;}
 const textInkCache=new Map();
 const iconInkCache=new Map();
-async function textInkOffset(value,size,family){
-  const key=`${family}:${size}:${value}`;
+async function textInkOffset(value,size,family,x=10,anchor='start'){
+  const key=`${family}:${size}:${x}:${anchor}:${value}`;
   if(textInkCache.has(key)) return textInkCache.get(key);
-  const sample=`<svg xmlns="http://www.w3.org/2000/svg" width="600" height="160"><rect width="600" height="160" fill="#fff"/>${text(value,10,80,size,'start',family)}</svg>`;
+  const sample=`<svg xmlns="http://www.w3.org/2000/svg" width="600" height="160"><rect width="600" height="160" fill="#fff"/>${text(value,x,80,size,anchor,family)}</svg>`;
   const {data,info}=await sharp(Buffer.from(sample)).greyscale().raw().toBuffer({resolveWithObject:true});
   let minY=160,maxY=-1;
   for(let y=0;y<info.height;y++) for(let x=0;x<info.width;x++) if(data[y*info.width+x]<160){minY=Math.min(minY,y);maxY=Math.max(maxY,y);}
@@ -95,7 +95,8 @@ async function textInkOffset(value,size,family){
   return offset;
 }
 async function centeredText(value,x,cy,size,anchor='start',family='Lato'){
-  const baseline=Math.round(cy-await textInkOffset(value,size,family));
+  const offset=await textInkOffset(value,size,family,anchor==='end'?x:10,anchor==='end'?anchor:'start');
+  const baseline=Math.round(cy-offset);
   return text(value,x,baseline,size,anchor,family);
 }
 async function iconInkOffset(name,size){
@@ -325,9 +326,9 @@ async function normalE(d,logoSize=20,mode='three'){
   s+=await centeredIcon(d.current.icon,10,55,66);
   s+=await centeredText(d.current.temp+'°',82,55,76,'start','Raleway');
   const dawn=d.sun.event==='civilDawn';
-  s+=await centeredText(dawn?'FIRST LIGHT':'LAST LIGHT',255,31,14);
+  s+=await centeredText(dawn?'FIRST LIGHT':'LAST LIGHT',255,38,14);
   s+=await centeredIcon(dawn?'dawn':'dusk',255,64,30);
-  s+=await centeredText(d.sun.time,293,64,22);
+  s+=await centeredText(d.sun.time,370,64,22,'end');
   s+=line(6,94,394,94,true);
   s+=line(209,102,209,263,true);
   if(mode==='three'){

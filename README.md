@@ -71,7 +71,7 @@ The canonical renderer is the pinned Linux container. It requires Docker and Git
 ./tools/render.sh
 ```
 
-It prints one row per canonical frame and exits successfully only when `design/verify.py` passes and every row has zero differing pixels. During the T03 re-baseline review it intentionally exits nonzero; see [`docs/rebaseline-report.md`](docs/rebaseline-report.md).
+It prints one row per canonical frame and exits successfully only when `design/verify.py` passes and every row has zero differing pixels. Jeremy approved the one-time container re-baseline on 2026-09-26; the comparison record is in [`docs/rebaseline-report.md`](docs/rebaseline-report.md).
 
 The host build remains available for quick local iteration, but it is not the cross-machine reference. Its prerequisites, once, are:
 

@@ -11,7 +11,13 @@ Use this as a **pass/fail review protocol** for the weather display implementati
 
 ## 2. Rebuild the references and run the mechanical gate
 
-From the project root, run the generator with Node and `sharp` available, then threshold and verify with Python/Pillow:
+From the project root, run the pinned container build, verifier, and seven-frame byte-for-byte comparison:
+
+```sh
+./tools/render.sh
+```
+
+The host build remains available for local iteration with Node, `sharp`, Python, and Pillow:
 
 ```sh
 node design/build.js
@@ -23,7 +29,7 @@ python3 design/verify.py
 
 If `sharp` is not in the active Node resolution path, provide its installed `node_modules` directory through `NODE_PATH`; do not alter source code just to fix module discovery. The commands must run in that order. `build.js` writes intermediate antialiased images and generated SVGs under `.build/` plus icon PNGs; `threshold.py` makes the final exports and icon assets 1-bit. Never use `.build/raw/` or a browser's smooth SVG display as a pass result.
 
-`verify.py` must report PASS. It checks the five selected normal and two state exports, true 400 × 300 1-bit pixels, 4 px safe margins, pixel-center alignment, hourly gaps of at least 7 px, icon assets, and all review-page image links. If it fails, inspect and fix the cause; do not weaken a check merely to get a green result. Update `spec.md` and the test together only after a design change has been explicitly accepted.
+`verify.py` must report PASS. It checks the five selected normal and two state exports, true 400 × 300 1-bit pixels, 4 px safe margins, pixel-center alignment, hourly gaps of at least 5 px, icon assets, and all review-page image links. If it fails, inspect and fix the cause; do not weaken a check merely to get a green result. The 5 px gap was explicitly approved with the 2026-09-26 container re-baseline and is documented in `spec.md`.
 
 ## 3. Inspect at three scales
 
@@ -46,13 +52,13 @@ Then inspect `state-setup.png` and `state-low-battery.png`.
 Check **visible black-pixel centers**, not SVG/image box centers or text baselines. On the selected normal screen:
 
 - Current condition icon and current temperature share visible center `y=55`; neither looks lower. The temperature remains the largest element for `-12°`, `97°`, and `108°`.
-- Sun icon and time share center `y=64`; the `FIRST LIGHT`/`LAST LIGHT` label is centered near `y=31`. The title, icon, and time use 14/30/22 px respectively.
-- Hourly row centers are `121, 161, 201, 241`. Every time, temperature, icon, and positive percentage in a row shares its center within 1 px in the device output. Fixed left anchors are `8, 70, 119, 164`; minimum black-pixel gap is 7 px in the supplied fixtures. Do not push the icon back to x=124.
+- Sun icon and time share center `y=64`; the `FIRST LIGHT`/`LAST LIGHT` label is centered near `y=38`, and the time is right-anchored at x=370. The title, icon, and time use 14/30/22 px respectively.
+- Hourly row centers are `121, 161, 201, 241`. Every time, temperature, icon, and positive percentage in a row shares its center within 1 px in the device output. Fixed left anchors are `8, 70, 119, 164`; minimum black-pixel gap is 5 px in the supplied fixtures. Do not push the icon back to x=124.
 - Daily main-row centers are `126, 178, 230`. Day, icon, and high/low share each main center; the percentage is a deliberate secondary line 20 px below. An absent chance leaves the row's columns in exactly the same places.
 - Refresh icon, timestamp, optional low-battery glyph, and right-side logo share the footer center near `y=285.5`. The right edge of the 20 px logo box is x=395. The logo must retain its original arch/diamond proportions and clear space.
 - Only a dotted line at y=94 and a dotted vertical line at x=209 divide the normal data areas. The footer rule is solid at y=272. There are no period-by-period separators.
 
-Pay special attention to the 7 px minimum hourly gap in the worst-case fixture. Preserve it when changing fonts, rasterization, or the incoming icon bitmaps. The server must use the same fonts and rasterizer as this pipeline, so glyph shapes should match exactly; any difference is a defect in the server's setup, not a tolerance to accept.
+Pay special attention to the 5 px minimum hourly gap in the worst-case fixture. Preserve it when changing fonts, rasterization, or the incoming icon bitmaps. The server must use the same fonts and rasterizer as this pipeline, so glyph shapes should match exactly; any difference is a defect in the server's setup, not a tolerance to accept.
 
 ## 5. Verify data and icon meaning
 

@@ -81,12 +81,12 @@ Order is the recommended sequence; **Depends On** is the hard constraint. Cards 
 
 - **2026-09-25, reset-to-setup button:** BOOT (GPIO 0) press wakes and refreshes; held five seconds clears Wi-Fi credentials. USER (GPIO 45) is unused. Recorded in `scope.md` §6 and `decisions.md`.
 - **2026-09-25, repository visibility:** public; may be switched later.
+- **2026-09-26, pinned renderer re-baseline:** Jeremy approved all seven container-rendered frames and the measured 5 px worst-case hourly gap. Locked stack: Node 22.23.3 on `node:22.23.3-bookworm-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c`, `sharp` 0.33.5 / libvips 8.15.3, Python 3.11.2, Pillow 12.3.0. The accepted output is the new byte-for-byte reference.
 
 ## Decisions that still need Jeremy's word
 
 | Item | Where | Why |
 |---|---|---|
-| Re-baseline of exports | T04 | Only if the pinned container cannot reproduce the current frames exactly. |
 | Battery pack purchase | T17 | After sleep current is measured; the board's linear regulator may dominate. |
 | Sign-off | T18 | Per `design/review-instructions.md` §8. |
 
