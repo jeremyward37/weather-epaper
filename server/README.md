@@ -1,4 +1,12 @@
-# Frame bundle (T10)
+# Server modules
+
+## Time logic (T09)
+
+`src/timing.js` exports `nextThreeHourMarks`, `nextThreeDays`, `civilEvents`, `isDay`, `footerTimestamp`, and `refreshWindow`. All accept a real instant (`Date` or an offset-bearing timestamp); local dates and labels use `America/Denver` regardless of the host time zone. The mark results have `{ instant, time }`, daily results have `{ date, day }`, and civil events have `{ event, time, instant }`. The `time`, `day`, and `event` values match the normal fixture fields directly. `refreshWindow` returns `{ inWindow, nextSlot }`; `nextSlot` is the next scheduled half-hour instant strictly after `now`. SunCalc 1.9.0 computes civil twilight at a solar altitude of −6°.
+
+SunCalc 1.9.0 and its license are vendored in `vendor/`, so the timing module has no runtime installation step. Run `npm test` with Node 22 or newer.
+
+## Frame bundle (T10)
 
 `src/pack.js` accepts a **400×300, non-interlaced, 1-bit grayscale PNG** and returns a 15,000-byte row-major framebuffer (50 bytes per row). The default wire format has the leftmost pixel in the most significant bit and `1 = white`. `src/bundle.js` reads `config.json` at call time; change `whiteIsOne` or `msbFirst` there if the T14 hardware test requires it. Re-run `npm run pack:setup` after changing either flag.
 

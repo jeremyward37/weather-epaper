@@ -1,12 +1,13 @@
 {
   "name": "weather-epaper-server",
   "private": true,
+  "version": "0.1.0",
   "type": "module",
   "engines": {
     "node": ">=22"
   },
   "scripts": {
-    "test": "node --test test",
+    "test": "node --test",
     "pack:setup": "node bin/pack-setup.js"
   }
 }
