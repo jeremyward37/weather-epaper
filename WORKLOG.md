@@ -3,28 +3,30 @@
 ## Session — T10 Frame packer: 1-bit PNG to raw framebuffer, decoder, publish bundle
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad8187b4a0c4aebf59bda7
-- **Started / finished:** 2026-09-26 23:25 MDT / in progress
+- **Started / finished:** 2026-09-26 23:25 MDT / 2026-09-26 23:33 MDT
 - **Model:** GPT-6 Sol · Medium
-- **Branch / PR:** `t10-frame-packer` / pending
-- **Status at end:** In progress
+- **Branch / PR:** `t10-frame-packer` / https://github.com/jeremyward37/weather-epaper/pull/9
+- **Status at end:** Done
 
 ### Result
-In progress.
+Added `server/src/pack.js` to convert the approved 400×300 1-bit grayscale PNGs to and from 15,000-byte row-major framebuffers. Added `server/config.json` flags for polarity and bit order, `server/src/bundle.js` for the two-frame publish bundle and 1×/3× review page, and `server/bin/pack-setup.js` plus the committed `firmware/assets/setup_frame.h`. Documented the bundle and made CI regenerate and compare the setup header. PR #9 is open and conflict-free.
 
 ### Verification
-In progress.
+Node 22 `node --test` passed 335 server tests, including seven canonical-frame round trips and both polarities and bit orders checked with `tools/framediff.py`. The committed 15,000-byte setup header decoded with zero differing pixels against `state-setup.png`. A local `python3 -m http.server` served `index.html`, both 1-bit PNGs, and `meta.json` with HTTP 200. `git diff --check` passed. GitHub Actions CI `build` passed on run 36297501480, including pinned render/zero-diff verification and header regeneration.
 
 ### Decisions
 - Use the T06-complete `origin/main` as the branch base; keep the unrelated change in the primary checkout untouched.
+- Use Node built-ins for strict 1-bit PNG decoding and encoding, so the server packer has no external image dependency.
+- Include SHA-256 hashes for the four frame files and `index.html`; `meta.json` cannot contain its own hash.
 
 ### Problems
-None.
+The host's Node 16 could not run the test runner, and its older Pillow could not run `framediff.py`; used bundled Node 22 and Pillow 12.3.0. Main advanced after branch creation; merged it and preserved both T10 and T22 work-log entries. GitHub CI passed after the conflict was resolved.
 
 ### Needs Jeremy
-None.
+Review and merge PR #9 when ready.
 
 ### Next
-Complete T10 only; do not start T11 or T14 in this session.
+T10 is ready for review. T11 can consume `writeBundle`; T14 should confirm polarity and bit order on the physical panel and change `server/config.json` if needed.
 
 ---
 
