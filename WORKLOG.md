@@ -1,5 +1,35 @@
 # Work log
 
+## Session — T22 Live dependency map for ePaper Weather Dash
+
+- **Task:** https://app.notion.com/p/3e8d9adbacad8160a56dd55a5a945318
+- **Started / finished:** 2026-09-26 22:50 MDT / 2026-09-26 23:15 MDT
+- **Model:** GPT-6 · Medium (task recommendation: GPT-6 Sol · Medium)
+- **Branch / PR:** `t22-dependency-dashboard` / https://github.com/jeremyward37/weather-epaper/pull/8
+- **Status at end:** Done
+
+### Result
+Added a **Dependency Gantt** tab to the ePaper Weather Dash Notion project page. Its 22 rows sit in ten dependency stages and show a colored stage mark, a derived Complete / In progress / Ready / Blocked state, compact unfinished prerequisite IDs, and the Depends On links. Notion formulas recalculate state and blockers when task statuses change. Added T22 to `docs/dev-plan.md` and documented the stage convention on the project page.
+
+### Verification
+The Notion linked view query returned all 22 project tasks, sorted by stages 1–10 with every prerequisite in an earlier stage. A status-and-relation audit at completion found 7 Complete, 1 In progress, 3 Ready (T08, T09, T10), and 11 Blocked. The project page and view configuration were fetched back successfully. `git diff --check` passed. PR #8 is mergeable, and GitHub Actions CI `build` completed successfully on run 36296612886.
+
+### Decisions
+- Use dependency stages instead of calendar dates because the task cards have no planned dates or durations. Tasks in one stage can proceed in parallel.
+- Derive state and open blockers from the existing Status and Depends On properties, so normal task updates also update the chart.
+- Show blocker task IDs to keep the table compact; the existing Depends On links open the full cards. Stages must be recalculated when dependency links or tasks change.
+- Treat [PD] as an additional hardware gate described in the project-page legend; dependency readiness alone does not confirm that the physical board is available.
+
+### Problems
+Main advanced during this session and caused a WORKLOG rebase conflict; preserved the T05, T06, and T22 entries, rebased, and verified PR #8 was mergeable. The in-app browser required a separate Notion sign-in and the desktop client remained on a loading screen, so visual UI inspection was unavailable; the connector verified the view structure, rows, and formulas' schema.
+
+### Needs Jeremy
+Review and merge PR #8 when ready.
+
+### Next
+T08, T09, and T10 are dependency-ready. Start only one of those cards in a new session. If Depends On links change, update Dependency stage as documented in `docs/dev-plan.md`.
+
+---
 ## Session — T07 PR conflict resolution after T06 merge
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad813c90aecad2b0214c39

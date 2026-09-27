@@ -9,7 +9,7 @@
 3. One card per session. Work happens on a branch `t<nn>-<slug>` in `~/codeProjects/weather-epaper`; a pull request with green CI is the unit of delivery (from T05 on).
 4. Finishing: work-log entry filled in, same summary pasted into the card's **Agent Notes**, Status set to *Done* only when every acceptance criterion passed. Steps only Jeremy can do (flash, photograph, buy, DNS, approve) are listed under *Needs Jeremy* and on the card.
 5. Cards whose title starts with **Jeremy:** are not agent-executable.
-6. Cards tagged **[PD]** (post-delivery) need the physical board, which was on order on 2026-09-25. Everything without the tag can be done before it arrives: T02 through T13, and T20/T21 once their dependencies allow.
+6. Cards tagged **[PD]** (post-delivery) need the physical board, which was on order on 2026-09-25. Everything without the tag can be done before it arrives: T02 through T13, and T20–T22 once their dependencies allow.
 
 Token bands on the cards: **Low** under 300k tokens, **Med** 300k–1M, **High** over 1M. Estimates are for the whole Codex session including reading context; Jeremy is on ChatGPT Plus, where GPT-6 Astra is rate-limited and burns quota about twice as fast as Sol, so the plan uses **Sol** for judgment work and **Luna** for mechanical work and reserves Astra for nothing by default. Effort ladder in Codex: Light · Medium · High · Extra High · Max (Ultra on Astra/Sol only).
 
@@ -73,9 +73,17 @@ Order is the recommended sequence; **Depends On** is the hard constraint. Cards 
 | T20 | Runbook and documentation closeout | [card](https://app.notion.com/p/3e7d9adbacad81e0be24ec5156dc4c34) | T18 | GPT-6 Luna · Medium | Low |
 | T21 | Optional: external trigger fallback for late GitHub cron runs | [card](https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7) | T12 | GPT-6 Luna · Light | Low |
 
+### Phase E — Project tracking
+
+| # | Task | Card | Depends on | Model · effort | Tokens |
+|---|---|---|---|---|---|
+| T22 | Live dependency map on the Notion project page | [card](https://app.notion.com/p/3e8d9adbacad8160a56dd55a5a945318) | T02 | GPT-6 Sol · Medium | Low |
+
+The [Notion project page](https://app.notion.com/p/3e7d9adbacad8068b42ff29eccbf8892) has a **Dependency Gantt** tab. It positions tasks by dependency stage, not calendar date, and derives Complete / In progress / Ready / Blocked plus open blockers from each card's Status and Depends On relations. Status changes update the view automatically. If task dependencies change or a card is added, recompute its **Dependency stage** as one more than the largest stage among its prerequisites (or 1 when it has none). Hardware tasks tagged [PD] also need the board before work starts.
+
 **Critical path:** T02 → T03 → T06 → T10 → T14 → T15 → T16 → T18. Phase B (T07–T12) can interleave with Phase C once T10 exists; T07 can start right after T02.
 
-**Rough budget:** 16 agent tasks; sum of the band midpoints is about 7–8M tokens, dominated by T16 (device loop), T06 (renderer refactor), and T11 (render CLI).
+**Rough budget:** 17 agent tasks; sum of the band midpoints is about 7–8M tokens, dominated by T16 (device loop), T06 (renderer refactor), and T11 (render CLI).
 
 ## Decisions closed after the planning session
 
