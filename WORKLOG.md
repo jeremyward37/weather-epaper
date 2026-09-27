@@ -3,16 +3,16 @@
 ## Session — T12 Scheduled publish: GitHub Actions cron to GitHub Pages
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81bd91adf4876d1bbf55
-- **Started / finished:** 2026-09-27 12:56 MDT / in progress
+- **Started / finished:** 2026-09-27 12:56 MDT / 2026-09-27 16:25 MDT
 - **Model:** GPT-6 Sol · Medium
-- **Branch / PR:** t12-scheduled-publish
+- **Branch / PR:** `t12-scheduled-publish` / https://github.com/jeremyward37/weather-epaper/pull/13; `t12-publish-hardening` / https://github.com/jeremyward37/weather-epaper/pull/14; `t12-session-closeout`
 - **Status at end:** In progress
 
 ### Result
-Added the scheduled Pages publisher, a window guard, tests, and the publishing runbook. Configured GitHub Pages for Actions and merged PR #13 after CI passed. The first manual dispatch deployed a complete frame bundle. A follow-up branch separates rendering from deployment so branch-only failure tests can run outside the protected Pages environment.
+Added the scheduled Pages publisher, a window guard, tests, and the publishing runbook. Configured GitHub Pages for Actions and merged PRs #13 and #14 after CI passed. The protected `deploy` job now depends on the unprotected `render` job, so a failed branch render can be tested without deployment access.
 
 ### Verification
-Pinned Node 22 `node --test server/test` passed 359 tests. `./tools/render.sh server --out public/` succeeded against live NWS data; both framebuffer files were 15,000 bytes. PR #13 CI `build` passed. Manual run 36349513099 succeeded; the live `frame.bin` was 15,000 bytes and `meta.json` reported `renderedAt` 2026-09-27T20:51:02.413Z. The separated-job correction and two scheduled runs remain under verification.
+Pinned Node 22 `node --test server/test` passed 359 tests. `./tools/render.sh server --out public/` succeeded against live NWS data; both framebuffer files were 15,000 bytes. PR #13 and #14 CI `build` checks passed. Manual main runs 36349513099 and 36355112733 published successfully; the live `frame.bin` was 15,000 bytes and `index.html` referenced both PNG previews. Forced-failure run 36354963516 on `t12-failure-check` exited 2 on invalid latitude; artifact upload and deploy were skipped, and `cmp` confirmed the live `meta.json` was byte-for-byte unchanged. GitHub had not started a scheduled run by 2026-09-27 16:21 MDT, so the two-consecutive-runs criterion remains open.
 
 ### Decisions
 - Working in a separate T12 worktree to preserve an existing `.gitignore` change in the canonical checkout.
@@ -23,12 +23,13 @@ Pinned Node 22 `node --test server/test` passed 359 tests. `./tools/render.sh se
 - The T12 card's local-time schedule conflicted with `docs/scope.md` §9's older UTC-aligned schedule. Reconciled the plan and decisions after Jeremy approved the 4:47 AM addition.
 - The first push used a `GITHUB_TOKEN` without `workflow` scope; using the saved GitHub keyring credential pushed the workflow successfully.
 - The initial forced-failure dispatch was rejected before rendering because the whole job entered the protected `github-pages` environment. Split render and deploy into separate jobs to exercise the failure path.
+- GitHub registered the scheduled workflow as active, but no `schedule` event appeared through 2026-09-27 16:21 MDT, despite several elapsed cron slots. GitHub documents that scheduled runs can be delayed or dropped; the scheduled-run acceptance criterion remains open.
 
 ### Needs Jeremy
 None at present.
 
 ### Next
-Verify two consecutive scheduled runs and the branch-only forced-failure behavior; then finish T12. T13 DNS remains Jeremy's separate card.
+Verify two consecutive scheduled runs and advancing live `meta.json` timestamps, then mark T12 Done. If GitHub keeps missing slots, record the evidence and consider T21's external trigger in a separate session. T13 DNS remains Jeremy's separate card.
 
 ---
 
