@@ -1,4 +1,13 @@
 {
   "whiteIsOne": true,
-  "msbFirst": true
+  "msbFirst": true,
+  "latitude": 41.25,
+  "longitude": -112.03,
+  "grid": { "id": "SLC", "x": 98, "y": 198 },
+  "station": "KOGD",
+  "timeZone": "America/Denver",
+  "contact": "jeremy@builtbyjer.com",
+  "schedule": { "startHour": 5, "endHour": 22, "intervalMinutes": 30 },
+  "requestTimeoutMs": 15000,
+  "retry": { "retries": 3, "baseDelayMs": 2000, "jitterMs": 500 }
 }

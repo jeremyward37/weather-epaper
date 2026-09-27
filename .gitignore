@@ -9,6 +9,7 @@ __pycache__/
 # OS / editor / agent scratch
 .DS_Store
 .claude/
+/feedback/
 
 # Runtime/tool outputs
 server/node_modules/
