@@ -10,20 +10,17 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
-  publish:
+  render:
     runs-on: ubuntu-latest
     timeout-minutes: 8
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      publish: ${{ steps.window.outputs.publish }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -79,7 +76,18 @@ jobs:
         with:
           path: public/
 
+  deploy:
+    needs: render
+    if: needs.render.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
-        if: steps.window.outputs.publish == 'true'
         id: deployment
         uses: actions/deploy-pages@v4
