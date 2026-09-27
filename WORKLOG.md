@@ -1,5 +1,32 @@
 # Work log
 
+## Session — T22 Live dependency map for ePaper Weather Dash
+
+- **Task:** https://app.notion.com/p/3e8d9adbacad8160a56dd55a5a945318
+- **Started / finished:** 2026-09-26 22:50 MDT / in progress
+- **Model:** GPT-6 · Medium (task recommendation: GPT-6 Sol · Medium)
+- **Branch / PR:** `t22-dependency-dashboard` / pending
+- **Status at end:** In progress
+
+### Result
+In progress.
+
+### Verification
+In progress.
+
+### Decisions
+- Use dependency stages instead of calendar dates because the task cards have no planned dates or durations.
+
+### Problems
+None.
+
+### Needs Jeremy
+None currently.
+
+### Next
+Complete T22 only.
+
+---
 ## Session — T07 PR conflict resolution after T06 merge
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad813c90aecad2b0214c39
