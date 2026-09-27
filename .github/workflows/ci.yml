@@ -88,13 +88,16 @@ jobs:
             --volume "$PWD:/work" --tmpfs /work/design/node_modules --workdir /work \
             "${{ steps.renderer.outputs.image }}" node --test design/test
 
-      - name: Run server Node tests when present
+      - name: Set up Node 22 for server tests
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run server Node tests
         shell: bash
         run: |
-          if [ -d server/test ] || [ -d server/tests ]; then
-            cd server
-            node --test
-          fi
+          cd server
+          npm test
 
       - name: Regenerate embedded setup frame and require a clean diff
         run: |

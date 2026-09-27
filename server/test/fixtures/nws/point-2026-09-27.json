@@ -1,0 +1,112 @@
+{
+  "@context": [
+    "https://geojson.org/geojson-ld/geojson-context.jsonld",
+    {
+      "@version": "1.1",
+      "wx": "https://api.weather.gov/ontology#",
+      "s": "https://schema.org/",
+      "geo": "http://www.opengis.net/ont/geosparql#",
+      "unit": "http://codes.wmo.int/common/unit/",
+      "@vocab": "https://api.weather.gov/ontology#",
+      "geometry": {
+        "@id": "s:GeoCoordinates",
+        "@type": "geo:wktLiteral"
+      },
+      "city": "s:addressLocality",
+      "state": "s:addressRegion",
+      "distance": {
+        "@id": "s:Distance",
+        "@type": "s:QuantitativeValue"
+      },
+      "bearing": {
+        "@type": "s:QuantitativeValue"
+      },
+      "value": {
+        "@id": "s:value"
+      },
+      "unitCode": {
+        "@id": "s:unitCode",
+        "@type": "@id"
+      },
+      "forecastOffice": {
+        "@type": "@id"
+      },
+      "forecastGridData": {
+        "@type": "@id"
+      },
+      "publicZone": {
+        "@type": "@id"
+      },
+      "county": {
+        "@type": "@id"
+      }
+    }
+  ],
+  "id": "https://api.weather.gov/points/41.25,-112.03",
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -112.03,
+      41.25
+    ]
+  },
+  "properties": {
+    "@id": "https://api.weather.gov/points/41.25,-112.03",
+    "@type": "wx:Point",
+    "cwa": "SLC",
+    "type": "land",
+    "forecastOffice": "https://api.weather.gov/offices/SLC",
+    "gridId": "SLC",
+    "gridX": 98,
+    "gridY": 198,
+    "forecast": "https://api.weather.gov/gridpoints/SLC/98,198/forecast",
+    "forecastHourly": "https://api.weather.gov/gridpoints/SLC/98,198/forecast/hourly",
+    "forecastGridData": "https://api.weather.gov/gridpoints/SLC/98,198",
+    "observationStations": "https://api.weather.gov/gridpoints/SLC/98,198/stations",
+    "relativeLocation": {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -112.0362515,
+          41.2610507
+        ]
+      },
+      "properties": {
+        "city": "Marriott-Slaterville",
+        "state": "UT",
+        "distance": {
+          "unitCode": "wmoUnit:m",
+          "value": 0
+        },
+        "bearing": {
+          "unitCode": "wmoUnit:degree_(angle)",
+          "value": 0
+        }
+      }
+    },
+    "forecastZone": "https://api.weather.gov/zones/forecast/UTZ104",
+    "county": "https://api.weather.gov/zones/county/UTC057",
+    "fireWeatherZone": "https://api.weather.gov/zones/fire/UTZ478",
+    "timeZone": "America/Denver",
+    "radarStation": "KMTX",
+    "astronomicalData": {
+      "sunrise": "2026-09-26T07:20:00-06:00",
+      "sunset": "2026-09-26T19:18:39-06:00",
+      "transit": "2026-09-26T13:19:19-06:00",
+      "civilTwilightBegin": "2026-09-26T06:52:35-06:00",
+      "civilTwilightEnd": "2026-09-26T19:46:03-06:00",
+      "nauticalTwilightBegin": "2026-09-26T06:20:29-06:00",
+      "nauticalTwilightEnd": "2026-09-26T20:18:10-06:00",
+      "astronomicalTwilightBegin": "2026-09-26T05:47:53-06:00",
+      "astronomicalTwilightEnd": "2026-09-26T20:50:46-06:00"
+    },
+    "nwr": {
+      "transmitter": "WXM22",
+      "sameCode": "049057",
+      "areaBroadcast": "https://api.weather.gov/radio/WXM22/broadcast",
+      "pointBroadcast": "https://api.weather.gov/points/41.25,-112.03/radio"
+    }
+  }
+}
