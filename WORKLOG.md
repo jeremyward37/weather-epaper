@@ -1,5 +1,38 @@
 # Work log
 
+## Session — T09 Time logic: three-hour marks, daily labels, civil twilight, formatting
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad814fa0e2f5dc1770fcef
+- **Started / finished:** 2026-09-26 23:27 MDT / 2026-09-27 00:07 MDT
+- **Model:** GPT-6 Sol · Medium
+- **Branch / PR:** `codex/t09-time-logic` / https://github.com/jeremyward37/weather-epaper/pull/11
+- **Status at end:** Done
+
+### Result
+Added pure `server/src/timing.js` with the six time APIs and vendored SunCalc 1.9.0 for civil twilight. The returned time, day, and event fields match the normal fixture schema. Added `server/test/timing.test.js`, API notes in `server/README.md`, and the SunCalc license.
+
+### Verification
+Node 24 `node --test 'test/*.test.js'` with the bundled Python on `PATH` passed all 351 server tests, including seven new timing tests and T08's newly merged tests. `./tools/render.sh` printed `PASS` and zero differing pixels for all seven canonical frames after merging current `main`. GitHub Actions `build` passed on [run 36299113362](https://github.com/jeremyward37/weather-epaper/actions/runs/36299113362) for PR #11. `git diff --check` passed.
+
+### Decisions
+- Based this branch on T06's completed renderer commit in a separate worktree; the primary checkout has an unrelated local edit.
+- Enumerate real UTC instants for marks and refresh slots; use `Intl.DateTimeFormat` in `America/Denver` for all labels and local-date arithmetic, so DST gaps and repeated hours retain chronological order.
+- Treat `10:00 PM` as the last eligible refresh instant; the next slot after it is `5:00 AM` the following local date.
+- Merged current `main` after T10 landed, keeping its ES module server layout and prior work-log entries.
+- Merged current `main` again after T08 landed, retaining the fetch CLI, package scripts, docs, and both earlier log entries.
+- Vendored SunCalc 1.9.0 so the existing CI can run timing tests without a new dependency installation step.
+
+### Problems
+The host Node 16 cannot run `node --test`, and its older Pillow breaks T10's framediff tests. Used the bundled Node 24 and Python/Pillow runtime. An initial host `./build.sh` could not write the managed worktree under sandbox permissions; the required build passed inside the pinned container through `./tools/render.sh`. GitHub rejected the first push because the available token cannot edit workflow files; removed that change and vendored SunCalc with its license instead. T08 merged while PR #11 was opening, briefly making it conflict; merged current main and resolved three text conflicts.
+
+### Needs Jeremy
+Review and merge [PR #11](https://github.com/jeremyward37/weather-epaper/pull/11) when ready.
+
+### Next
+T11 can consume the timing functions after T09 merges. Do not start it in this session.
+
+---
+
 ## Session — T08 follow-up: shared feedback ignore rule
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81778789d00a13ae0218
@@ -148,7 +181,6 @@ Review and merge [PR #6](https://github.com/jeremyward37/weather-epaper/pull/6) 
 
 ### Next
 T08 can start after T07 merges; T06 is already integrated. Do not start it in this session.
-
 ---
 
 ## Session — T06 Extract the renderer into an importable library
