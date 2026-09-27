@@ -99,6 +99,9 @@ jobs:
           cd server
           npm test
 
+      - name: Verify server fixture frames against approved exports
+        run: ./tools/fixture-check.sh
+
       - name: Regenerate embedded setup frame and require a clean diff
         run: |
           node server/bin/pack-setup.js

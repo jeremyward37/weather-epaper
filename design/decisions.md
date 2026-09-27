@@ -111,3 +111,9 @@ The mapping table and rules are in [`../docs/nws-condition-map.md`](../docs/nws-
 - Use the caller's civil dawn/dusk `isDay` for the icon variant, even if the NWS icon URL says day or night.
 - When a period reports positive precipitation chance with a neutral condition icon, promote it to an icon carrying the forecast's precipitation type. With no type wording, use snow at 34 °F or colder and showers above 34 °F. This preserves the approved positive-chance icon rule.
 - `hailDay` and `hailNight` remain for a zero-chance hail condition; with positive chance, use the thunder icon because the approved validator permits only Rain, Snow, Mix, or Thunder names alongside a percentage.
+
+## T11 render-job decisions — 2026-09-27
+
+- Fixture mode uses the fixture's `lowBattery` value so `normal-night.json` reproduces its approved export; live mode renders the same weather data twice with the overlay explicitly off and on.
+- The in-memory 1-bit renderer output has the approved pixels but a different PNG encoding. Re-saving it with the pinned Pillow version reproduces the approved export bytes without changing a pixel or the frame design.
+- The footer shows the instant of the successful render from fresh NWS data. Bundle metadata also records the NWS hourly forecast's `updateTime` so source freshness is visible without changing the frame.

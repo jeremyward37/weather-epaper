@@ -1,5 +1,40 @@
 # Server
 
+## Render job (T11)
+
+Run from the repository root. The pinned image supplies Node 22, `sharp`, and
+Pillow 12.3.0, which writes PNGs byte-identically to the approved exports.
+
+```sh
+./tools/render.sh server --out public/
+./tools/render.sh server --now 2026-09-27T17:30:00Z --dry-run
+./tools/render.sh server --fixture design/fixtures/normal-summer.json --out public/fixture
+./tools/render.sh server --fixture design/fixtures/normal-night.json --low-battery --out public/fixture
+./tools/fixture-check.sh
+```
+
+Live mode fetches NWS data, fills the four future marks, three days, civil
+twilight, and footer time, validates the fixture, renders both battery states,
+and writes the six-file bundle documented below. Fixture mode skips NWS and
+writes `frame.png`; it honors the fixture's `lowBattery` value, while
+`--low-battery` forces the glyph on. `--dry-run` executes the full pipeline and
+discards the staged output. `--out` defaults to the repository's `public/`.
+`--now` is an offset-bearing ISO timestamp for reproducible live runs.
+
+The CLI prints one JSON line on stdout for success, or one JSON line on stderr
+and exits **2** on any error. Each line includes `level`, `step`, elapsed `ms`,
+`dataUpdateTime`, and `footerTimestamp`. A failed run leaves `--out` untouched.
+Output is built in a sibling temporary directory, then installed after every
+file is ready; an existing directory is restored if installation fails. The
+publish step in T12 should deploy this directory only after the command exits
+successfully.
+
+`config.json` holds the fixed coordinates, station, `America/Denver` time
+zone, NWS contact address, retry/timeout policy, and framebuffer polarity.
+There are no secret environment variables. The optional
+`WEATHER_EPAPER_PYTHON` environment variable selects the pinned Python used
+for PNG encoding; `tools/render.sh server` sets it to `python3` in the image.
+
 ## Time logic (T09)
 
 `src/timing.js` exports `nextThreeHourMarks`, `nextThreeDays`, `civilEvents`, `isDay`, `footerTimestamp`, and `refreshWindow`. All accept a real instant (`Date` or an offset-bearing timestamp); local dates and labels use `America/Denver` regardless of the host time zone. The mark results have `{ instant, time }`, daily results have `{ date, day }`, and civil events have `{ event, time, instant }`. The `time`, `day`, and `event` values match the normal fixture fields directly. `refreshWindow` returns `{ inWindow, nextSlot }`; `nextSlot` is the next scheduled half-hour instant strictly after `now`. SunCalc 1.9.0 computes civil twilight at a solar altitude of −6°.

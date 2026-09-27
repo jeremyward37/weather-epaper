@@ -25,6 +25,12 @@ if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then
     .
 fi
 
+if [ "${1:-}" = server ]; then
+  shift
+  exec docker run --rm --user "$(id -u):$(id -g)" --volume "$ROOT:/work" \
+    --tmpfs /work/design/node_modules --workdir /work "$IMAGE" node server/bin/render.js "$@"
+fi
+
 REFERENCE_DIR="$(mktemp -d "${TMPDIR:-/tmp}/weather-epaper-reference.XXXXXX")"
 trap 'rm -rf "$REFERENCE_DIR"' EXIT
 
