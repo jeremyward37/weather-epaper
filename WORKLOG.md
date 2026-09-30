@@ -5,7 +5,7 @@
 - **Task:** https://app.notion.com/p/3e7d9adbacad81bd91adf4876d1bbf55
 - **Started / finished:** 2026-09-30 12:45 MDT / 2026-09-30 12:45 MDT
 - **Model:** GPT-6.1 Sol · Low
-- **Branch / PR:** `codex/t12-final-closeout` / pending
+- **Branch / PR:** `codex/t12-final-closeout` / https://github.com/jeremyward37/weather-epaper/pull/16
 - **Status at end:** Done
 
 ### Result
