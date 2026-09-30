@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T12 scheduled publish acceptance closeout
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81bd91adf4876d1bbf55
+- **Started / finished:** 2026-09-30 12:45 MDT / 2026-09-30 12:45 MDT
+- **Model:** GPT-6.1 Sol · Low
+- **Branch / PR:** `codex/t12-final-closeout` / pending
+- **Status at end:** Done
+
+### Result
+Confirmed T12's remaining scheduled-publish criterion. The publisher, failure protection, and runbook delivered in PRs #13–#15 are complete; no publishing code changed in this closeout.
+
+### Verification
+`gh run list --workflow publish.yml --branch main --event schedule` showed two consecutive successful scheduled runs on `main`: [36744795844](https://github.com/jeremyward37/weather-epaper/actions/runs/36744795844), created 2026-09-30 16:31:11 UTC, and [36746984359](https://github.com/jeremyward37/weather-epaper/actions/runs/36746984359), created 16:49:14 UTC. Their downloaded Pages artifacts' `meta.json.renderedAt` values were 16:31:45.916Z and 16:49:42.952Z respectively; a cache-busted request to live Pages returned the later timestamp and matching frame hashes. Prior T12 verification established that a forced render failure skipped upload/deploy and preserved the live frame, and that `docs/runbook.md` contains the required procedures.
+
+### Decisions
+- Close T12 against its three written acceptance criteria. Track scheduler punctuality separately in T21 because GitHub has missed or delayed many half-hour slots.
+
+### Problems
+- Successful consecutive runs establish publishing and timestamp advancement, but do not establish reliable delivery before every device wake. The 10:31 MDT run itself started after the 10:30 wake.
+
+### Needs Jeremy
+None for T12.
+
+### Next
+T21 can measure cron drift and evaluate an external trigger in a separate session. T13 DNS remains Jeremy's separate card. Do not start either in this session.
+
+---
+
 ## Session — T12 Scheduled publish: GitHub Actions cron to GitHub Pages
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81bd91adf4876d1bbf55
