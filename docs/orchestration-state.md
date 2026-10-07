@@ -4,11 +4,11 @@ This is the durable handoff ledger; update it with each run and approval. WORKLO
 
 - **Updated:** 2026-10-07
 - **Active card:** T23 orchestration preparation
-- **Stage:** Handoff prepared; awaiting GitHub publication and CI
+- **Stage:** Handoff PR open; awaiting required CI and Jeremy review
 - **Branch:** `codex/t23-orchestration`
-- **PR / revision:** PR pending (GitHub rejects branch push with Internal Server Error); preparation commit `10cdf4d`, followed by handoff-status documentation commit
+- **PR / revision:** [PR #17](https://github.com/jeremyward37/weather-epaper/pull/17); latest revision and CI must be checked before merge.
 - **Independent QA:** Pass; three requested clarifications resolved. TOML parsing, relative links, task-row consistency, whitespace and Notion readback passed.
-- **Pending Jeremy action:** Local instructions are reviewable now; approve merge and starting T14 only after the PR exists and required CI is green. No hardware action is required to resolve the GitHub error.
+- **Pending Jeremy action:** Review PR #17 when required CI is green; explicitly authorize merge and starting T14. No credential repair or hardware action is needed for the resolved push error.
 - **Next eligible task:** T14 after the T23 approval/merge gate. T21 is separately eligible, not automatically dispatched.
 - **Hardware:** Delivered 2026-10-06; unopened; no flash/photo/current measurements or physical acceptance yet.
 
@@ -33,8 +33,8 @@ Open issues / rollback:
 Approval requested (accept / merge / deploy / start next task):
 ```
 
-## Resume T23 publication
+## Resume T23 review
 
-The handoff remains In progress. GitHub repeatedly rejected branch pushes with Internal Server Error using both the environment token and the existing keyring credential; reads work. No remote branch or PR was observed. `./tools/render.sh` could not run because the Docker daemon is stopped; required CI has not run. These are pending checks, not passes. Named-role client discovery/loading remains unverified; scoped collaboration prompts are available.
+The saved branch pushed successfully on 2026-10-07 at approximately 11:34 MDT using the existing keyring credential. No credentials, remotes, or repository settings were changed. PR #17 is open and attached. The previous GitHub server error is resolved; its exact cause was not returned. The prior local Docker check could not run because the daemon was stopped; use required PR CI for the pinned rendering and regression checks. Named-role client discovery/loading remains unverified; scoped collaboration prompts remain available.
 
-Resume this card first: locate branch `codex/t23-orchestration` and the worktree `/private/tmp/weather-epaper-orchestration` (if the temporary checkout is gone, recreate a worktree from that saved branch). Check the remote branch and existing PR before retrying. Push the branch, open/attach the PR, wait for required CI, resolve failures, then update this state and the T23 Agent Notes. Do not implement T14 or merge while publication/CI or Jeremy's gate is pending.
+Resume this card first: inspect PR #17's latest head and required checks, resolve any failure, then obtain Jeremy's review/merge/advance authorization. Worktree: `/private/tmp/weather-epaper-orchestration`; branch: `codex/t23-orchestration` (if the temporary checkout is gone, recreate from the saved branch). Do not implement T14 or merge while CI or Jeremy's gate is pending.
