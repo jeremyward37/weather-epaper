@@ -1,15 +1,15 @@
 # T14 review packet — USB bring-up
 
 Task: [T14](https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b) · [PR #19](https://github.com/jeremyward37/weather-epaper/pull/19).
-Status: **In progress; Jeremy flashed the approved build and supplied setup photo/runtime evidence; button transitions, acceptance and merge pending**. Updated 2026-10-07. All physical actions were Jeremy's; agents did not upload, reset or operate the board. Actual evidence is in `firmware/HARDWARE.md`, `firmware/photos/t14-setup.jpg` and `firmware/logs/t14-runtime-initial.txt`.
+Status: **In progress; all original technical criteria have evidence; Jeremy acceptance and authorized merge pending**. Updated 2026-10-07. Jeremy flashed the approved build and supplied setup photo, startup, no-pack ADC and both button transitions. All physical actions were Jeremy's; agents did not upload, reset or operate the board. Actual evidence is in `firmware/HARDWARE.md`, `firmware/photos/t14-setup.jpg` and `firmware/logs/`.
 
 ## Reviewed software and evidence
 
-Implementation source: `4ac387dbbbb3672b11672222f360a83804c8d615`, based on merged main `6887c8413abe53e705b5fc1ec6cacae30771229a`. Subsequent PR edits record QA, corrected progress snapshots and this review packet; firmware/config/workflow sources are unchanged. Check the latest PR head and its checks before authorizing flash. Current source-revision CI [run 37664544568](https://github.com/jeremyward37/weather-epaper/actions/runs/37664544568) passed both **build** and **firmware**. The final documentation revision must also pass both jobs.
+Implementation source: `4ac387dbbbb3672b11672222f360a83804c8d615`, based on merged main `6887c8413abe53e705b5fc1ec6cacae30771229a`. Subsequent PR edits record QA, corrected progress snapshots and this review packet; firmware/config/workflow sources are unchanged. Check the latest PR head and its checks before authorizing merge. Source-revision CI [run 37664544568](https://github.com/jeremyward37/weather-epaper/actions/runs/37664544568) passed both **build** and **firmware**. The final documentation revision must also pass both jobs.
 
 The spike transfers the approved 400×300 setup framebuffer directly, full-refreshes and hibernates the panel, then prints ADC and button levels every two seconds while the ESP32 stays awake. It disables unused peripherals and radio power. The setup text describes a future hotspot; this spike has no Wi-Fi. Continuous USB is suitable for this bring-up. No pack is present, so its ADC readings cannot establish battery voltage or charge level.
 
-Independent QA: separate `epaper_qa` (GPT-6.1 Sol · High), available software checks Pass, no blocking firmware defect. [Full independent report](t14-qa.md) is the audit snapshot; CI was pending when authored and subsequently passed as linked above. The QA clean rebuild produced the frozen app listed below; QA also rechecked the final documentation, all five bundle hashes and nobuild commands with a narrow Pass. [Hardware record](../firmware/HARDWARE.md) distinguishes documentary/software facts from physical findings.
+Independent QA: separate `epaper_qa` (GPT-6.1 Sol · High), software and actual hardware-evidence checks Pass, no blocking firmware defect. [Full independent report and final addendum](t14-qa.md) distinguish the initial audit from later observed evidence. The QA clean rebuild produced the frozen app listed below. The earlier nobuild recommendation was incomplete and is withdrawn; the corrected explicit esptool command passed independent parser-only and offline merge-range checks, all five hashes verified, and Jeremy successfully flashed it. Independent QA also passed the actual setup photo, button transitions and startup-warning assessment. [Hardware record](../firmware/HARDWARE.md) distinguishes documentary/software facts from physical findings.
 
 | Criterion / gate | Evidence | Result |
 |---|---|---|
@@ -18,7 +18,7 @@ Independent QA: separate `epaper_qa` (GPT-6.1 Sol · High), available software c
 | Existing renderer/server regression gates | CI build: pinned build/verify, 7 zero-diff frames, 6 byte-identical CLI fixtures and tool/design/server tests | Pass on source revision; recheck final PR head |
 | HARDWARE.md | Pins, GYE042A87 driver, ADC, power/charger sources, explicit pending observations | Pass |
 | Setup photo and physical wire format | Jeremy's actual photo; independent visual QA Pass; findings recorded in scope/decisions | Photo QA Pass; Jeremy acceptance pending |
-| Serial ADC and both buttons | Actual USB-only/no-pack raw=0, ADC_mV=0, sense_mV=0; released buttons both HIGH | ADC observed; held/released transitions pending |
+| Serial ADC and both buttons | Actual USB-only/no-pack raw=0, ADC_mV=0, sense_mV=0; both HIGH→LOW→HIGH in `firmware/logs/t14-buttons.txt` | Pass |
 | Independent software QA | Separate review and meaningful rerun | Pass |
 | Jeremy flash/review acceptance and authorized merge | Explicit human approval and physical evidence | Pending |
 
@@ -33,7 +33,11 @@ Build environment: PlatformIO 6.1.18, pioarduino 54.03.21, Arduino-ESP32 3.2.1, 
 
 ## Needs Jeremy
 
-First review PR #19 and the source/artifact above, then explicitly approve this **T14 flash**. That approval does not approve merge or advancement to T15. After approval:
+Review PR #19 and this completed evidence packet, then explicitly accept T14 and authorize its merge after current-head CI is green. Starting T15 requires explicit advancement authorization. No additional flash or physical test is required by the current evidence. T14 remains In progress until acceptance and authorized merge.
+
+## Completed hardware procedure — reference
+
+Jeremy approved the frozen T14 flash and completed the corrected upload, setup photo, startup/no-pack ADC and both button checks below. Retain these steps for recovery/reproduction; they are not a new request to repeat them.
 
 1. Keep the battery connector empty. To bypass the existing Meshtastic app during the first connection, hold **BOOT** while plugging USB into this Mac and the device; release BOOT after connection. Discover the ROM USB port with the command below. Do not hold BOOT during normal startup or subsequent button tests.
 2. In Terminal use the prepared checkout and tool; list ports:

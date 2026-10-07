@@ -1,0 +1,11 @@
+Selected verbatim serial excerpt from Jeremy's Terminal Appshot, 2026-10-07 13:00 MDT.
+Context: frozen T14 app 197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d; USB-only, no battery pack. This excerpt records USER and BOOT released/held/released transitions without resetting.
+
+[T14] ms=643956 BATT_ADC_raw=0 ADC_mV=0 sense_mV=0 USER=1 BOOT=1 (LOW=pressed; pack presence unknown)
+[T14] ms=645959 BATT_ADC_raw=0 ADC_mV=0 sense_mV=0 USER=0 BOOT=1 (LOW=pressed; pack presence unknown)
+[T14] ms=647962 BATT_ADC_raw=0 ADC_mV=0 sense_mV=0 USER=0 BOOT=1 (LOW=pressed; pack presence unknown)
+[T14] ms=649965 BATT_ADC_raw=0 ADC_mV=0 sense_mV=0 USER=1 BOOT=1 (LOW=pressed; pack presence unknown)
+[T14] ms=651968 BATT_ADC_raw=0 ADC_mV=0 sense_mV=0 USER=1 BOOT=0 (LOW=pressed; pack presence unknown)
+[T14] ms=653971 BATT_ADC_raw=0 ADC_mV=0 sense_mV=0 USER=1 BOOT=1 (LOW=pressed; pack presence unknown)
+[T14] ms=655974 BATT_ADC_raw=0 ADC_mV=0 sense_mV=0 USER=1 BOOT=1 (LOW=pressed; pack presence unknown)
+[T14] ms=661983 BATT_ADC_raw=0 ADC_mV=0 sense_mV=0 USER=1 BOOT=1 (LOW=pressed; pack presence unknown)

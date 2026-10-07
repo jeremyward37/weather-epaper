@@ -1,6 +1,6 @@
 # NM-EPD-420-BW hardware record
 
-Status: **setup photo, runtime memory and USB-only no-pack ADC observed 2026-10-07; button transitions and Jeremy acceptance pending**. Jeremy flashed the reviewed spike. This T14 run uses continuous USB power and an empty battery connector; a pack is not expected until early November. Battery calibration, actual battery voltage and power consumption remain unmeasured.
+Status: **setup photo, runtime memory, USB-only no-pack ADC and both button transitions observed 2026-10-07; Jeremy acceptance/merge pending**. Jeremy flashed the reviewed spike. This T14 run uses continuous USB power and an empty battery connector; a pack is not expected until early November. Battery calibration, actual battery voltage and power consumption remain unmeasured.
 
 ## Primary sources
 
@@ -62,8 +62,8 @@ Startup warnings were independently traced in the pinned sources. The premature 
 |---|---|---|
 | Setup frame and wire format | Reviewed revision + flashed SHA-256 + whole-panel photo at `photos/t14-setup.jpg`; Jeremy confirms orientation, crop, shift and polarity | Photo and separate visual QA Pass; Jeremy acceptance pending |
 | USB-only ADC | Actual raw / ADC_mV / sense_mV lines, power source and no-pack note | Observed raw=0 / ADC_mV=0 / sense_mV=0, USB-only with no pack; not a battery measurement |
-| USER / BOOT | Each released HIGH → held LOW → released HIGH in serial | Pending |
+| USER / BOOT | Each released HIGH → held LOW → released HIGH in serial | Pass: USER at 643956→645959→649965 ms; BOOT at 649965→651968→653971 ms; actual excerpt `logs/t14-buttons.txt` |
 | Flash / PSRAM | Startup capacity line, no reset loop / panel timeout | Observed 16777216 / 8388608 bytes; stable diagnostics, no timeout in supplied output |
 | Battery readings, calibration and sleep current | Pack and meter measurements in later cards | Not attempted |
 
-Exact flash, monitor, downloader recovery and stop/rollback steps are in [README.md](README.md). T14 stays In progress while button-transition evidence and Jeremy acceptance remain pending; merge requires separate authorization and green CI.
+Exact flash, monitor, downloader recovery and stop/rollback steps are in [README.md](README.md). All original technical criteria have observed/software evidence. T14 stays In progress pending Jeremy acceptance; merge requires separate authorization and green CI.

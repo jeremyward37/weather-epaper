@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T14 button evidence and acceptance handoff
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 13:01 MDT / 2026-10-07 13:06 MDT
+- **Model:** Primary Codex runtime; separate QA final evidence audit.
+- **Branch / PR:** `codex/t14-bringup` / https://github.com/jeremyward37/weather-epaper/pull/19
+- **Status at end:** In progress
+
+### Result
+Jeremy supplied actual USER and BOOT transitions. USER was HIGH at 643956 ms, LOW at 645959/647962, HIGH at 649965; BOOT was HIGH at 649965, LOW at 651968, HIGH at 653971. Stable diagnostics continued through 661983 ms, with no-pack ADC values zero. Saved verbatim excerpt in firmware/logs/t14-buttons.txt. All original T14 technical acceptance criteria now have evidence; explicit Jeremy acceptance and authorized merge remain pending.
+
+### Verification
+Photo and independent visual QA passed; frozen app and clean build/zero-pixel evidence are unchanged. Separate QA independently parsed all eight button-excerpt lines, confirmed both HIGH→LOW→HIGH sequences and strictly increasing timestamps, reverified all five frozen hashes and confirmed production source/config/workflow/header/exports unchanged since 4ac387d. Its final technical addendum is in docs/t14-qa.md. Revision 7e222d4 CI passed build and firmware in run 37670973964. Publish this final evidence record and require both checks on its resulting head before the review handoff; the exact final head/check readback is reported to Jeremy and the card without modifying the already-checked repository again.
+
+### Decisions
+No further flash is needed. Keep T14 In progress until Jeremy acceptance and authorized merge; T15 requires separate explicit advancement authorization.
+
+### Problems
+No remaining physical defect identified. Battery calibration/life remain later-card work without a pack. Current-head CI is required before acceptance/merge; no additional firmware build or flash is needed for evidence-only edits. Prior photo publication succeeded using per-command HTTP/1.1/postBuffer after chunked push disconnected; no persistent Git config changed.
+
+### Needs Jeremy
+Review the final T14 packet and explicitly approve acceptance/merge; authorize starting T15 if desired. Ctrl-C may stop the monitor while USB remains connected.
+
+### Next
+Wait at T14 review gate. No merge or next-card execution without authorization.
+
+---
+
 ## Session — T14 first runtime evidence
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
