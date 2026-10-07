@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T15 physical BOOT observation
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 15:42 MDT / 2026-10-07 15:44 MDT
+- **Model:** Primary runtime; physical evidence capture, no implementation change.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress
+
+### Result
+Jeremy performed brief BOOT press/release then ten-second runtime hold/release without RESET and confirmed the panel refreshed to Wi-Fi setup. Actual normal runtime capture logs one Immediate refresh requested, one Credential reset requested and one Setup frame displayed. Driver reports its two full-update phases; no repeated credential-reset/setup entry in the observed tail. Capturing private portal re-entry/re-provision next.
+
+### Verification
+Read actual current serial and Jeremy's panel report. Short BOOT hook and long-hold reset/display observed on restored approved normal source b8ae0c4/app736c18b0. No new upload. AP IP callback absent so far after runtime reset; phone hotspot/portal reachability is requested, not yet claimed. Ten-second hold duration is Jeremy-performed, not measured from logs.
+
+### Decisions
+Verify actual hotspot/portal and failed submission retry before correct private re-provision. Keep raw observer active. No repeat flash approval needed; frame/source unchanged.
+
+### Problems
+None established; missing AP callback line means reachability must be observed rather than inferred from setup display.
+
+### Needs Jeremy
+Rejoin WeatherStation-Setup/firstlight on a phone, open http://192.168.4.1 and report reachability without entering credentials yet. Physical USER/power/photo checks remain.
+
+### Next
+Complete portal failure/retry, correct re-provision, directly captured second physical USB cycle and USER/photo observations. T15 stays In progress pending criteria and acceptance/authorized merge; no T16 work.
+
+---
+
 ## Session — T15 resumed hardware persistence and reset checks
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
