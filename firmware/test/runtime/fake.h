@@ -13,7 +13,7 @@ namespace fake {
 inline uint32_t ms=0;
 inline time_t epoch=1784124000;
 inline bool saved=true, connected=false, joinFails=false, ntpFails=false, fetchFails=false;
-inline bool removeFails=false, shaSaveFails=false, panelFails=false, everSaveFails=false, pendingSaveFails=false;
+inline bool removeFails=false, shaSaveFails=false, panelFails=false, activeBusyStuck=false, everSaveFails=false, pendingSaveFails=false;
 inline bool buttonLow=false;
 inline int wake=0, initCalls=0, writes=0, refreshes=0, portals=0, joins=0, fetches=0;
 inline int panel=1, incoming=2, pending=0;
@@ -100,7 +100,7 @@ class GxEPD2_420_GYE042A87 {
  static constexpr int WIDTH=400,HEIGHT=300;
  void(*callback)(const void*)=nullptr;
  GxEPD2_420_GYE042A87(int,int,int,int){}
- void selectFastFullUpdate(bool){} void setBusyCallback(void(*fn)(const void*)){callback=fn;}
+ void selectFastFullUpdate(bool){} void powerOff(){} void setBusyCallback(void(*fn)(const void*)){callback=fn;}
  void writeImage(const uint8_t* bytes,int,int,int,int,bool,bool,bool){++fake::writes;fake::pending=bytes[0];}
 };
 template<class Driver,int Height>struct GxEPD2_BW {
@@ -108,6 +108,8 @@ template<class Driver,int Height>struct GxEPD2_BW {
  explicit GxEPD2_BW(Driver driver):epd2(driver){}
  void init(int,bool,int,bool){++fake::initCalls;} void setRotation(int){}
  void refresh(bool){++fake::refreshes;fake::panel=fake::pending;
+   fake::pins[6]=fake::activeBusyStuck?HIGH:LOW;
    if(fake::panelFails){fake::pins[6]=HIGH;epd2.callback(nullptr);delay(9991);epd2.callback(nullptr);}}
- void hibernate(){fake::pins[6]=LOW;}
+ // SSD1683 datasheet command0x10: BUSY keepsHIGH while in deep sleep.
+ void hibernate(){fake::pins[6]=HIGH;}
 };

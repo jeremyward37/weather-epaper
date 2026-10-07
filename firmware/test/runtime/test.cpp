@@ -26,7 +26,7 @@ time_t fakeTime(time_t* output){const time_t now=fake::epoch+fake::ms/1000;if(ou
 void reset() {
  fake::ms=0;fake::epoch=1784124000;fake::saved=true;fake::connected=false;fake::joinFails=false;
  fake::ntpFails=false;fake::fetchFails=false;fake::removeFails=false;fake::shaSaveFails=false;
- fake::panelFails=false;fake::everSaveFails=false;fake::pendingSaveFails=false;fake::buttonLow=false;fake::wake=0;
+ fake::panelFails=false;fake::activeBusyStuck=false;fake::everSaveFails=false;fake::pendingSaveFails=false;fake::buttonLow=false;fake::wake=0;
  fake::initCalls=fake::writes=fake::refreshes=fake::portals=fake::joins=fake::fetches=0;
  fake::panel=1;fake::incoming=2;fake::values.clear();fake::pins.clear();fake::afterFetch=[]{};fake::onPoll=[]{};
  chosenTarget=0;rtcWasSet=true;storageReady=true;displayReady=false;refreshRequested=false;
@@ -62,8 +62,13 @@ int main() {
  reset();fake::values["framePending"]="1";fake::joinFails=true;
  for(unsigned wake=0;wake<20;++wake){fake::ms=0;run();assert(fake::portals==0&&fake::initCalls==0);}
  reset();fake::pendingSaveFails=true;run();assert(fake::initCalls==0&&fake::panel==1);
+ reset();weatherExists();run();
+ assert(fake::pins[board::epdBusy]==HIGH&&fake::values["lastFrameSha"]==shaFor(2));
+ assert(!fake::values.count("framePending")); // Normal hibernateHIGH is accepted after activeLOW.
+ reset();weatherExists();fake::activeBusyStuck=true;run();
+ assert(!fake::values.count("lastFrameSha")&&fake::values["framePending"]=="1"); // ActiveHIGH still fails.
  reset();weatherExists();fake::panelFails=true;run();
- assert(!fake::values.count("lastFrameSha")&&fake::values["everShown"]=="1"); // No false success on BUSY timeout.
+ assert(panelTimedOut.load()&&!fake::values.count("lastFrameSha")&&fake::values["everShown"]=="1"); // Real callback timeout still fails.
  reset();weatherExists();fake::afterFetch=[] {fake::onPoll=[] {fake::onPoll=[]{};
    provisioning::clearCredentials();provisioning::runPortalBlocking();};};run();
  assert(fake::portals==1&&fake::panel==setup_frame[0]&&!fake::values.count("lastFrameSha")); // Reset wins over fetched bytes.
@@ -74,5 +79,5 @@ int main() {
  assert(fakeTime(nullptr)>=fake::epoch+20 && fake::fetches==1 && chosenTarget>fake::epoch+20);
  for(int pin:{board::adcEnable,board::amplifierEnable,board::codecEnable,board::loraEnable,board::temperatureEnable,board::loraReset})assert(fake::pins[pin]==LOW);
  assert(fake::fetchedFile=="lowbat"); // ADC0 follows specified provisional policy.
- puts("PASS deployed-main join20/retention/NTP/RTC/SHA-A-B-A/reset/BOOT/target/power orchestration");
+ puts("PASS deployed-main join20/retention/NTP/RTC/SHA-A-B-A/reset/BOOT/target/power/hibernate-HIGH-vs-active-BUSY orchestration");
 }

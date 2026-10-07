@@ -81,9 +81,13 @@ bool show(const uint8_t* buffer, bool programMemory) {
   initializeDisplay();
   display.epd2.writeImage(buffer, 0, 0, board::width, board::height, false, false, programMemory);
   if (!panelTimedOut.load()) display.refresh(false);
+  display.epd2.powerOff();
+  // SSD1683 command 0x10 deliberately holds BUSY HIGH in deep sleep. Validate
+  // active refresh/power-off completion BEFORE hibernate sends that command.
+  const bool activeReady = !panelTimedOut.load() && digitalRead(board::epdBusy) == LOW;
   display.hibernate();
   detachInterrupt(board::epdBusy);
-  return !panelTimedOut.load() && digitalRead(board::epdBusy) == LOW;
+  return activeReady && !panelTimedOut.load();
 }
 void drawSetup() {
   const uint32_t started = millis();
