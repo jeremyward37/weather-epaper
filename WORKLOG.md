@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T16 corrected flash after physical BOOT entry
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
+- **Started / finished:** 2026-10-07 17:25 MDT / 2026-10-07 17:31 MDT (startup/first-slot record; bounded capture continues)
+- **Model:** Primary runtime; independent T16 QA GPT-6.1 Sol · High.
+- **Branch / PR:** `codex/t16-wake-fetch-sleep` / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress
+
+### Result
+Jeremy replied “done” to physical BOOT/RESET instructions. Verified approved corrected production upload succeeded; saved Wi-Fi/NTP/verified HTTPS/display/SHA save and sleep observed. Jeremy confirmed weather visible after normal RESET, then no flashing on brief BOOT. Actual BOOT/immediate and first17:30 TIMER both show identical-no-redraw. Evidence and independent partial hardware QA recorded; bounded90-minute production observer remains active.
+
+### Verification
+Reviewed head847c8b1a494e3a6cc8cf0300f7977625d3a6db70 had build/firmware SUCCESS in run37701828781. Approved source3fc1e59/all five bundle hashes and app1320576 bytes SHA4d9e35cfeaf3b712abc5eb2737b95fcd4c5e3d45bd077f2c8c031df977e8a648 checked before four explicit no-reset writes; exit0/all four verified. Same board serial2884859F0EFC; NVS ranges untouched and saved join observed. Actual cold display4694ms changed-refreshed-hibernated-sha-saved; actual BOOT/immediate1ms identical-no-redraw plus human no-flicker; first TIMER at23:29:41UTC/fetch23:30:01UTC, identical-no-redraw, sleep to18:00. Host all6files/matching5hashes, both15000 bins and tools/framediff.py both0pixels. Independent upload/startup and BOOT addendum Pass; full-hour/fidelity/offline/USER/longclear still pending. First attempted framediff used the serial venv without Pillow; reran successfully using existing image venv. Whitespace check Pass. Independent narrow documentation/evidence recheck Pass after current-state corrections; source/assets remain unchanged.
+
+### Decisions
+Keep T16's original physical criteria pending until actual observation and independent reconciliation. T24 remains deferred.
+
+### Problems
+Manual ROM upload hard-reset initially gave no application log. Normal RESET with BOOT released produced application startup. No false panel failure in corrected trace. Wi-Fi-loss check would disrupt others; Jeremy requests test later, criterion remains pending.
+
+### Needs Jeremy
+Leave USB connected through18:35MDT without further button presses to collect17:30/18:00/18:30 production slots. Whole-panel photo/index fidelity still needed. Wi-Fi-loss/recovery, USER/longclear and final acceptance remain later physical checks; no Terminal work needed.
+
+### Next
+Continue bounded raw observer session54253 (live /private/tmp/weather-epaper-t16-corrected-production-runtime.txt) through at least18:30; automatic end approximately18:56:49MDT. Reconcile actual hour evidence and remaining physical checks independently. No merge, acceptance or next-card start.
+
+---
+
 ## Session — T16 corrected production flash and observation
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03

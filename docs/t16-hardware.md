@@ -6,7 +6,7 @@ Observed 2026-10-07; original acceptance criteria remain required. [Review packe
 
 Jeremy's “Approve t16” at16:51 MDT replied to the frozen production flash/one-hour-test request, not acceptance/merge/T17. Reviewed PR21 headda21f3b8a55e1e41e995636b7bf401a7e4ff793e had both required CI SUCCESS in run37697987046. All five frozen file hashes and SOURCE_REVISION rechecked before upload. Source068113577d1739da8b7ac13cfc77dec5d3b7d7c6; production app1320544 bytes SHA17122de56f655b7b37bcc3464f310416ec8b48e189730157e95b9b9a0bc29957. Four explicit address/image pairs, DIO80m16MB,115200, automatic default-reset/hard-reset; no broad erase or native Wi-Fi NVS write. Flash exit0 and all four write hashes verified. Board ESP32-S3v0.2,16MB flash/8MBPSRAM; same USB303A:1001 serial2884859F0EFC at /dev/cu.usbmodem114101.
 
-Evidence: [actual flash log](../firmware/logs/t16-initial-production-flash.txt). Device still has this initial approved release while a correction is prepared; no corrected flash is inferred from software work.
+Evidence: [actual flash log](../firmware/logs/t16-initial-production-flash.txt). This section records the initial release. The separately approved corrected production upload and actual startup are recorded in [corrected hardware record](t16-corrected-hardware.md).
 
 ## Actual first runtime
 

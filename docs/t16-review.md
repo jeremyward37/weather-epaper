@@ -2,9 +2,9 @@
 
 [T16 card](https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03) · [PR #21](https://github.com/jeremyward37/weather-epaper/pull/21) · branch `codex/t16-wake-fetch-sleep`, base merged T15 `637c275`.
 
-Software/artifact source: **`3fc1e59235b4fc3b456c2b6d75aa380965899cc1`**. Status **In progress; independent correction QA passed; new flash approval required after green final-head CI**. Documentation-only review commits do not replace these frozen artifacts.
+Software/artifact source: **`3fc1e59235b4fc3b456c2b6d75aa380965899cc1`**. Status **In progress; corrected production flash approved and executed after green CI; actual startup/BOOT no-redraw and first TIMER success observed; remaining physical criteria pending**. Documentation-only review commits do not replace these frozen artifacts.
 
-The original approved0681135/app17122de5 release was flashed successfully at16:55MDT. Saved Wi-Fi, fresh NTP, verified HTTPS and a visible weather transition succeeded, but the firmware incorrectly rejected BUSY HIGH after panel hibernation and withheld the SHA. The controller deliberately drives HIGH in deep sleep. This corrected release checks active refresh/power-off completion before hibernation and retains timeout protection; regression tests now model the actual sleep behavior. See [actual hardware evidence](t16-hardware.md) and [independent correction QA](t16-busy-fix-qa.md). Original flash approval does **not** authorize this new artifact. The original release remains installed, diagnostic observer stopped; no hosting change or T17 work.
+The original approved0681135/app17122de5 release was flashed successfully at16:55MDT. Saved Wi-Fi, fresh NTP, verified HTTPS and a visible weather transition succeeded, but the firmware incorrectly rejected BUSY HIGH after panel hibernation and withheld the SHA. The controller deliberately drives HIGH in deep sleep. This corrected release checks active refresh/power-off completion before hibernation and retains timeout protection; regression tests now model the actual sleep behavior. See [actual hardware evidence](t16-hardware.md) and [independent correction QA](t16-busy-fix-qa.md). The original approval alone did not authorize this new artifact. Jeremy subsequently approved the corrected production release; it is now installed, with actual display/SHA save, brief BOOT no-redraw and first corrected TIMER evidence in [corrected hardware record](t16-corrected-hardware.md). Bounded observer session54253 is active; no hosting change or later-card work.
 
 ## Delivered behavior
 
@@ -12,7 +12,7 @@ Saved Wi-Fi reconnects with a 20-second cap; a fresh NTP sync has ten seconds an
 
 Production targets Mountain `:00`/`:30`, **05:00 through 22:00 inclusive**, joining about 20 seconds early and waiting for the target before fetching. BOOT wakes immediately; a held five-second reset retains T15 provisioning behavior. USER remains unused. Wi-Fi is off and peripheral outputs are held at the vendor sleep levels before timer/ext0 deep sleep. [Firmware README](../firmware/README.md) describes configuration and limits; [hardware record](../firmware/HARDWARE.md) names pinned APIs and power assumptions.
 
-Battery thresholds **3.55 V / 0.10 V** are provisional until T17. Empty-pack USB ADC zero selects the approved low-battery weather variant, including its footer glyph; it does not identify charge or pack presence. No approved frame or rendering rule changed. The original approved T16 flash now shows weather; corrected SHA suppression and physical fidelity remain to be tested.
+Battery thresholds **3.55 V / 0.10 V** are provisional until T17. Empty-pack USB ADC zero selects the approved low-battery weather variant, including its footer glyph; it does not identify charge or pack presence. No approved frame or rendering rule changed. The corrected approved T16 flash shows weather; actual BOOT/TIMER SHA suppression is observed. Whole-panel fidelity and the full-hour/offline checks remain pending.
 
 ## Verification and remaining criteria
 
@@ -21,8 +21,8 @@ Battery thresholds **3.55 V / 0.10 V** are provisional until T17. Empty-pack USB
 | Native schedule and failure checks | 25 deployed provisioning/main/net and schedule/parser scenario/suite invocations; PlatformIO native Unity testcase | Pass; independent deployed-code checks also pass |
 | Clean production/debug/persistence builds | Pinned Core6.1.18/pioarduino54.03.21/Arduino3.2.1; three clean SUCCESS builds | Pass |
 | Independent software QA | [Original audit](t16-qa.md) plus [correction audit](t16-busy-fix-qa.md): realistic sleeping HIGH, active failures/timeouts, original-code sensitivity, clean build and frozen artifact checks | Correction software Pass; physical criteria Pending |
-| Required CI on corrected review head | Correction/final-head build and firmware checks must both pass; exact-head readback recorded on GitHub/Notion before review | Pending until final readback; prior068 CI is historical |
-| Approved bytes and published preview | No canonical/setup changes; host HTTPS200, both15000-byte bins, published hashes match; both raw/PNG zero-pixel comparisons | Original device TLS/fetch observed; corrected TLS/panel and full fidelity Pending |
+| Required CI on corrected review head | Approved-upload head847c8b1 build/firmware SUCCESS in run37701828781, read before upload; later evidence-head CI required before merge | Pass for uploaded release; latest evidence-head results recorded on GitHub/Notion |
+| Approved bytes and published preview | No canonical/setup changes; host HTTPS200, both15000-byte bins, published hashes match; both raw/PNG zero-pixel comparisons | Corrected verified TLS/fetch and visible weather observed; full whole-panel fidelity Pending |
 | Correct real wakes across **at least one hour** | Actual production timer traces/host timestamps and Jeremy observations required | Pending |
 | Frame matches index; changed/unchanged/offline panel behavior | Actual flashed hash, sanitized trace and whole-panel observations/photo required | Pending |
 | Deep-sleep current or documented reason measurement unavailable | Jeremy: “No suitable meter available.” Continuous USB/no pack; no measured current claimed | Pass documented-reason alternative; no current measured |
@@ -44,7 +44,7 @@ Production/debug RAM64,804 bytes; production app-flash1,320,054/debug1,320,038 o
 
 ## Needs Jeremy
 
-**Decision requested:** approve this frozen **corrected production T16 flash and one-hour physical test**. This approval will not merge PR21, accept the physical criteria, release the debug/harness variants or start T17.
+**Approval recorded:** Jeremy said “approve corrected T16 flash,” completed physical ROM entry, and the exact frozen production release was uploaded after green CI on head847c8b1. See [corrected hardware evidence](t16-corrected-hardware.md). Its bounded production observation is active; remaining original physical checks and later acceptance/merge are still pending. Debug/harness release and later-card start remain separate gates.
 
 The enduring request that the agent run Terminal commands overrides the manual Terminal handoff in AGENTS.md rule13. **The agent runs upload, hash verification, port discovery and serial capture.** Jeremy handles physical buttons/power, private credentials, panel observations/photos and measurement limitations. Keep the battery connector empty and USB connected during software review. The initial build can refresh again at a scheduled wake because the false error withheld SHA; that is the defect being fixed, not a passed no-redraw check. No Terminal command needs to be typed by Jeremy.
 
