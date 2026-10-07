@@ -10,6 +10,47 @@ permissions:
   contents: read
 
 jobs:
+  firmware:
+    name: firmware
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install pinned firmware build tools
+        run: python -m pip install -r firmware/build-requirements.txt
+
+      # Deliberately no PlatformIO cache: verify dependency resolution from clean.
+      - name: Build USB bring-up firmware
+        run: pio run -d firmware -e nm-epd-420-bw
+
+      - name: Record firmware artifact hashes and source revision
+        working-directory: firmware/.pio/build/nm-epd-420-bw
+        run: |
+          sha256sum firmware.bin bootloader.bin partitions.bin firmware.elf > SHA256SUMS
+          git rev-parse HEAD > SOURCE_REVISION
+          python -m platformio --version > BUILD_VERSION
+
+      - name: Upload firmware and flash components
+        uses: actions/upload-artifact@v4
+        with:
+          name: t14-usb-bringup-${{ github.sha }}
+          if-no-files-found: error
+          path: |
+            firmware/.pio/build/nm-epd-420-bw/firmware.bin
+            firmware/.pio/build/nm-epd-420-bw/firmware.elf
+            firmware/.pio/build/nm-epd-420-bw/bootloader.bin
+            firmware/.pio/build/nm-epd-420-bw/partitions.bin
+            firmware/.pio/build/nm-epd-420-bw/SHA256SUMS
+            firmware/.pio/build/nm-epd-420-bw/SOURCE_REVISION
+            firmware/.pio/build/nm-epd-420-bw/BUILD_VERSION
+
   build:
     name: build
     runs-on: ubuntu-latest

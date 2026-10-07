@@ -22,6 +22,8 @@ A single-glance weather display that hangs in Jeremy's closet so he knows what t
 | Power | Li-Po battery; deep sleep between refreshes |
 | Links | [Product](https://rockbase.shop/en/products/nm-epd-420?variant=42529919762514) · [Wiki](https://wiki.rockbaseiot.com/docs/products/nm-epd-420/) · [Board firmware reference](https://github.com/RockBase-iot/NM-EPD-420) · [Icon and font source](https://github.com/RockBase-iot/esp32-weather-epd) |
 
+Temporary power setup (Jeremy, 2026-10-07): continuous USB until the battery pack arrives in early November 2026. The board is unboxed and no battery was supplied. USB permits firmware bring-up; battery calibration and life acceptance still require the pack.
+
 Enclosure and mounting are undecided. The 4 px safe margin in the design exists for that reason.
 
 ## 3. Architecture
@@ -100,14 +102,14 @@ The handoff items from the scope review were resolved in the planning session wi
 | 3 | Low-battery threshold | Two frames published per slot (normal, low-battery); the device picks by voltage with a hysteresis band. Threshold and band are set once the battery pack is known (Jeremy task). |
 | 4 | Battery life | In scope: measured over weeks after first deployment, and used to size the pack. |
 | 5 | Hosting | GitHub Actions cron → GitHub Pages at `weather.builtbyjer.com` (DNS CNAME added by Jeremy). The local-time schedule runs at 4:47 AM and :17/:47 from 5 AM through 9 PM `America/Denver`, preparing all 35 device wakes through 10 PM. The job checks the window, allows a delayed final scheduled run shortly after 10 PM, and never publishes on a failed fetch, so the previous frame stays live. Jeremy approved the extra 4:47 AM publish on 2026-09-27 to serve the 5:00 AM wake. |
-| 6 | Wire format | Raw 15,000-byte, 1 bit per pixel, row-major, 50 bytes per row, MSB first, default `1 = white` as GxEPD2 expects. Confirmed on hardware by the firmware spike before any other firmware work. |
+| 6 | Wire format | Raw 15,000-byte, 1 bit per pixel, row-major, 50 bytes per row, MSB first, default `1 = white` as GxEPD2 expects. Vendor-documented default; physical confirmation is pending the T14 firmware spike before further firmware work. |
 | 7 | Wake scheduling | Device: NTP each wake, compute next slot locally, deep sleep. |
 | 8 | Setup hotspot | Captive portal at `192.168.4.1`, SSID `WeatherStation-Setup`, password `firstlight`; BOOT held five seconds clears credentials (USER cannot wake from deep sleep). Setup screen bytes are embedded in firmware. |
 | 9 | Repository layout | Monorepo; `server/` imports the layout code from `design/` as a library after a zero-diff refactor. |
 | 10 | Firmware framework | PlatformIO, Arduino framework, GxEPD2, matching RockBase's reference code. |
 | 11 | Frame verification | `tools/framediff.py` compares any two frames (PNG or raw) and reports differing pixels; CI fails on any drift of `design/exports/`. |
 | 12 | Enclosure and mounting | Still undecided; not blocking. |
-| 13 | Execution | One card per implementation run, coordinated by a persistent Codex orchestrator with implementation and independent QA subagents, then a Jeremy review pause (`docs/orchestration.md`). Each run has its own branch and log entry; hardware evidence and explicit acceptance gate Done. Jeremy-only actions remain his. **[PD]** marks physical-board work; the board arrived 2026-10-06, unopened as of 2026-10-07. |
+| 13 | Execution | One card per implementation run, coordinated by a persistent Codex orchestrator with implementation and independent QA subagents, then a Jeremy review pause (`docs/orchestration.md`). Each run has its own branch and log entry; hardware evidence and explicit acceptance gate Done. Jeremy-only actions remain his. **[PD]** marks physical-board work; the board arrived 2026-10-06 and Jeremy confirmed it unboxed on 2026-10-07; physical acceptance remains pending. |
 | 14 | Repository visibility | Public. Can be switched later in repository settings; a private repo meters Actions minutes and needs GitHub Pro for Pages. |
 
 ## 10. Document map

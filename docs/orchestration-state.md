@@ -2,15 +2,17 @@
 
 This is the durable handoff ledger; update it with each run and approval. WORKLOG remains the append-only session history; Notion cards hold acceptance/status. Never store secrets.
 
-- **Updated:** 2026-10-07
-- **Active card:** T23 orchestration preparation
-- **Stage:** Awaiting Jeremy review
-- **Branch:** `codex/t23-orchestration`
-- **PR / revision:** [PR #17](https://github.com/jeremyward37/weather-epaper/pull/17); `build` passed on `f052d2691888f9919f95945e4cf71733bd6db573` ([run](https://github.com/jeremyward37/weather-epaper/actions/runs/37660267570)). Check the latest revision and required CI again before merge.
-- **Independent QA:** Pass; three requested clarifications resolved. TOML parsing, relative links, task-row consistency, whitespace and Notion readback passed.
-- **Pending Jeremy action:** Review PR #17 when required CI is green; explicitly authorize merge and starting T14. No credential repair or hardware action is needed for the resolved push error.
-- **Next eligible task:** T14 after the T23 approval/merge gate. T21 is separately eligible, not automatically dispatched.
-- **Hardware:** Delivered 2026-10-06; unopened; no flash/photo/current measurements or physical acceptance yet.
+- **Updated:** 2026-10-07 11:57 MDT
+- **Active card:** T14 USB-powered board bring-up
+- **Stage:** Independent QA
+- **Branch / checkout:** `codex/t14-bringup` / `/private/tmp/weather-epaper-t14`
+- **Base / PR:** merged main `6887c8413abe53e705b5fc1ec6cacae30771229a`; T14 PR pending
+- **Independent QA:** Pending; separate GPT-6.1 Sol · High child after implementation finishes.
+- **Intended checks:** PlatformIO clean build, embedded setup header 15,000-byte/zero-pixel comparison, existing CI plus firmware build and artifact hashes.
+- **Pending Jeremy action:** Keep USB data cable ready; reviewed build and exact physical instructions will follow. No flash authorized yet.
+- **Next eligible task:** T15 only after T14's hardware/review/merge gates; T21 separately eligible, not dispatched.
+- **Hardware:** Unboxed; supplied photos show USB-C, Reset/User/Boot and battery switch; Meshtastic screen. No battery; expected early November 2026. Jeremy intends continuous USB power until then. Weather firmware panel/serial acceptance is pending.
+- **Reconciliation:** GitHub PR #17 merged at 2026-10-07 11:38:30 MDT (`6887c84`), required CI passed on final head `7e36c61`; Notion T23 Done. PR #18 (`bee7e19`) is open acceptance bookkeeping with passing CI, not a new T23 gate.
 
 ## Approval ledger
 
@@ -33,8 +35,12 @@ Open issues / rollback:
 Approval requested (accept / merge / deploy / start next task):
 ```
 
-## Resume T23 review
+## Historical T23 review packet (superseded by reconciliation above)
 
 The saved branch pushed successfully on 2026-10-07 at approximately 11:34 MDT using the existing keyring credential. No credentials, remotes, or repository settings were changed. PR #17 is open and attached. The previous GitHub server error is resolved; its exact cause was not returned. The prior local Docker check could not run because the daemon was stopped; use required PR CI for the pinned rendering and regression checks. Named-role client discovery/loading remains unverified; scoped collaboration prompts remain available.
 
 Resume this card first: inspect PR #17's latest head and required checks, resolve any failure, then obtain Jeremy's review/merge/advance authorization. Worktree: `/private/tmp/weather-epaper-orchestration`; branch: `codex/t23-orchestration` (if the temporary checkout is gone, recreate from the saved branch). Do not implement T14 or merge while CI or Jeremy's gate is pending.
+
+## T14 preparation authorization — 2026-10-07
+
+Jeremy's human messages in this chat request orchestration of the remaining project, provide unboxed-device photos and USB readiness, and specify continuous USB power until the battery arrives in early November. Preparing T14's software, independent QA and review packet is within that request. It does not authorize flashing, merging, deployment changes, hardware acceptance, or advancing beyond T14. Physical and release gates remain pending.

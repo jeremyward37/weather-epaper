@@ -1,5 +1,36 @@
 # Work log
 
+## Session — T14 USB-powered board bring-up
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 11:57 MDT / in progress
+- **Model:** Primary Codex runtime (identity/effort not exposed); implementation and independent QA GPT-6.1 Sol · High, verified available in this client's tool schema.
+- **Branch / PR:** `codex/t14-bringup` / pending
+- **Status at end:** In progress
+
+### Result
+Preparing the T14 PlatformIO spike in `/private/tmp/weather-epaper-t14`, from merged main `6887c84`. T10 is Done. T23 is Done in Notion and PR #17 is merged; PR #18 is acceptance bookkeeping and remains open.
+
+### Verification
+`node server/bin/pack-setup.js` (bundled Node) regenerated the embedded header with a clean diff. Extracted 15,000 bytes and bundled Python `tools/framediff.py` against `state-setup.png` reported zero differing pixels. PlatformIO 6.1.18 clean + build with pioarduino 54.03.21/GxEPD2 1.6.8 succeeded; RAM 37,336 bytes, application flash 471,870 bytes. Local app SHA-256 `729f687c5849eae070a4ca0b04e8fc045321288570069d6178cb2c752efebd98`. Workflow YAML parsed and `git diff --check` passed. Independent QA and required CI pending. No hardware operation has occurred.
+
+### Decisions
+- Jeremy has a USB cable and will leave the device connected until the battery arrives in early November 2026. T14 accepts documented no-pack ADC readings. Battery calibration/life acceptance waits for the pack.
+- Preserve the unrelated `.gitignore` edit and old main checkout by using an isolated branch/worktree.
+- Use scoped implementation and QA subagents as required by accepted AGENTS.md; only the orchestrator changes Git, Notion, log and state.
+
+### Problems
+No hardware evidence yet. Local `./tools/render.sh` exited 2 because Docker daemon is stopped; pinned renderer/fixture regression verification will run in CI. Vendor pioarduino installer writes a tool cache under `~/.platformio/tools` despite isolated `PLATFORMIO_CORE_DIR`; documented and left intact. Initial build succeeded but its size helper 2.3.2 rejected vendor `--ng`; pinning esp-idf-size 1.6.1 resolved the warning in the clean rebuild. The durable main ledger predates PR #17's merge; reconciliation records the observed merge without merging PR #18.
+
+### Needs Jeremy
+After software verification/review: USB connection, authorized flash, straight-on setup-screen photo and serial/button readings. No battery required for T14. Exact commands pending the build.
+
+### Next
+Finish only T14's software preparation; stop at review/hardware gate. T15 must wait for T14 physical evidence, acceptance and authorized merge.
+
+---
+
+
 ## Session — T23 publication retry and CI
 
 - **Task:** https://app.notion.com/p/3f2d9adbacad8146b8f8f2d5dea31b1e
