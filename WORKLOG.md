@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T15 phone provisioning confirmation
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 14:19 MDT / 2026-10-07 14:23 MDT
+- **Model:** Primary runtime; hardware evidence capture, no implementation change.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress
+
+### Result
+Jeremy reported submitting Wi-Fi privately, with no obvious portal success/failure feedback. Agent serial capture confirms [T15] Trying submitted Wi-Fi followed by [T15] Provisioning complete; setup frame retained. Saved sanitized full phone-provisioning capture as firmware/logs/t15-phone-provisioning.txt. Replacing the agent monitor produced its documented USB reset and [T15] Saved Wi-Fi connected; panel retained, demonstrating saved reconnect after that reset. This does not yet claim Jeremy's physical power-cycle observation.
+
+### Verification
+Read actual ongoing serial capture and confirmed generic success with no home identifiers/passwords in the saved log. Both build and firmware jobs passed on documentation head 36a513c in CI run 37680646611. Stopped only the agent's identified monitor process and started a bounded observer with DTR/RTS inactive, same-device matching and reconnect after USB loss. Source b8ae0c4 and approved app hash are unchanged; no upload in this session so far.
+
+### Decisions
+The retained setup image is expected until T16 fetches the first weather frame. Use serial connection result as success evidence. Agent handles Terminal operations under the recorded override; Jeremy supplies unplug/replug and panel observations. The observer's serial attachment may itself cause a USB reset and is labeled as such.
+
+### Problems
+Jeremy did not notice clear portal result feedback; serial resolves this submission as success. Portal UI/design and frozen firmware remain unchanged.
+
+### Needs Jeremy
+Unplug USB from the device, wait five seconds, reconnect with BOOT released, then after twenty seconds report whether the screen stayed unchanged. First physical power-cycle request is pending.
+
+### Next
+Complete repeated physical reconnect, runtime BOOT reset/re-provision, approved timer-sleep harness and normal restore. Keep T15 In progress until criteria/acceptance/authorized merge; no T16 advancement.
+
+---
+
 ## Session — T15 agent Terminal upload and startup observation
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b

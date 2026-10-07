@@ -2,14 +2,14 @@
 
 This is the durable handoff ledger; update it with each run and approval. WORKLOG remains the append-only session history; Notion cards hold acceptance/status. Never store secrets.
 
-- **Updated:** 2026-10-07 14:12 MDT
+- **Updated:** 2026-10-07 14:21 MDT
 - **Active card:** T15 Wi-Fi provisioning
-- **Stage:** Approved normal T15 flashed by agent; startup/setup AP observed; awaiting private phone setup and physical persistence/reset evidence.
+- **Stage:** Approved normal T15 flashed by agent; startup/setup AP observed; phone provisioning succeeded and saved reconnect after monitor-induced reset observed; physical persistence/reset evidence remains pending.
 - **Branch / checkout:** `codex/t15-wifi-provisioning` / `/Users/jeremyward/.codex/worktrees/t15-wifi-provisioning/weather-epaper`
 - **Base / PR:** merged T14 `08be1ac4024d1c79c25814f0881469804ab096a8`; [T15 PR #20](https://github.com/jeremyward37/weather-epaper/pull/20), final firmware/config/test/workflow source `b8ae0c4c1680d6fd3857b6d413248e298599d8ee`. Later review records leave that source unchanged.
 - **Independent QA:** T15 software Pass; separate `epaper_qa` GPT-6.1 Sol · High. Ten deployed native plus fourteen independent timer/NVS failure scenarios, clean normal/harness builds, zero-pixel setup match, logging/upload/partition checks. Physical criteria Pending; see `t15-qa.md`.
 - **Intended checks:** completed software checks in `t15-qa.md`; source CI build/firmware Pass in run 37676538752. Require final PR-head checks green before release/merge; latest result tracked in GitHub/Notion.
-- **Pending Jeremy action:** provision privately by phone and perform saved reconnect/runtime BOOT/power-cycle observations. Agent handles approved normal/harness upload, serial capture and normal restore; Jeremy handles physical buttons, phone, power cycling and photographs. Actual evidence, T15 acceptance and authorized merge remain Pending.
+- **Pending Jeremy action:** perform physical USB power-cycle/panel observations and runtime BOOT tests; initial private phone save succeeded. Agent handles approved normal/harness upload, serial capture and normal restore; Jeremy handles physical buttons, phone, power cycling and photographs. Actual evidence, T15 acceptance and authorized merge remain Pending.
 - **Next eligible task:** T16 only after T15's own hardware/review/merge gates and explicit advancement; T21 separately eligible, not dispatched.
 - **Hardware:** T14 accepted: Jeremy flashed reviewed app, supplied setup photo, startup/no-pack ADC and button evidence. T15 physical provisioning/power-cycle/deep-sleep/reset tests pending. No battery; expected early November 2026; continuous USB intended. Battery calibration/life untested.
 - **Reconciliation:** PR #19 merged at 2026-10-07 13:16 MDT (`08be1ac`), required CI passed on accepted head `6b39baa`; Notion T14 Done and T15 In progress. PR #18 remains earlier acceptance bookkeeping; it is not a new delivery gate.

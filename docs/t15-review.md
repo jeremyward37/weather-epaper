@@ -1,6 +1,6 @@
 # T15 review packet — Wi-Fi provisioning
 
-Task: [T15](https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b). Branch: `codex/t15-wifi-provisioning`, based on accepted/merged T14 `08be1ac`. [PR #20](https://github.com/jeremyward37/weather-epaper/pull/20). Final firmware/config/test/workflow source: `b8ae0c4c1680d6fd3857b6d413248e298599d8ee`; frozen hashes are below. Status **In progress; software QA Pass; normal flash and persistence test approved; normal firmware flashed; awaiting phone/persistence/reset evidence**. T14 was accepted by Jeremy and PR #19 merged; that approval authorizes T15 preparation, not its new firmware release.
+Task: [T15](https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b). Branch: `codex/t15-wifi-provisioning`, based on accepted/merged T14 `08be1ac`. [PR #20](https://github.com/jeremyward37/weather-epaper/pull/20). Final firmware/config/test/workflow source: `b8ae0c4c1680d6fd3857b6d413248e298599d8ee`; frozen hashes are below. Status **In progress; software QA Pass; normal flash and persistence test approved; normal firmware flashed; phone save succeeded; awaiting physical persistence/reset evidence**. T14 was accepted by Jeremy and PR #19 merged; that approval authorizes T15 preparation, not its new firmware release.
 
 ## Behavior
 
@@ -12,12 +12,12 @@ Credentials remain in native Wi-Fi NVS. Preferences stores provisioning/frame me
 
 | Criterion | Evidence | Result |
 |---|---|---|
-| Pinned WiFiManager and required API/hotspot/portal | Source review and build; actual phone reachability still required | Software Pass; physical Pending |
+| Pinned WiFiManager and required API/hotspot/portal | Source review/build plus Jeremy phone submission and actual Provisioning complete serial line in t15-phone-provisioning.txt | Pass |
 | BOOT reset and short refresh hook, USER unused | Production-controller tests; actual runtime check required | Software Pass; physical Pending |
 | Setup only on provisioning entry; frame identity slot | Source/native checks; setup header must remain byte-identical | Software Pass |
 | Credentials survive power cycle and deep sleep | Native NVS path and separate bounded test build; Jeremy's serial/panel observations required | Physical Pending |
-| No credentials printed or committed | Source/upstream logging audit plus sanitized actual serial | Software Pass; physical Pending |
-| Original four Jeremy checks with serial excerpts | Flash, phone/save, reconnect and long press | Pending |
+| No credentials printed or committed | Source/upstream logging audit and sanitized actual startup/phone serial | Pass for observed runs |
+| Original four Jeremy checks with serial excerpts | Flash and phone/save observed; monitor-induced-reset saved reconnect observed; physical power cycle/long press pending | Partial |
 | Independent QA and final-head CI | Separate GPT-6.1 Sol · High audit: 10 deployed native scenarios, 14 independent timer/NVS failure scenarios, clean normal/harness builds, header regeneration/zero-pixel framediff, secret-log audit and offline upload checks. Source CI passed; final PR-head CI tracked on GitHub/Notion before release/merge | Software Pass; latest CI gate required |
 | Jeremy acceptance and authorized merge | Explicit instruction after evidence | Pending |
 
@@ -106,3 +106,7 @@ Offline QA validated esptool argument parsing while denying serial access, merge
 ## Limits and next gate
 
 Actual normal flash/startup/setup AP IP are observed. Phone reachability, NVS persistence and runtime reset remain pending; compilation/mocks do not pass these physical criteria. Battery calibration and life await the pack and later cards. T16 owns weather download, ext0 wake integration and the half-hourly schedule. T15 stays In progress until its criteria, independent QA, Jeremy acceptance and authorized merge all pass. No T16 work is dispatched. When T16 implements ext0 wake, start BOOT sampling before serial/wake-processing waits so its held-wake threshold starts immediately; this note is also on the T16 card.
+
+## Actual phone save — 2026-10-07 14:21 MDT
+
+Jeremy submitted home Wi-Fi privately and reported no obvious portal success/failure feedback. Actual serial confirms `Trying submitted Wi-Fi` then `Provisioning complete; setup frame retained`; full sanitized capture is [t15-phone-provisioning.txt](../firmware/logs/t15-phone-provisioning.txt). The subsequent agent monitor attachment generated a labeled USB reset and `Saved Wi-Fi connected; panel retained`, with no setup redraw log. Physical USB power-cycle/panel observations and BOOT/timer-sleep checks remain pending; do not conflate the monitor-induced reset with a physical power cycle. Both jobs passed on evidence-only head 36a513c in CI run 37680646611; require latest-head success before merge. Frozen firmware unchanged.
