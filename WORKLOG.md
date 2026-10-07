@@ -1,5 +1,89 @@
 # Work log
 
+## Session — T14 uploader argument correction
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 12:41 MDT / 2026-10-07 12:44 MDT
+- **Model:** Primary Codex runtime; resumed implementation and independent QA roles for narrow upload-command correction.
+- **Branch / PR:** `codex/t14-bringup` / https://github.com/jeremyward37/weather-epaper/pull/19
+- **Status at end:** In progress
+
+### Result
+Jeremy ran the supplied nobuild/upload/monitor command. Installed esptool 5.0.0-dev1 rejected malformed address/file pairs before connecting or writing; no successful flash is claimed. Diagnosing the vendor nobuild environment and preparing explicit frozen-binary offsets. Firmware rebuild and hardware actions remain excluded from agent work.
+
+### Verification
+All five frozen bundle hashes verify. Installed esptool image-info validates the S3 bootloader, DIO/80 MHz/16 MB image and footer hashes. Implementation and separate QA validated the explicit command with Click parser contexts without callbacks/serial; QA's offline merge-bin verified all four source byte ranges unchanged at their framework/partition-derived offsets with no overlap. No hardware command or rebuild was executed. Documentation commands replace the withdrawn nobuild upload and use the same approved binaries.
+
+### Decisions
+Preserve the approved frozen app and boot components; correct uploader handoff without rebuilding.
+
+### Problems
+Prior command review did not exercise the actual uploader argument construction. Jeremy's failed output is the observed evidence.
+
+### Needs Jeremy
+Run the corrected hash-gated explicit esptool command from the frozen bundle with current port /dev/cu.usbmodem14101, then return terminal output and panel photo. The command uses the existing BOOT entry; serial monitoring follows after successful upload and app USB enumeration.
+
+### Next
+T14 retry and physical evidence only. No merge or next card.
+
+---
+
+## Session — T14 flash command handoff
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 12:40 MDT / 2026-10-07 12:40 MDT
+- **Model:** Primary Codex runtime (identity/effort not exposed); no source changes or new QA delegation.
+- **Branch / PR:** `codex/t14-bringup` / https://github.com/jeremyward37/weather-epaper/pull/19
+- **Status at end:** In progress
+
+### Result
+Jeremy confirmed “reset done” after the BOOT-held RESET procedure. Read-only enumeration still sees `/dev/cu.usbmodem14101` (303A:1001). Prepared the exact approved nobuild/upload/monitor command with that port for Jeremy to run; no agent flash occurred.
+
+### Verification
+Frozen app SHA-256 rechecked matching `197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d`. Firmware unchanged since independently reviewed implementation `4ac387d`; approval-ledger revision `16bc3e7` CI passed both jobs in run 37666916058. USB enumeration does not independently prove boot mode.
+
+### Decisions
+Use the existing reviewed build without rebuilding. Jeremy performs upload in Terminal; handle actual uploader/monitor output before claiming success.
+
+### Problems
+Flash completion and setup/photo/serial/button acceptance remain unverified.
+
+### Needs Jeremy
+Run the provided command from /private/tmp/weather-epaper-t14 with PLATFORMIO_CORE_DIR=/private/tmp/weather-epaper-t14-pio, both ports /dev/cu.usbmodem14101 and nobuild/upload/monitor targets. Return terminal output and a photo after refresh; on error return output before retry.
+
+### Next
+Evaluate actual T14 flash evidence. No merge or next card.
+
+---
+
+## Session — T14 first USB connection
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 12:30 MDT / 2026-10-07 12:31 MDT
+- **Model:** Primary Codex runtime (identity/effort not exposed); no implementation change or new QA delegation.
+- **Branch / PR:** `codex/t14-bringup` / https://github.com/jeremyward37/weather-epaper/pull/19
+- **Status at end:** In progress
+
+### Result
+Jeremy reports the device connected and supplied IMG_2841.JPG, showing Meshtastic's welcome screen rather than the prior splash. This establishes that the original app drew a new screen, but retained e-paper pixels cannot determine the current boot mode. Read-only enumeration sees /dev/cu.usbmodem14101, USB JTAG/serial debug unit, VID:PID 303A:1001. No agent upload or hardware reset was performed.
+
+### Verification
+Frozen app hash remains `197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d`. Both CI jobs passed for approval-bookkeeping revision 16bc3e7 in https://github.com/jeremyward37/weather-epaper/actions/runs/37666916058. Firmware sources are unchanged.
+
+### Decisions
+Use Jeremy's labeled BOOT+RESET sequence while USB stays connected to establish download mode before selecting the upload port again. Enumeration alone does not prove download mode.
+
+### Problems
+No flashed setup frame or ADC/button evidence yet; this Meshtastic photo does not satisfy T14 acceptance.
+
+### Needs Jeremy
+Keep USB connected, hold BOOT, press and release RESET while still holding BOOT, wait about two seconds, then release BOOT. Return “reset done” for read-only port re-enumeration and the frozen upload command.
+
+### Next
+Continue approved T14 flash and physical verification only; acceptance, merge and T15 remain pending.
+
+---
+
 ## Session — T14 approved flash and BOOT instructions
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b

@@ -42,17 +42,30 @@ First review PR #19 and the source/artifact above, then explicitly approve this 
    cd /private/tmp/weather-epaper-t14
    export PLATFORMIO_CORE_DIR=/private/tmp/weather-epaper-t14-pio
    /private/tmp/weather-epaper-t14-venv/bin/pio device list
-   shasum -a 256 firmware/.pio/build/nm-epd-420-bw/firmware.bin
    ```
 
-   The app hash must be `197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d`. If it differs, stop and return the hash; do not flash an unreviewed rebuild.
-3. Substitute the actual `/dev/cu.usbmodem...` port in both fields below. Close any other serial monitor. This uses **nobuild** to upload the existing reviewed binary and pinned boot components, then opens the serial monitor:
+3. Substitute the actual ROM `/dev/cu.usbmodem...` port below. Close any other serial monitor. Use this corrected explicit command from the **frozen bundle**, with no rebuild. It checks the recorded source revision and all five bundle hashes before invoking the installed esptool:
 
    ```sh
-   /private/tmp/weather-epaper-t14-venv/bin/pio run -d firmware -e nm-epd-420-bw -t nobuild -t upload -t monitor --upload-port /dev/cu.usbmodemPORT --monitor-port /dev/cu.usbmodemPORT
+   (
+     cd /private/tmp/weather-epaper-t14-artifacts/4ac387dbbbb3672b11672222f360a83804c8d615 &&
+     test "$(cat SOURCE_REVISION)" = 4ac387dbbbb3672b11672222f360a83804c8d615 &&
+     shasum -a 256 -c SHA256SUMS &&
+     /private/tmp/weather-epaper-t14-venv/bin/python \
+       /private/tmp/weather-epaper-t14-pio/packages/tool-esptoolpy/esptool.py \
+       --chip esp32s3 --port /dev/cu.usbmodemPORT --baud 115200 \
+       --before no-reset --after hard-reset \
+       write-flash -z --flash-mode dio --flash-freq 80m --flash-size 16MB \
+       0x0000 bootloader.bin 0x8000 partitions.bin \
+       0xe000 boot_app0.bin 0x10000 firmware.bin
+   )
    ```
 
-   USB may renumber after upload. If monitoring fails, exit with Control-C, reconnect USB with BOOT released, list ports again, and use:
+   Every hash check must say `OK`; the app remains `197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d`. Stop on any mismatch or missing file. `--before no-reset` assumes step 1 entered the ROM downloader; `--after hard-reset` requests application startup after writing. The source revision and approved binaries are unchanged.
+
+   The earlier PlatformIO **nobuild upload command is withdrawn**. Jeremy's attempt exposed missing address/file pairs, rejected by esptool before connection; that parser failure did not write flash. In pioarduino 54.03.21, `nobuild` skips `BuildProgram()` and therefore the framework initialization that fills `FLASH_EXTRA_IMAGES` and `ESP32_APP_OFFSET`. The corrected command supplies them explicitly: S3 bootloader `0x0000`, partition table `0x8000`, and boot-app/OTA data `0xe000` from pinned Arduino `tools/pioarduino-build.py`; app `0x10000` from `huge_app.csv` and the frozen partition table. It uses the validated DIO / 80 MHz / 16 MB image settings.
+
+   USB may renumber after upload. Reconnect USB with BOOT released if the application does not start, list ports again, and open the application CDC port:
 
    ```sh
    /private/tmp/weather-epaper-t14-venv/bin/pio device monitor -d firmware -e nm-epd-420-bw --port /dev/cu.usbmodemPORT --baud 115200

@@ -21,7 +21,7 @@ The first build downloads the vendor-pinned **pioarduino 54.03.21** platform, Ar
 
 The vendor platform's installer also caches toolchains under `~/.platformio/tools`, even when `PLATFORMIO_CORE_DIR` points elsewhere. The first local build created that vendor cache; it was left intact. The temporary core directory does not fully isolate these downloads. This is the unmodified vendor platform; CI runs it on a disposable clean runner. `build-requirements.txt` also pins `esp-idf-size` **1.6.1**, because pioarduino 54.03.21 invokes the `--ng` option removed in 2.x. Install those requirements in the Python environment used by PlatformIO; an IDE-managed environment needs the same helper pin.
 
-The local app is `firmware/.pio/build/nm-epd-420-bw/firmware.bin`. A build alone proves neither panel fidelity nor battery/button operation. CI's separate `firmware` job performs a clean `pio run`, then uploads the app, ELF, bootloader, partitions, `SHA256SUMS`, source revision, and PlatformIO version. `firmware.bin` is an application binary, not a merged flash image; use PlatformIO upload to place all components correctly.
+The local app is `firmware/.pio/build/nm-epd-420-bw/firmware.bin`. A build alone proves neither panel fidelity nor battery/button operation. CI's separate `firmware` job performs a clean `pio run`, then uploads the app, ELF, bootloader, partitions, `SHA256SUMS`, source revision, and PlatformIO version. `firmware.bin` is an application binary, not a merged flash image. The reviewed T14 upload uses explicit offsets for all four flash components from the frozen bundle below.
 
 Record the actual app hash before flashing:
 
@@ -41,17 +41,30 @@ Only Jeremy plugs in or flashes the board. Use the reviewed revision named in th
    pio device list
    ```
 
-2. Substitute that `/dev/cu.usbmodem...` port below; close any Arduino IDE or other serial monitor using it. From the repository root, flash and open the monitor:
+2. Substitute that `/dev/cu.usbmodem...` port below; close any Arduino IDE or other serial monitor using it. Enter the ROM downloader by holding BOOT while reconnecting USB, release BOOT, then rediscover its port. Use the frozen bundle for source `4ac387dbbbb3672b11672222f360a83804c8d615`. This subshell verifies its recorded revision and every bundle hash before calling the installed esptool; it does not rebuild:
 
    ```sh
-   pio run -d firmware -e nm-epd-420-bw -t upload -t monitor --upload-port /dev/cu.usbmodemPORT --monitor-port /dev/cu.usbmodemPORT
+   (
+     cd /private/tmp/weather-epaper-t14-artifacts/4ac387dbbbb3672b11672222f360a83804c8d615 &&
+     test "$(cat SOURCE_REVISION)" = 4ac387dbbbb3672b11672222f360a83804c8d615 &&
+     shasum -a 256 -c SHA256SUMS &&
+     /private/tmp/weather-epaper-t14-venv/bin/python \
+       /private/tmp/weather-epaper-t14-pio/packages/tool-esptoolpy/esptool.py \
+       --chip esp32s3 --port /dev/cu.usbmodemPORT --baud 115200 \
+       --before no-reset --after hard-reset \
+       write-flash -z --flash-mode dio --flash-freq 80m --flash-size 16MB \
+       0x0000 bootloader.bin 0x8000 partitions.bin \
+       0xe000 boot_app0.bin 0x10000 firmware.bin
+   )
    ```
 
-   If the USB port renumbers after upload, exit with Control-C, run `pio device list` again, then:
+   All five hash checks must say `OK`. The reviewed app hash is `197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d`. Stop if the revision, hashes, or expected bundle files differ. `--before no-reset` assumes the preceding BOOT/reconnect step has already entered the ROM downloader. After a successful upload, reconnect USB with BOOT released if the application does not start, run `pio device list` again, then open its application CDC port:
 
    ```sh
    pio device monitor -d firmware -e nm-epd-420-bw --port /dev/cu.usbmodemPORT --baud 115200
    ```
+
+   The earlier `pio run -t nobuild -t upload` instruction is withdrawn for this vendor version: its `nobuild` branch skips framework initialization, leaving the application offset and extra boot images unset. esptool rejects the resulting missing address/file pairs before connecting. The explicit command above supplies the four required pairs. Their offsets come from the pinned Arduino `tools/pioarduino-build.py` (S3 bootloader `0x0000`, partition table `0x8000`, boot-app/OTA data `0xe000`) and `huge_app.csv` (app `0x10000`).
 
 3. Let the panel finish flashing black/white and settle on the setup screen. Compare it with `design/exports/states/state-setup.png`. Photograph the whole panel straight-on, including all edges: text and logo upright, black on white, no mirroring, crop, shift, or missing columns. Save the photo as `firmware/photos/t14-setup.jpg` and attach it to the T14 Notion card. Do not rotate, invert, or retouch the photo to hide a mismatch.
 4. Copy several serial lines with both buttons released. Hold USER for at least three seconds, release for three seconds, then hold BOOT for three seconds and release. Do not reset or reconnect with BOOT held during this button test. Capture each LOW and return to HIGH. Buttons only report levels in T14.
