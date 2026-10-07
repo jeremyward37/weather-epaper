@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T16 orchestration: capture deferred daily temperature correction
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03 (follow-up T24: https://app.notion.com/p/3f2d9adbacad81af943af1a0f1cb24fb)
+- **Started / finished:** 2026-10-07 17:11 MDT / 2026-10-07 17:15 MDT
+- **Model:** Primary orchestration runtime; future T24 recommendation GPT-6.1 Sol · Medium implementation / High independent QA, verified against the current runtime's available model list.
+- **Branch / PR:** `codex/t16-wake-fetch-sleep` / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress (T16); Not started (T24)
+
+### Result
+Jeremy requested the three daily temperature pairs read LO/HI instead of HI/LO and authorized a separate later task. Created Notion T24 with precise scope, acceptance criteria, model recommendations and no due date. T24 depends on T16 (stage 9); T18 now includes T24 as a prerequisite (stage 10 unchanged). Project, T16 and T18 notes link the follow-up. Added the task to the development plan and recorded the pending design decision. This is coordination bookkeeping; no T24 implementation run began.
+
+### Verification
+Fetched Dev Tasks schema and searched for duplicates before creation. Read back T24's Not started status, task order 24, stage 9, T16 dependency, project relation and unset due date. Verified T18 prerequisites and project linkage after updates. Documentation diff and whitespace check only; renderer, fixtures, canonical exports and firmware remain untouched. CI for the bookkeeping revision must be green before release/merge; latest check readback belongs on GitHub/Notion.
+
+### Decisions
+Jeremy's request authorizes only `H°/L°` → `L°/H°` in daily rows, including low-battery weather. NWS high/daytime and low/following-night semantics remain unchanged. Implementation will update the design contract and generated references together and verify all seven frames plus six CLI fixtures. T24 is queued after T16 acceptance/merge, before T18 final sign-off.
+
+### Problems
+None. Current exports still use the previous order until T24 is implemented and reviewed.
+
+### Needs Jeremy
+T16 corrected-production flash and one-hour test approval remains pending under the existing review packet. This design follow-up does not approve a flash, merge or advancement.
+
+### Next
+Resume T16 at its recorded release gate. Run T24 later as its own approved implementation session; do not begin it during T16.
+
+---
+
 ## Session — T16 approved production flash and physical observation
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
