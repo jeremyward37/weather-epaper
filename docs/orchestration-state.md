@@ -2,14 +2,14 @@
 
 This is the durable handoff ledger; update it with each run and approval. WORKLOG remains the append-only session history; Notion cards hold acceptance/status. Never store secrets.
 
-- **Updated:** 2026-10-07 12:44 MDT
+- **Updated:** 2026-10-07 12:55 MDT
 - **Active card:** T14 USB-powered board bring-up
-- **Stage:** T14 flash approved; corrected explicit frozen-binary upload command passed independent offline QA; awaiting Jeremy retry
+- **Stage:** Flash, physical setup photo, runtime memory and no-pack ADC evidence recorded; button transitions and Jeremy acceptance pending
 - **Branch / checkout:** `codex/t14-bringup` / `/private/tmp/weather-epaper-t14`
 - **Base / PR:** merged main `6887c8413abe53e705b5fc1ec6cacae30771229a`; [T14 PR #19](https://github.com/jeremyward37/weather-epaper/pull/19), reviewed implementation `4ac387dbbbb3672b11672222f360a83804c8d615`; subsequent review docs do not change firmware/config/workflow
 - **Independent QA:** Pass for available software checks; separate `epaper_qa` GPT-6.1 Sol · High clean build/frame/driver/instructions review. Physical gates pending. See `t14-qa.md`.
 - **Intended checks:** PlatformIO clean build, embedded setup header 15,000-byte/zero-pixel comparison, existing CI plus firmware build and artifact hashes.
-- **Pending Jeremy action:** Jeremy connected USB, confirmed BOOT-held RESET, and tried the supplied upload command. Esptool rejected address/file pairs before connecting or writing. The explicit replacement uses the same approved frozen binaries and passed independent parser/merge-range QA. Jeremy retries it at /dev/cu.usbmodem14101 and returns photo/serial/button evidence. No merge or T15 advancement authorized.
+- **Pending Jeremy action:** Jeremy's setup photo and runtime output passed visual/memory/no-pack checks. Keep the monitor open and return USER and BOOT 1→0→1 transitions by holding/releasing each three seconds, without resetting. Explicit acceptance, merge and T15 advancement remain unauthorized.
 - **Next eligible task:** T15 only after T14's hardware/review/merge gates; T21 separately eligible, not dispatched.
 - **Hardware:** Unboxed; supplied photos show USB-C, Reset/User/Boot and battery switch; Meshtastic screen. No battery; expected early November 2026. Jeremy intends continuous USB power until then. Weather firmware panel/serial acceptance is pending.
 - **Reconciliation:** GitHub PR #17 merged at 2026-10-07 11:38:30 MDT (`6887c84`), required CI passed on final head `7e36c61`; Notion T23 Done. PR #18 (`bee7e19`) is open acceptance bookkeeping with passing CI, not a new T23 gate.

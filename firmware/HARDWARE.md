@@ -1,6 +1,6 @@
 # NM-EPD-420-BW hardware record
 
-Status: **documentation checked 2026-10-07; physical verification pending**. Jeremy has unboxed the board and has a USB cable. This T14 run uses continuous USB power and an empty battery connector; a pack is not expected until early November. No battery voltage, button transition, panel orientation, polarity, bit order, flash/PSRAM capacity, or power consumption has been measured by this implementation session.
+Status: **setup photo, runtime memory and USB-only no-pack ADC observed 2026-10-07; button transitions and Jeremy acceptance pending**. Jeremy flashed the reviewed spike. This T14 run uses continuous USB power and an empty battery connector; a pack is not expected until early November. Battery calibration, actual battery voltage and power consumption remain unmeasured.
 
 ## Primary sources
 
@@ -40,7 +40,7 @@ Panel: GYE042A87, 400 × 300, black/white, SSD1683. Pinned driver: `GxEPD2_420_G
 
 Software wire contract: **15,000 bytes**, no header/compression, 1 bpp, row-major, 50 bytes per row, MSB first, **1 = white / 0 = black**. Pixel `(x,y)` is bit `7 - (x % 8)` of byte `y * 50 + x / 8`; origin is the top-left. `firmware/assets/setup_frame.h` is generated from the approved PNG by `node server/bin/pack-setup.js`, using `server/config.json`. Firmware does not draw text, decode PNG, reverse bits, or invert colors.
 
-This is the software contract, **not physical confirmation**. A zero-pixel comparison of embedded bytes with `design/exports/states/state-setup.png` establishes packing fidelity. Jeremy's straight-on photo must establish upright/unmirrored text, black-on-white polarity, alignment, no crop/shift, and successful refresh. Record confirmed findings in scope §9 row 6 and `design/decisions.md` only after that evidence; a build or driver source does not close the physical gate.
+A zero-pixel comparison of embedded bytes with `design/exports/states/state-setup.png` establishes software packing fidelity. Jeremy's actual photo [photos/t14-setup.jpg](photos/t14-setup.jpg), supplied as IMG_2842.JPG, establishes upright/unmirrored text and logo, black-on-white polarity, complete content and no visible crop, shift or missing columns. The orchestrator and separate QA both passed visual comparison with the canonical setup PNG. Camera angle and lighting limit this to visual inspection, not a pixel measurement of the photo. The frame used the default row-major/MSB-first/1=white wire contract without correction; scope §9 and decisions record this evidence. Jeremy's explicit acceptance remains pending.
 
 ## ADC, power and charger
 
@@ -52,14 +52,18 @@ Earlier vendor schematic/card findings: LGS4056HEP linear Li-ion charger (TP4056
 
 Sleep current is unpublished. Earlier schematic review noted AMS1117-3.3 and MD5333 regulators; actual sleep rail behavior and current remain unknown. The continuously awake USB spike is not evidence for the later battery/deep-sleep design.
 
-## Pending hardware record
+## Observed hardware record
+
+Jeremy flashed implementation `4ac387dbbbb3672b11672222f360a83804c8d615`, app SHA-256 `197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d`. Esptool connected to ESP32-S3 QFN56 revision v0.2, verified the app write, and returned to the shell. After normal reset, application serial reports `Flash=16777216 PSRAM=8388608`, completed refresh and stable increasing timestamps. Selected actual serial lines: [logs/t14-runtime-initial.txt](logs/t14-runtime-initial.txt). Photo SHA-256 `fe30c95d6e9d05e4e06aab4f796bfb203ee00ee2a15512f7571212e024ebe00b`; the original file was copied without editing.
+
+Startup warnings were independently traced in the pinned sources. The premature per-pin ADC attenuation call is ignored before lazy channel initialization; the default is already `ADC_11db`, which the first read uses. GxEPD2 presets CS/RST/DC before `pinMode`; Arduino 3 rejects these initial writes, then the driver configures the pins and repeats the writes, including the reset pulse. These one-time messages did not block the observed frame or later diagnostics. No subsequent ADC error, Busy Timeout or reset loop is present in the supplied excerpt. Removing these messages would require a new reviewed build; the current verified artifact is unchanged.
 
 | Check | Evidence needed | Current result |
 |---|---|---|
-| Setup frame and wire format | Reviewed revision + flashed SHA-256 + whole-panel photo at `photos/t14-setup.jpg`; Jeremy confirms orientation, crop, shift and polarity | Pending |
-| USB-only ADC | Actual raw / ADC_mV / sense_mV lines, power source and no-pack note | Pending |
+| Setup frame and wire format | Reviewed revision + flashed SHA-256 + whole-panel photo at `photos/t14-setup.jpg`; Jeremy confirms orientation, crop, shift and polarity | Photo and separate visual QA Pass; Jeremy acceptance pending |
+| USB-only ADC | Actual raw / ADC_mV / sense_mV lines, power source and no-pack note | Observed raw=0 / ADC_mV=0 / sense_mV=0, USB-only with no pack; not a battery measurement |
 | USER / BOOT | Each released HIGH → held LOW → released HIGH in serial | Pending |
-| Flash / PSRAM | Startup capacity line, no reset loop / panel timeout | Pending |
+| Flash / PSRAM | Startup capacity line, no reset loop / panel timeout | Observed 16777216 / 8388608 bytes; stable diagnostics, no timeout in supplied output |
 | Battery readings, calibration and sleep current | Pack and meter measurements in later cards | Not attempted |
 
-Exact flash, monitor, downloader recovery and stop/rollback steps are in [README.md](README.md). T14 stays In progress while the required photo/serial evidence and Jeremy acceptance are missing.
+Exact flash, monitor, downloader recovery and stop/rollback steps are in [README.md](README.md). T14 stays In progress while button-transition evidence and Jeremy acceptance remain pending; merge requires separate authorization and green CI.

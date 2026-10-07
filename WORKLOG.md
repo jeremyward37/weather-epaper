@@ -1,5 +1,61 @@
 # Work log
 
+## Session — T14 first runtime evidence
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 12:50 MDT / 2026-10-07 12:55 MDT
+- **Model:** Primary Codex runtime; implementation and independent QA resumed for startup-warning assessment only.
+- **Branch / PR:** `codex/t14-bringup` / https://github.com/jeremyward37/weather-epaper/pull/19
+- **Status at end:** In progress
+
+### Result
+Jeremy supplied runtime Terminal output after normal reset. T14 booted and printed Flash=16777216, PSRAM=8388608, frame=15000, refresh-return/panel-hibernation message and increasing diagnostic timestamps from 4869 through 19020 ms. Released buttons USER=1 BOOT=1; USB-only/no-pack readings raw=0 ADC_mV=0 sense_mV=0. Repetition is the intended approximately two-second diagnostic loop, not evidence of repeated resets.
+
+### Verification
+Startup also logs ADC channel-not-configured and GPIO 46/5/4 not-set-as-GPIO errors. Implementation and separate QA traced them to ignored preliminary calls followed by correct initialization; default ADC attenuation is already 11 dB and GxEPD2 repeats output writes after pinMode. They are nonblocking for this frozen revision. Selected verbatim serial excerpt saved in firmware/logs/t14-runtime-initial.txt. Jeremy supplied IMG_2842.JPG, copied unchanged to firmware/photos/t14-setup.jpg (SHA-256 fe30c95d6e9d05e4e06aab4f796bfb203ee00ee2a15512f7571212e024ebe00b). Orchestrator and separate QA visually compared actual photo and canonical PNG: Pass, upright/unmirrored black-on-white complete frame, no visible crop/shift/missing columns. Camera perspective prevents a pixel-level photo claim. Actual evidence recorded in HARDWARE, scope and decisions; firmware/config/exports unchanged.
+
+### Decisions
+Do not mistake stable periodic diagnostics or zero no-pack readings for a reset loop or battery state of charge. Investigate warnings before accepting the hardware result.
+
+### Problems
+Button transitions and Jeremy's explicit acceptance remain pending. Battery voltage/calibration/life are untested without a pack. Startup-warning cleanup is optional and would need a newly reviewed build; no reflash is necessary for the current observed photo/diagnostics.
+
+### Needs Jeremy
+Keep the serial monitor open. Hold USER three seconds, release three seconds; then hold BOOT three seconds and release. Return serial showing each 1→0→1 transition. Do not reset during this button check. After evidence, explicit review/merge and advancement gates remain.
+
+### Next
+Finish T14 evidence and warning assessment only; no merge or T15 advancement.
+
+---
+
+## Session — T14 successful flash and serial handoff
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 12:45 MDT / 2026-10-07 12:46 MDT
+- **Model:** Primary Codex runtime; evidence recording only, no implementation changes.
+- **Branch / PR:** `codex/t14-bringup` / https://github.com/jeremyward37/weather-epaper/pull/19
+- **Status at end:** In progress
+
+### Result
+Jeremy's Terminal Appshot shows the corrected command passing all five hash checks, connecting to ESP32-S3 QFN56 revision v0.2 on /dev/cu.usbmodem14101, writing the 472,272-byte app at 0x10000 and reporting “Hash of data verified.” It returned to the shell after “Hard resetting via RTS pin.” This is successful uploader evidence; physical display/runtime acceptance is not yet established. No agent upload occurred.
+
+### Verification
+Device-reported embedded PSRAM 8 MB, 40 MHz crystal, USB Serial/JTAG. Application source `4ac387d` and frozen hash `197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d`. Read-only post-flash enumeration still sees /dev/cu.usbmodem14101. Screenshot includes the app verification; individual boot-component write lines are not visible, so no separate claim of their observed hashes is made.
+
+### Decisions
+Open the application serial monitor next; retain actual startup/ADC/button evidence and a setup photo before physical acceptance.
+
+### Problems
+Jeremy reports the screen is unchanged after successful upload. Application startup has not been established; the uploader's USB reset may not have started the app. No setup photo or application serial lines yet. Uploader identification of PSRAM is distinct from runtime PSRAM initialization.
+
+### Needs Jeremy
+With BOOT released, press and release RESET once and wait about ten seconds for normal startup. Run the standalone PlatformIO monitor command at baud 115200 and observed port; return serial output and panel state/photo. Button checks follow once runtime diagnostics are present. If no diagnostics appear after ten seconds, return that observation.
+
+### Next
+Complete T14 runtime/display checks only. No merge or T15 advancement.
+
+---
+
 ## Session — T14 uploader argument correction
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b

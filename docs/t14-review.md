@@ -1,7 +1,7 @@
 # T14 review packet — USB bring-up
 
 Task: [T14](https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b) · [PR #19](https://github.com/jeremyward37/weather-epaper/pull/19).
-Status: **In progress, awaiting Jeremy review and hardware evidence**. Prepared 2026-10-07. No board connection, upload, physical measurement, acceptance or merge was performed by agents.
+Status: **In progress; Jeremy flashed the approved build and supplied setup photo/runtime evidence; button transitions, acceptance and merge pending**. Updated 2026-10-07. All physical actions were Jeremy's; agents did not upload, reset or operate the board. Actual evidence is in `firmware/HARDWARE.md`, `firmware/photos/t14-setup.jpg` and `firmware/logs/t14-runtime-initial.txt`.
 
 ## Reviewed software and evidence
 
@@ -17,8 +17,8 @@ Independent QA: separate `epaper_qa` (GPT-6.1 Sol · High), available software c
 | Clean firmware build and CI job | Independent clean PlatformIO build; firmware CI success | Pass on source revision; recheck final PR head |
 | Existing renderer/server regression gates | CI build: pinned build/verify, 7 zero-diff frames, 6 byte-identical CLI fixtures and tool/design/server tests | Pass on source revision; recheck final PR head |
 | HARDWARE.md | Pins, GYE042A87 driver, ADC, power/charger sources, explicit pending observations | Pass |
-| Setup photo and physical wire format | Actual panel orientation/polarity/alignment/crop; record findings in scope/decisions | Pending Jeremy |
-| Serial ADC and both buttons | Actual USB-only empty-connector samples and HIGH→LOW→HIGH transitions | Pending Jeremy |
+| Setup photo and physical wire format | Jeremy's actual photo; independent visual QA Pass; findings recorded in scope/decisions | Photo QA Pass; Jeremy acceptance pending |
+| Serial ADC and both buttons | Actual USB-only/no-pack raw=0, ADC_mV=0, sense_mV=0; released buttons both HIGH | ADC observed; held/released transitions pending |
 | Independent software QA | Separate review and meaningful rerun | Pass |
 | Jeremy flash/review acceptance and authorized merge | Explicit human approval and physical evidence | Pending |
 
