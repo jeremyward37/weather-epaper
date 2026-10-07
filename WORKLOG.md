@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T16 panel photo fidelity evidence
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
+- **Started / finished:** 2026-10-07 17:39 MDT / 2026-10-07 17:41 MDT
+- **Model:** Primary runtime; independent visual QA GPT-6.1 Sol · High.
+- **Branch / PR:** `codex/t16-wake-fetch-sleep` / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress
+
+### Result
+Jeremy supplied IMG_2844.JPG for the requested whole-panel comparison. Root and independent visual QA both Pass the photographed frame comparison with the saved corresponding low-battery PNG (footer10/7 5:05PM). Added docs/t16-photo-qa.md and detailed comparison/limits to the actual hardware record; original image stays local. Current HI/LO matches the existing baseline; user-requested LO/HI is deferred to T24.
+
+### Verification
+Original photo SHAe3cfabfc8e0e4effc0586613a0b07ada4098442657f18758e8df68b6685cd7f0. Saved reference PNGSHAdf9ad98c06dd2a030654b00fb34e7ddab69cda5cb1f1c025f038a0a84755ba6f. Root and independent visual QA confirm correct full-frame orientation/polarity, content, positions and legible footer, no visible crop or shift. All visible weather values/icons and footer5:05 match. Saved lowbat versus normal raw comparison yields100 differing pixels confined to136,281,14,10 footer glyph; intentional difference/exit1, not a failure. Prior bin/PNG comparisons are0 pixels; photograph perspective/blur precludes a photographed pixel-equality claim. ecb8061 required build/firmware SUCCESS in run37702949889, read back17:39MDT. Live capture still shows one corrected TIMER slot; not a full-hour pass.
+
+### Decisions
+Record photo identity and comparison; preserve original image in Downloads and do not publish its surrounding desk/background. Keep the original combined physical checkbox open until full-hour and deferred offline evidence are collected.
+
+### Problems
+None observed in root visual comparison; no exact photographed pixel measurement performed.
+
+### Needs Jeremy
+Keep USB connected/buttons released through18:35MDT. Offline/recovery and remaining button checks still pending; no repeat flash approval needed.
+
+### Next
+Continue bounded timer capture session54253 through at least18:30; automatic end18:56:49. Full-hour/offline/remaining buttons and final independent reconciliation/acceptance remain pending. No merge or next-card start.
+
+---
+
 ## Session — T16 corrected flash after physical BOOT entry
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03

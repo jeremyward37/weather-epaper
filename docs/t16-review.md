@@ -12,7 +12,7 @@ Saved Wi-Fi reconnects with a 20-second cap; a fresh NTP sync has ten seconds an
 
 Production targets Mountain `:00`/`:30`, **05:00 through 22:00 inclusive**, joining about 20 seconds early and waiting for the target before fetching. BOOT wakes immediately; a held five-second reset retains T15 provisioning behavior. USER remains unused. Wi-Fi is off and peripheral outputs are held at the vendor sleep levels before timer/ext0 deep sleep. [Firmware README](../firmware/README.md) describes configuration and limits; [hardware record](../firmware/HARDWARE.md) names pinned APIs and power assumptions.
 
-Battery thresholds **3.55 V / 0.10 V** are provisional until T17. Empty-pack USB ADC zero selects the approved low-battery weather variant, including its footer glyph; it does not identify charge or pack presence. No approved frame or rendering rule changed. The corrected approved T16 flash shows weather; actual BOOT/TIMER SHA suppression is observed. Whole-panel fidelity and the full-hour/offline checks remain pending.
+Battery thresholds **3.55 V / 0.10 V** are provisional until T17. Empty-pack USB ADC zero selects the approved low-battery weather variant, including its footer glyph; it does not identify charge or pack presence. No approved frame or rendering rule changed. The corrected approved T16 flash shows weather; actual BOOT/TIMER SHA suppression is observed. Photographed whole-panel fidelity Pass is recorded in t16-photo-qa.md; full-hour/offline checks remain pending.
 
 ## Verification and remaining criteria
 
@@ -22,7 +22,7 @@ Battery thresholds **3.55 V / 0.10 V** are provisional until T17. Empty-pack USB
 | Clean production/debug/persistence builds | Pinned Core6.1.18/pioarduino54.03.21/Arduino3.2.1; three clean SUCCESS builds | Pass |
 | Independent software QA | [Original audit](t16-qa.md) plus [correction audit](t16-busy-fix-qa.md): realistic sleeping HIGH, active failures/timeouts, original-code sensitivity, clean build and frozen artifact checks | Correction software Pass; physical criteria Pending |
 | Required CI on corrected review head | Approved-upload head847c8b1 build/firmware SUCCESS in run37701828781, read before upload; later evidence-head CI required before merge | Pass for uploaded release; latest evidence-head results recorded on GitHub/Notion |
-| Approved bytes and published preview | No canonical/setup changes; host HTTPS200, both15000-byte bins, published hashes match; both raw/PNG zero-pixel comparisons | Corrected verified TLS/fetch and visible weather observed; full whole-panel fidelity Pending |
+| Approved bytes and published preview | No canonical/setup changes; host HTTPS200, both15000-byte bins, published hashes match; both raw/PNG zero-pixel comparisons | Corrected verified TLS/fetch and photographed whole-panel visual fidelity Pass |
 | Correct real wakes across **at least one hour** | Actual production timer traces/host timestamps and Jeremy observations required | Pending |
 | Frame matches index; changed/unchanged/offline panel behavior | Actual flashed hash, sanitized trace and whole-panel observations/photo required | Pending |
 | Deep-sleep current or documented reason measurement unavailable | Jeremy: “No suitable meter available.” Continuous USB/no pack; no measured current claimed | Pass documented-reason alternative; no current measured |
