@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T16 corrected production flash and observation
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
+- **Started / finished:** 2026-10-07 17:18 MDT / 2026-10-07 17:23 MDT (awaiting physical BOOT entry)
+- **Model:** Primary runtime; existing T16 independent QA GPT-6.1 Sol · High.
+- **Branch / PR:** `codex/t16-wake-fetch-sleep` / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress
+
+### Result
+Jeremy said “approve corrected T16 flash,” referring to the pending source3fc1e59 / production4d9e35cf corrected packet. Existing agent Terminal override persists. Approved production upload and observation are being prepared; no debug/harness, erase, acceptance, merge or next-card start. The asleep board's USB port was absent; Jeremy was given the exact BOOT/RESET sequence. All five frozen bundle hashes passed verification; latest PR21 CI is checked before release.
+
+### Verification
+Reviewed PR21 headfad90fb0c4767696eca8f87ce2921674e7ea9705: build and firmware SUCCESS in run37701282248. All five frozen checksums/source and production app1320576 bytes SHA4d9e35cfeaf3b712abc5eb2737b95fcd4c5e3d45bd077f2c8c031df977e8a648 verified. Only firmware README/HARDWARE and historical logs differ from audited source; source/config/tests/workflow unchanged. Same-board port discovery returned no Espressif device on repeated checks; no port opened or upload executed. Corrected command prepared with four explicit offsets, no-reset after manual ROM entry, separate evidence logs and bounded90-minute raw capture (not started). Whitespace check Pass. Actual corrected runtime and full original physical criteria remain Pending.
+
+### Decisions
+Preserve saved Wi-Fi NVS and use only frozen production bundle. T24 is deferred and no display-order change belongs to this run. No suitable meter remains the documented measurement limitation.
+
+### Problems
+Board USB is currently absent during normal sleep. Await Jeremy's physical BOOT/RESET entry while completing independent host checks.
+
+### Needs Jeremy
+Enter BOOT mode when requested. Observe panel, later scheduled/offline/button behavior; private credentials stay private. Flash approval is already supplied.
+
+### Next
+Wait for Jeremy physical BOOT/RESET reply, recheck latest documentation-head CI and same-board enumeration, then run the already approved upload and observation without asking artifact permission again. No observer is running. Record runtime and independently reconcile required evidence; do not merge or start another card.
+
+---
+
 ## Session — T16 orchestration: capture deferred daily temperature correction
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03 (follow-up T24: https://app.notion.com/p/3f2d9adbacad81af943af1a0f1cb24fb)
