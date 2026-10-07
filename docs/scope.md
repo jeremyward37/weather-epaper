@@ -1,8 +1,8 @@
 # ePaper Weather Station — project scope
 
-**Status:** live. This is the single reference for what the project is, what is in and out of scope, and what has been decided. `design/spec.md` holds the pixel-level design contract; this document holds everything else. Where an older document disagrees with this one, this one wins. Last updated 2026-09-25 (development-planning decisions added).
+**Status:** live. This is the single reference for what the project is, what is in and out of scope, and what has been decided. `design/spec.md` holds the pixel-level design contract; this document holds everything else. Where an older document disagrees with this one, this one wins. Last updated 2026-10-07 (orchestration handoff and progress reconciliation).
 
-**Design phase: complete.** All frames are approved (checkpoint 3 closed 2026-09-25), including the setup-screen hotspot password `firstlight`. **Development phase: planned.** The task-by-task plan is `docs/dev-plan.md`; each task is a card in Jeremy's Notion *Dev Tasks* database, and agents log their work in `WORKLOG.md`. §9 records the decisions that plan was built on.
+**Design phase: complete.** All frames are approved (checkpoint 3 closed 2026-09-25), including the setup-screen hotspot password `firstlight`. **Development phase: server complete; firmware and physical verification remain.** The task-by-task plan is `docs/dev-plan.md`; each task is a card in Jeremy's Notion *Dev Tasks* database, and agents log their work in `WORKLOG.md`. §9 records the decisions that plan was built on.
 
 Owner: Jeremy. Software is built with OpenAI Codex; every plan names the model and reasoning level per task (see `AGENTS.md`).
 
@@ -29,7 +29,7 @@ Enclosure and mounting are undecided. The 4 px safe margin in the design exists 
 **Server-side rendering; the device is a thin client.**
 
 1. A **scheduled job** runs once per refresh slot, shortly before the device wakes. It fetches weather from the NWS API, computes civil dawn/dusk, lays out the frame with the same library that produces the design exports (`design/lib/render.js` → rasterize → threshold), and publishes two files to **static hosting**: a raw 1-bit framebuffer and a PNG.
-2. The **device** wakes on schedule, joins Wi-Fi, downloads the raw framebuffer (400 × 300 / 8 = 15,000 bytes, panel byte order, no decoder needed), writes it to the panel, reports its battery voltage, and deep-sleeps until the next slot. It draws nothing of its own.
+2. The **device** wakes on schedule, joins Wi-Fi, downloads the raw framebuffer (400 × 300 / 8 = 15,000 bytes, panel byte order, no decoder needed), writes it to the panel, measures its battery voltage locally (serial diagnostics, no telemetry endpoint), and deep-sleeps until the next slot. It draws nothing of its own.
 3. Nothing stays running. The device fetches a fixed URL under Jeremy's domain, `builtbyjer.com`.
 
 Consequences:
@@ -48,7 +48,7 @@ Consequences:
 |---|---|---|
 | Current observation, hourly forecast, daily forecast | National Weather Service API, `api.weather.gov` | Free, no key. US only. |
 | Civil dawn and civil dusk | Computed on the server from fixed latitude/longitude | Also defines day vs night for icon variants. |
-| Local time and DST | Server, `America/Denver` | The device does not need a time zone; the server can tell it when to wake next. |
+| Local time and DST | Server, `America/Denver` | The server uses `America/Denver`; the device syncs NTP and computes its own next wake with the approved POSIX TZ rule (see §3 and §9 row 7). |
 
 **Semantics decided:**
 
@@ -107,7 +107,7 @@ The handoff items from the scope review were resolved in the planning session wi
 | 10 | Firmware framework | PlatformIO, Arduino framework, GxEPD2, matching RockBase's reference code. |
 | 11 | Frame verification | `tools/framediff.py` compares any two frames (PNG or raw) and reports differing pixels; CI fails on any drift of `design/exports/`. |
 | 12 | Enclosure and mounting | Still undecided; not blocking. |
-| 13 | Execution | Each task is one Codex session, sized at roughly one to three hours of agent work. Tasks Jeremy must do himself (hardware, DNS, approvals) are in the same Notion database and marked as not agent-executable. Tasks that need the physical board are tagged **[PD]** (post-delivery); the board was on order on 2026-09-25. |
+| 13 | Execution | One card per implementation run, coordinated by a persistent Codex orchestrator with implementation and independent QA subagents, then a Jeremy review pause (`docs/orchestration.md`). Each run has its own branch and log entry; hardware evidence and explicit acceptance gate Done. Jeremy-only actions remain his. **[PD]** marks physical-board work; the board arrived 2026-10-06, unopened as of 2026-10-07. |
 | 14 | Repository visibility | Public. Can be switched later in repository settings; a private repo meters Actions minutes and needs GitHub Pro for Pages. |
 
 ## 10. Document map
@@ -116,6 +116,8 @@ The handoff items from the scope review were resolved in the planning session wi
 |---|---|
 | `docs/scope.md` (this file) | Project scope, architecture, decisions, development-planning decisions |
 | `docs/dev-plan.md` | Development plan: phases, task list with Notion links, model and token recommendations |
+| `docs/orchestration.md` | Roles, execution protocol, review gates, start/resume prompt |
+| `docs/orchestration-state.md` | Current gate and approval/evidence ledger |
 | `WORKLOG.md` | Agent work log: one entry per task session, with the required template |
 | `design/spec.md` | Pixel-exact design contract |
 | `design/decisions.md` | Design rationale and dated decision log |

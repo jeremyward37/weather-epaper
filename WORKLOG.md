@@ -1,5 +1,34 @@
 # Work log
 
+## Session — T23 Orchestrator handoff, independent QA, and review gates
+
+- **Task:** https://app.notion.com/p/3f2d9adbacad8146b8f8f2d5dea31b1e
+- **Started / finished:** 2026-10-07 10:48 MDT / pending
+- **Model:** GPT-6.1 Sol · High; independent audit subagent inherited model/effort
+- **Branch / PR:** `codex/t23-orchestration` / pending
+- **Status at end:** In progress
+
+### Result
+Prepared orchestrator instructions, three project role definitions, a durable approval ledger, and updated T14–T21 cards/project page. Corrected dependency stages and stale status/scope prose. No firmware card implementation started.
+
+### Verification
+Bundled Python parsed all four TOML files; relative links and task rows passed; approved design/implementation sources remain unchanged. `git diff --check` passed. Independent subagent reviewed the workflow and identified three clarifications, now fixed: unverified named-role loading, Jeremy-only completion, and preserving the existing scheduled publisher. Notion readback verified all eight remaining cards, dependencies, stages, model recommendations, gates and unchanged Not started statuses. PR CI pending.
+
+### Decisions
+- Jeremy requested this workflow 2026-10-07: implementation and separate QA children, concrete review pauses, hardware evidence before Done.
+- T17 depends on T16 for working-loop measurements; T18 includes T17; final T20 closeout includes T19. T21 reliability must be resolved or explicitly deferred before final sign-off.
+
+### Problems
+Canonical checkout was behind origin/main and contained an unrelated `.gitignore` edit; isolated worktree `/private/tmp/weather-epaper-orchestration` preserves it. No physical bring-up evidence exists yet. Named-agent runtime loading is unverified; the start prompt supports scoped collaboration instructions. Notion update initially rejected URL-shaped page IDs; retried with observed page IDs and verified all results.
+
+### Needs Jeremy
+Review/authorize merging T23 and starting T14. Later hardware steps are prepared by each task and performed by Jeremy.
+
+### Next
+T14 after handoff approval/merge; T21 remains separately eligible. No next-card execution in this session.
+
+---
+
 ## Session — T12 scheduled publish acceptance closeout
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81bd91adf4876d1bbf55
@@ -498,7 +527,7 @@ T03 — Pinned renderer container and frame diff tool. The repository is at `~/c
 ---
 
 
-One entry per agent session, newest at the top. Every task in `docs/dev-plan.md` requires an entry here **and** matching notes on its Notion card. Jeremy reads this file to understand what happened without replaying a session, so write for a reader who was not there.
+One entry per task implementation run or resumed run, newest at the top. The primary orchestrator owns the log; subagent results are summarized inside their parent run. Every task in `docs/dev-plan.md` requires an entry here **and** matching notes on its Notion card. Jeremy reads this file to understand what happened without replaying a session, so write for a reader who was not there.
 
 ## Rules for agents
 

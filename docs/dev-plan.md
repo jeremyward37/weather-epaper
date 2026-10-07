@@ -4,14 +4,11 @@
 
 ## How a task is run
 
-1. Jeremy opens the next card whose **Depends On** cards are all Done and starts a Codex session with the card's **Model Rec** (model · reasoning effort).
-2. The agent reads `README.md`, `AGENTS.md` rules 10–14, `WORKLOG.md`, this file, and the card. It sets the card to *In progress* and opens a work-log entry.
-3. One card per session. Work happens on a branch `t<nn>-<slug>` in `~/codeProjects/weather-epaper`; a pull request with green CI is the unit of delivery (from T05 on).
-4. Finishing: work-log entry filled in, same summary pasted into the card's **Agent Notes**, Status set to *Done* only when every acceptance criterion passed. Steps only Jeremy can do (flash, photograph, buy, DNS, approve) are listed under *Needs Jeremy* and on the card.
-5. Cards whose title starts with **Jeremy:** are not agent-executable.
-6. Cards tagged **[PD]** (post-delivery) need the physical board, which was on order on 2026-09-25. Everything without the tag can be done before it arrives: T02 through T13, and T20–T22 once their dependencies allow.
+The remaining project is coordinated by a Codex orchestrator under [orchestration.md](orchestration.md), with the current gate in [orchestration-state.md](orchestration-state.md). One card per implementation run; a persistent chat may resume or coordinate later runs only after applicable approval. The orchestrator reads the card, sets In progress, opens a WORKLOG entry, delegates bounded implementation and separate QA, and prepares a `codex/tNN-slug` PR with green required CI. It then stops for Jeremy's review and hardware evidence. Agent delivery cards require every acceptance criterion, independent QA, Jeremy acceptance, and authorized merge for Done. Jeremy-only cards stay with him and close from their required evidence and acceptance.
 
-Token bands on the cards: **Low** under 300k tokens, **Med** 300k–1M, **High** over 1M. Estimates are for the whole Codex session including reading context; Jeremy is on ChatGPT Plus, where GPT-6 Astra is rate-limited and burns quota about twice as fast as Sol, so the plan uses **Sol** for judgment work and **Luna** for mechanical work and reserves Astra for nothing by default. Effort ladder in Codex: Light · Medium · High · Extra High · Max (Ultra on Astra/Sol only).
+**Progress reconciled 2026-10-07:** Notion T01–T13 and T22 are Done. T14–T21 remain Not started. The device arrived 2026-10-06 and is unopened; T14 is the next firmware task. T23 prepares this workflow and must be approved/merged before dispatching it. No firmware project or physical bring-up exists yet. T21 has known scheduler-delay evidence from T12; evaluate reliability before T18 sign-off.
+
+Token bands are historical planning estimates: Low under 300k, Med 300k–1M, High over 1M for a whole session. They are not budgets or observed usage. Re-check current account limits rather than using the old quota assumptions. Current role recommendations (checked 2026-10-07): orchestrator and independent QA GPT-6.1 Sol · High, documentation/measurement analysis GPT-6 Luna · High; GPT-6 Sol is the fallback when 6.1 Sol is unavailable. See [official models](https://learn.chatgpt.com/docs/models) and [subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents). Completed task rows retain their historical model recommendations; remaining rows below use the refreshed recommendations.
 
 ## Architecture the tasks build
 
@@ -59,31 +56,32 @@ Order is the recommended sequence; **Depends On** is the hard constraint. Cards 
 
 | # | Task | Card | Depends on | Model · effort | Tokens |
 |---|---|---|---|---|---|
-| T14 [PD] | Firmware spike: board bring-up, display the setup frame, confirm wire format | [card](https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b) | T10 | GPT-6 Sol · High | Med |
-| T15 [PD] | Firmware: Wi-Fi provisioning captive portal and setup screen | [card](https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b) | T14 | GPT-6 Sol · Medium | Med |
-| T16 [PD] | Firmware: wake, sync time, fetch frame, display, deep sleep | [card](https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03) | T15, T12 | GPT-6 Sol · High | High |
-| T17 [PD] | Battery pack, low-battery threshold, and hysteresis (agent + Jeremy) | [card](https://app.notion.com/p/3e7d9adbacad81c5b6a8cab33108c67b) | T14 | GPT-6 Sol · Medium | Low |
+| T14 [PD] | Firmware spike: board bring-up, display the setup frame, confirm wire format | [card](https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b) | T10 | GPT-6.1 Sol · High | Med |
+| T15 [PD] | Firmware: Wi-Fi provisioning captive portal and setup screen | [card](https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b) | T14 | GPT-6.1 Sol · Medium | Med |
+| T16 [PD] | Firmware: wake, sync time, fetch frame, display, deep sleep | [card](https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03) | T15, T12 | GPT-6.1 Sol · High | High |
+| T17 [PD] | Battery pack, low-battery threshold, and hysteresis (agent + Jeremy) | [card](https://app.notion.com/p/3e7d9adbacad81c5b6a8cab33108c67b) | T14, T16 | GPT-6.1 Sol · Medium | Low |
 
 ### Phase D — Verification and closeout
 
 | # | Task | Card | Depends on | Model · effort | Tokens |
 |---|---|---|---|---|---|
-| T18 [PD] | End-to-end verification and sign-off report | [card](https://app.notion.com/p/3e7d9adbacad816cbd40ea5020c63d90) | T11, T13, T16 | GPT-6 Sol · Medium | Med |
+| T18 [PD] | End-to-end verification and sign-off report | [card](https://app.notion.com/p/3e7d9adbacad816cbd40ea5020c63d90) | T11, T13, T16, T17 | GPT-6.1 Sol · High | Med |
 | T19 [PD] | **Jeremy:** battery-life measurement (runs for weeks) | [card](https://app.notion.com/p/3e7d9adbacad81bd8d66fa5c6d5ac2dd) | T17, T18 | — | — |
-| T20 | Runbook and documentation closeout | [card](https://app.notion.com/p/3e7d9adbacad81e0be24ec5156dc4c34) | T18 | GPT-6 Luna · Medium | Low |
-| T21 | Optional: external trigger fallback for late GitHub cron runs | [card](https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7) | T12 | GPT-6 Luna · Light | Low |
+| T20 | Runbook and documentation closeout | [card](https://app.notion.com/p/3e7d9adbacad81e0be24ec5156dc4c34) | T18, T19 | GPT-6 Luna · High | Low |
+| T21 | Optional: external trigger fallback for late GitHub cron runs | [card](https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7) | T12 | GPT-6 Luna · High | Low |
 
 ### Phase E — Project tracking
 
 | # | Task | Card | Depends on | Model · effort | Tokens |
 |---|---|---|---|---|---|
 | T22 | Live dependency map on the Notion project page | [card](https://app.notion.com/p/3e8d9adbacad8160a56dd55a5a945318) | T02 | GPT-6 Sol · Medium | Low |
+| T23 | Orchestrator handoff, independent QA, and review gates | [card](https://app.notion.com/p/3f2d9adbacad8146b8f8f2d5dea31b1e) | T22 | GPT-6.1 Sol · High | Low |
 
-The [Notion project page](https://app.notion.com/p/3e7d9adbacad8068b42ff29eccbf8892) has a **Dependency Gantt** tab. It positions tasks by dependency stage, not calendar date, and derives Complete / In progress / Ready / Blocked plus open blockers from each card's Status and Depends On relations. Status changes update the view automatically. If task dependencies change or a card is added, recompute its **Dependency stage** as one more than the largest stage among its prerequisites (or 1 when it has none). Hardware tasks tagged [PD] also need the board before work starts.
+The [Notion project page](https://app.notion.com/p/3e7d9adbacad8068b42ff29eccbf8892) has a **Dependency Gantt** tab. It positions tasks by dependency stage, not calendar date, and derives Complete / In progress / Ready / Blocked plus open blockers from each card's Status and Depends On relations. Status changes update the view automatically. If task dependencies change or a card is added, recompute its **Dependency stage** as one more than the largest stage among its prerequisites (or 1 when it has none). The board is delivered; [PD] tasks still need Jeremy's physical evidence. Dependency stage is scheduling information, not approval to dispatch. Remaining stage values: T14 6, T15 7, T16 8, T17 9, T18 10, T19 11, T20 12, T21 8, T23 4.
 
-**Critical path:** T02 → T03 → T06 → T10 → T14 → T15 → T16 → T18. Phase B (T07–T12) can interleave with Phase C once T10 exists; T07 can start right after T02.
+**Remaining delivery path:** T14 → T15 → T16 → T17 → T18 → T19 → T20. T21 runs separately, with a reliability disposition before T18 sign-off. T17 now waits for T16's integrated sleep-current evidence; T18 includes calibrated battery behavior; final T20 closeout waits for measured battery life in T19. Draft runbook work can be prepared earlier within an approved task, but cannot claim final closeout.
 
-**Rough budget:** 17 agent tasks; sum of the band midpoints is about 7–8M tokens, dominated by T16 (device loop), T06 (renderer refactor), and T11 (render CLI).
+**Historical whole-project estimate:** about 7–8M tokens before implementation; this is not a remaining-work budget. T23 orchestration preparation is additional. Track actual usage in each run.
 
 ## Decisions closed after the planning session
 
@@ -102,7 +100,7 @@ The [Notion project page](https://app.notion.com/p/3e7d9adbacad8068b42ff29eccbf8
 
 Recorded here so no task has to rediscover them; each card repeats the subset it needs.
 
-- **Codex models:** GPT-6 Astra (`gpt-6-astra`), GPT-6 Sol (`gpt-6-sol`), GPT-6 Luna (`gpt-6-luna`); GPT-5.5 retires from ChatGPT/Codex 2026-10-14. Plus plan: 5-hour and weekly windows; Astra limited.
+- **Codex models:** Historical selection was GPT-6 Sol/Luna. Use the refreshed model/effort recommendations above for remaining work; current availability was checked on 2026-10-07.
 - **NWS for 41.25, -112.03:** office `SLC`, grid `98,198`, time zone `America/Denver`, nearest station `KOGD`. Hourly forecast = 96 one-hour periods; daily = 14 day/night periods with `isDaytime`. `User-Agent` header mandatory. 34 icon codes verified from `https://api.weather.gov/icons`; the `icon` field is deprecated in the schema but retained. Forecast CDN cache is 3600 s; select periods by time, not index.
 - **GitHub:** `schedule` accepts `timezone:`; shortest interval 5 min; runs can start late; scheduled workflows pause after 60 days without repository activity. Pages via Actions is exempt from the 10-builds/hour limit; served with `Cache-Control: max-age=600`. Public repo → unlimited Actions minutes. Each repo can have its own Pages site and custom subdomain.
 - **Board (RockBase NM-EPD-420-BW):** ESP32-S3R8 + 16 MB flash + 8 MB OPI PSRAM; native USB; vendor builds with `pioarduino`; EPD CS 46 / DC 4 / RST 5 / BUSY 6 (active high) / SCK 2 / MOSI 1; GxEPD2 class `GxEPD2_420_GYE042A87`; framebuffer 1 bpp, MSB first, 1 = white; USER GPIO45 (not RTC-capable), BOOT GPIO0; battery ADC GPIO3 behind a 2:1 divider enabled by GPIO43; charger LGS4056HEP; battery connector JST 1.25 mm 2-pin; sleep current unpublished.

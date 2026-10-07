@@ -4,16 +4,16 @@ A 4.2″ black-and-white e-paper display (RockBase NM-EPD-420-BW, 400 × 300 px,
 
 This repository holds the **approved design** (mockups, a pixel-exact handoff spec, and the pipeline that renders and verifies them) and, as development proceeds, the **server** and **firmware** that implement it. Architecture decided 2026-09-25: a **scheduled job renders the frame** with this same pipeline and publishes a raw 1-bit framebuffer to static hosting; the device only downloads and displays it. Weather data comes from the **National Weather Service API**. The development plan is [docs/dev-plan.md](docs/dev-plan.md); progress is logged in [WORKLOG.md](WORKLOG.md).
 
-## Status (as of 2026-09-25)
+## Status (as of 2026-10-07)
 
 - **Design approved.** Normal state at checkpoint 2 (concept E3, four fixed 3-hour marks, three days); setup and low-battery screens at checkpoint 3 on 2026-09-25. Physical legibility verified by Jeremy the same day.
 - **Setup hotspot password `firstlight`** was added after the checkpoint 3 review and approved the same day. Nothing in the design is pending.
 - **Severe weather alert and the `DATA STALE` badge: removed from scope** 2026-09-25. A failed fetch keeps the previous frame; the footer timestamp is the staleness signal. Renders are in `design/exports/archive/`.
 - **No further design work is planned.** The gap before the first frame shows the setup screen; no extra state.
 - Full scope, decisions, and open items: [docs/scope.md](docs/scope.md).
-- **Development planned 2026-09-25.** Tasks are cards in Jeremy's Notion *Dev Tasks* database and are listed in order in `docs/dev-plan.md`. Build to `design/spec.md`, review with `design/review-instructions.md`.
+- **Foundation and server complete.** Notion T01–T13 and T22 are Done. Firmware T14–T17, system verification T18, battery measurement T19, final docs T20, and scheduler reliability T21 remain. The device arrived 2026-10-06; hardware bring-up is unverified. Tasks are cards in Jeremy's Notion *Dev Tasks* database and are listed in order in `docs/dev-plan.md`. Build to `design/spec.md`, review with `design/review-instructions.md`.
 - **Repository:** public GitHub monorepo [jeremyward37/weather-epaper](https://github.com/jeremyward37/weather-epaper), cloned to `~/codeProjects/weather-epaper`. The iCloud Drive folder is frozen; work in the canonical clone.
-- Working convention: software is built with OpenAI Codex, one task per session; every session appends to `WORKLOG.md` and updates its Notion card.
+- Working convention: a Codex orchestrator delegates implementation and independent QA for one card per run, then pauses for Jeremy review and hardware evidence. Start/resume instructions: [docs/orchestration.md](docs/orchestration.md); durable gate state: [docs/orchestration-state.md](docs/orchestration-state.md). Every run appends to `WORKLOG.md` and updates its Notion card.
 
 ## Read in this order
 
