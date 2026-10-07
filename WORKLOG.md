@@ -1,5 +1,61 @@
 # Work log
 
+## Session — T15 agent Terminal upload and startup observation
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 14:03 MDT / 2026-10-07 14:12 MDT
+- **Model:** Primary runtime; approved artifact upload and evidence bookkeeping, no implementation change.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress; awaiting private phone setup and physical persistence/reset evidence
+
+### Result
+Jeremy's request “Can't you run terminal commands? Why do I need to?” supersedes the initial manual-command handoff. Agent completed the already-approved frozen normal T15 flash with automatic BOOT entry, explicit offsets and preserved NVS. Normal app SHA-256 736c18b0ae031f60d32c1980192d0bc36a9de83fa0afa4f646ba0494a3556b3a, source b8ae0c4 unchanged. Startup reached setup frame and AP IP 192.168.4.1. Saved flash observation and full bounded startup capture under firmware/logs; ongoing provisioning capture is temporary until checked for credentials. Earlier no-agent-hardware statements describe the earlier handoff, not this later authorized action.
+
+### Verification
+SOURCE_REVISION and shasum -a 256 -c SHA256SUMS passed all five files. Explicit-offset esptool write-flash with --before default-reset returned exit 0; all four written-image hashes verified. Bounded pyserial capture with DTR/RTS inactive logged setup display/AP IP, with no T14 GPIO/ADC warnings. Opening serial itself generated USB_UART_CHIP_RESET; do not label this a spontaneous loop. Actual phone/save/power-cycle/BOOT/timer-sleep criteria remain Pending. Evidence: firmware/logs/t15-normal-flash-record.md and t15-first-startup.txt.
+
+### Decisions
+Agent runs approved uploads and serial monitoring, including persistence harness and normal restore; Jeremy supplies private phone credential entry and physical buttons/power/photos. No firmware rebuild, no broad erase, no repeated approval request. Preserve the same frozen bundles and earlier history.
+
+### Problems
+None in normal upload/startup. A sandboxed ps check was unavailable; upload connected successfully and no process termination was needed. No battery pack.
+
+### Needs Jeremy
+On a phone join WeatherStation-Setup with firstlight, open http://192.168.4.1 and save home Wi-Fi privately. Report the outcome without credentials. Later physical power-cycle/button observations will be guided one step at a time; no Terminal commands required.
+
+### Next
+Complete T15 provisioning/reconnect/reset and approved bounded timer-sleep persistence, restore normal, record sanitized serial/photos, then obtain T15 acceptance/merge authorization. Do not start T16.
+
+---
+
+## Session — T15 approved flash handoff
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 14:01 MDT / 2026-10-07 14:02 MDT
+- **Model:** Primary runtime; approval/evidence bookkeeping only, no implementation change.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress; awaiting Jeremy flash and hardware evidence
+
+### Result
+Jeremy explicitly said “approve T15 flash and persistence test”. Approval covers PR #20 reviewed head 250ec59bdb3a7351a5012867098c4b1ded9b1ee2 and unchanged audited source b8ae0c4c1680d6fd3857b6d413248e298599d8ee: normal frozen app SHA-256 736c18b0ae031f60d32c1980192d0bc36a9de83fa0afa4f646ba0494a3556b3a and separate bounded persistence harness 302af824bfe29974268d555605b6acb756945d4f16f13f93471d203d05a4fbd2. Recorded the approval and prepared staged normal-flash instructions; harness and normal restore follow observed provisioning. No agent hardware action.
+
+### Verification
+GitHub confirms reviewed head OPEN and both required CI jobs SUCCESS in run 37677877843. Rechecked SOURCE_REVISION and all five file hashes in each frozen bundle. Read-only enumeration finds ESP USB JTAG/serial unit at /dev/cu.usbmodem14101, VID:PID 303A:1001, serial28:84:85:9F:0E:FC. No upload, reset, monitor or rebuild performed by an agent; port must be rediscovered after physical transitions if it changes.
+
+### Decisions
+Use the exact frozen normal artifact first. Jeremy performs BOOT/RESET, explicit-offset hash-checked upload, private phone setup and observed persistence/reset tests. Approval persists for the separate harness and restoring normal; do not ask again for these same artifacts.
+
+### Problems
+None. Hardware behavior is still unobserved for T15; no battery pack.
+
+### Needs Jeremy
+Stop the old monitor, enter ROM using labeled BOOT/RESET, run the supplied normal-bundle command, then release BOOT and normal RESET. Return flash output; continue with new T15 serial/hotspot evidence and later the approved harness.
+
+### Next
+Await actual T15 phone/reconnect/reset/deep-sleep observations and sanitized logs/photo. Acceptance, authorized merge and T16 advancement remain pending.
+
+---
+
 ## Session — T15 Wi-Fi provisioning
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b

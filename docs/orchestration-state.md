@@ -2,14 +2,14 @@
 
 This is the durable handoff ledger; update it with each run and approval. WORKLOG remains the append-only session history; Notion cards hold acceptance/status. Never store secrets.
 
-- **Updated:** 2026-10-07 13:47 MDT
+- **Updated:** 2026-10-07 14:12 MDT
 - **Active card:** T15 Wi-Fi provisioning
-- **Stage:** T15 software QA Pass; awaiting Jeremy review/flash and hardware evidence. Final review-record CI must pass before release/merge.
+- **Stage:** Approved normal T15 flashed by agent; startup/setup AP observed; awaiting private phone setup and physical persistence/reset evidence.
 - **Branch / checkout:** `codex/t15-wifi-provisioning` / `/Users/jeremyward/.codex/worktrees/t15-wifi-provisioning/weather-epaper`
 - **Base / PR:** merged T14 `08be1ac4024d1c79c25814f0881469804ab096a8`; [T15 PR #20](https://github.com/jeremyward37/weather-epaper/pull/20), final firmware/config/test/workflow source `b8ae0c4c1680d6fd3857b6d413248e298599d8ee`. Later review records leave that source unchanged.
 - **Independent QA:** T15 software Pass; separate `epaper_qa` GPT-6.1 Sol · High. Ten deployed native plus fourteen independent timer/NVS failure scenarios, clean normal/harness builds, zero-pixel setup match, logging/upload/partition checks. Physical criteria Pending; see `t15-qa.md`.
 - **Intended checks:** completed software checks in `t15-qa.md`; source CI build/firmware Pass in run 37676538752. Require final PR-head checks green before release/merge; latest result tracked in GitHub/Notion.
-- **Pending Jeremy action:** review `t15-review.md` / PR #20 and explicitly approve normal T15 flash plus separate persistence test. Jeremy phone/save, power-cycle, runtime BOOT reset, actual deep-sleep persistence and sanitized evidence remain Pending, followed by acceptance and authorized merge.
+- **Pending Jeremy action:** provision privately by phone and perform saved reconnect/runtime BOOT/power-cycle observations. Agent handles approved normal/harness upload, serial capture and normal restore; Jeremy handles physical buttons, phone, power cycling and photographs. Actual evidence, T15 acceptance and authorized merge remain Pending.
 - **Next eligible task:** T16 only after T15's own hardware/review/merge gates and explicit advancement; T21 separately eligible, not dispatched.
 - **Hardware:** T14 accepted: Jeremy flashed reviewed app, supplied setup photo, startup/no-pack ADC and button evidence. T15 physical provisioning/power-cycle/deep-sleep/reset tests pending. No battery; expected early November 2026; continuous USB intended. Battery calibration/life untested.
 - **Reconciliation:** PR #19 merged at 2026-10-07 13:16 MDT (`08be1ac`), required CI passed on accepted head `6b39baa`; Notion T14 Done and T15 In progress. PR #18 remains earlier acceptance bookkeeping; it is not a new delivery gate.
@@ -69,3 +69,18 @@ Source `4ac387d`: local and independent clean build successful; embedded frame 1
 ## T15 software review gate — 2026-10-07 13:47 MDT
 
 Final source `b8ae0c4`: independent software QA Pass and both source CI jobs Pass (run 37676538752). Frozen read-only bundles: `/private/tmp/weather-epaper-t15-artifacts/b8ae0c4c1680d6fd3857b6d413248e298599d8ee/`, normal app SHA-256 `736c18b0ae031f60d32c1980192d0bc36a9de83fa0afa4f646ba0494a3556b3a`, bounded persistence-harness app `302af824bfe29974268d555605b6acb756945d4f16f13f93471d203d05a4fbd2`. Whole bundles/checksums and exact commands are in `t15-review.md`; earlier T15 build hashes are superseded. Final review-record CI remains required before release/merge and is recorded on GitHub/Notion. Jeremy has not yet approved these new flashes, performed physical T15 checks, accepted T15, or authorized its merge/T16 advancement. Card remains In progress; stop at this gate.
+
+## T15 normal flash and persistence-test approval — recorded 2026-10-07 14:01 MDT
+
+- **Human source:** Jeremy in this chat: “approve T15 flash and persistence test”.
+- **Reviewed revision:** PR #20 head `250ec59bdb3a7351a5012867098c4b1ded9b1ee2`; audited firmware/config/test/workflow source `b8ae0c4c1680d6fd3857b6d413248e298599d8ee`, unchanged.
+- **Approved artifacts:** normal app SHA-256 `736c18b0ae031f60d32c1980192d0bc36a9de83fa0afa4f646ba0494a3556b3a`; bounded persistence harness `302af824bfe29974268d555605b6acb756945d4f16f13f93471d203d05a4fbd2`. Both frozen bundles' source and all five file hashes rechecked and match.
+- **CI readback:** both required jobs SUCCESS on the exact reviewed head in run 37677877843. Approval bookkeeping does not rebuild or alter the artifacts.
+- **Approved action:** Jeremy may flash the normal bundle, run provisioning/reset/power-cycle tests, flash the separate bounded persistence harness, observe timer-sleep reconnect and restore normal firmware. Agents prepare/record/guide; no agent upload, reset or port operation under rule 13.
+- **Remaining gates:** actual physical/serial/photo evidence, Jeremy's T15 acceptance and authorized merge, then separate T16 advancement. The flash approval alone does not pass these gates. No new permission question for the two approved artifacts.
+
+## T15 Terminal-command override and normal flash — recorded 2026-10-07 14:12 MDT
+
+Jeremy asked “Can't you run terminal commands? Why do I need to?” after approving T15 flash and persistence. This overrides rule 13's manual Terminal handoff for the approved uploads and serial monitoring, including harness and normal restore. Physical phone/button/power/photo operations remain Jeremy's. No repeat artifact approval required.
+
+The agent verified the normal frozen source/all file hashes and ran explicit-offset esptool with automatic `--before default-reset`; exit 0, all four written-image hashes verified. Normal app/source/hash remain those approved above. Startup reached setup frame and AP IP 192.168.4.1. Evidence: firmware/logs/t15-normal-flash-record.md and t15-first-startup.txt. Serial monitor opening itself produced a USB reset; do not count it as spontaneous reboot. Phone/save, power cycle, BOOT reset and timer-sleep criteria remain pending. T15 In progress; no acceptance, merge or T16 advancement.

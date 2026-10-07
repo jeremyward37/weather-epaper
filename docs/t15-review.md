@@ -1,6 +1,6 @@
 # T15 review packet — Wi-Fi provisioning
 
-Task: [T15](https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b). Branch: `codex/t15-wifi-provisioning`, based on accepted/merged T14 `08be1ac`. [PR #20](https://github.com/jeremyward37/weather-epaper/pull/20). Final firmware/config/test/workflow source: `b8ae0c4c1680d6fd3857b6d413248e298599d8ee`; frozen hashes are below. Status **In progress; software QA Pass; awaiting Jeremy review/flash and hardware evidence**. T14 was accepted by Jeremy and PR #19 merged; that approval authorizes T15 preparation, not its new firmware release.
+Task: [T15](https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b). Branch: `codex/t15-wifi-provisioning`, based on accepted/merged T14 `08be1ac`. [PR #20](https://github.com/jeremyward37/weather-epaper/pull/20). Final firmware/config/test/workflow source: `b8ae0c4c1680d6fd3857b6d413248e298599d8ee`; frozen hashes are below. Status **In progress; software QA Pass; normal flash and persistence test approved; normal firmware flashed; awaiting phone/persistence/reset evidence**. T14 was accepted by Jeremy and PR #19 merged; that approval authorizes T15 preparation, not its new firmware release.
 
 ## Behavior
 
@@ -23,9 +23,11 @@ Credentials remain in native Wi-Fi NVS. Preferences stores provisioning/frame me
 
 ## Needs Jeremy
 
-First review this packet and its PR, then explicitly approve **T15 normal firmware flash and the separate persistence test**. Agents prepare the bundles but do not upload or operate hardware under [AGENTS.md](../AGENTS.md) rule 13. Do not repeat T14 flashing: these are new artifacts with their own hashes. USB can remain connected until the approved flash procedure begins. Stop the existing monitor before upload.
+Jeremy explicitly approved **T15 normal firmware flash and the separate persistence test** for reviewed PR head `250ec59` and both exact frozen hashes below; both required CI jobs passed in run 37677877843. His subsequent request that the agent run Terminal commands overrides AGENTS.md rule 13's manual Terminal handoff for these approved operations. The agent completed the normal upload with automatic BOOT entry (`--before default-reset`), exit 0 and all written-image hashes verified. Startup confirmed the setup frame and AP IP 192.168.4.1; see [flash record](../firmware/logs/t15-normal-flash-record.md) and [startup capture](../firmware/logs/t15-first-startup.txt). The agent handles upload/monitor/harness/normal restore; Jeremy handles private phone credentials, buttons, physical power cycles and photos. No repeat approval is needed.
 
-After approval, the orchestrator will guide these steps in order:
+The steps and commands below remain a manual fallback reference; normal flashing is already complete.
+
+The remaining test sequence is:
 
 1. Close the current monitor with Ctrl+C. Discover the serial port. With USB connected, hold **BOOT**, press/release **RESET**, wait two seconds, then release BOOT. Rediscover the ROM port; e-paper can keep its old image during this step.
 2. Verify the normal bundle's source revision and all SHA-256 checks, then upload the four explicit address/file pairs: bootloader `0x0000`, partitions `0x8000`, boot_app0 `0xe000`, app `0x10000`, DIO/80m/16MB. Use the frozen-bundle command supplied below. Do not use the broken vendor `nobuild` uploader. Press/release RESET with BOOT released if the app remains in downloader mode; rediscover its application port and open the monitor.
@@ -54,7 +56,7 @@ Discover ports without opening the device:
 /private/tmp/weather-epaper-t14-venv/bin/python -m serial.tools.list_ports -v
 ```
 
-Last read-only enumeration: `/dev/cu.usbmodem14101`, USB JTAG/serial debug unit, VID:PID303A:1001, serial28:84:85:9F:0E:FC. Rediscover after ROM/reset/sleep; replace the port in commands if it changes. The following commands are **for Jeremy after explicit T15 approval**. They validate all five image/ELF hashes and the source revision before any write. They leave NVS untouched; do not add an erase-flash step.
+Last read-only enumeration: `/dev/cu.usbmodem14101`, USB JTAG/serial debug unit, VID:PID303A:1001, serial28:84:85:9F:0E:FC. Rediscover after ROM/reset/sleep; replace the port in commands if it changes. The following commands are the approved upload reference; the agent may execute them under the recorded Terminal override. Automatic entry uses `--before default-reset`; the shown `no-reset` variant requires manual ROM entry. They validate all five image/ELF hashes and the source revision before any write. They leave NVS untouched; do not add an erase-flash step.
 
 Normal flash, also used to restore normal firmware after the harness:
 
@@ -99,8 +101,8 @@ env PLATFORMIO_CORE_DIR=/private/tmp/weather-epaper-t14-pio \
 -e nm-epd-420-bw --port /dev/cu.usbmodem14101 --baud 115200
 ```
 
-Offline QA validated esptool argument parsing while denying serial access, merged-image address ranges, partition fit and bootloader/app headers. No upload/reset/monitor was run by agents. On missing AP, credential leakage, boot loops, wrong panel content or Busy Timeout, stop and return sanitized evidence. Existing accepted T14 snapshot remains unchanged at `/private/tmp/weather-epaper-t14-artifacts/4ac387dbbbb3672b11672222f360a83804c8d615/`; recovery is the exact accepted T14 command in [T14 packet](t14-review.md) / [historical bring-up guide](../firmware/T14-BRINGUP.md), with its recorded app hash. No broad flash erase is included.
+Offline QA validated esptool argument parsing while denying serial access, merged-image address ranges, partition fit and bootloader/app headers. That offline QA involved no device access. The subsequent approved normal upload and startup capture are recorded above. On missing AP, credential leakage, boot loops, wrong panel content or Busy Timeout, stop and return sanitized evidence. Existing accepted T14 snapshot remains unchanged at `/private/tmp/weather-epaper-t14-artifacts/4ac387dbbbb3672b11672222f360a83804c8d615/`; recovery is the exact accepted T14 command in [T14 packet](t14-review.md) / [historical bring-up guide](../firmware/T14-BRINGUP.md), with its recorded app hash. No broad flash erase is included.
 
 ## Limits and next gate
 
-No actual radio, phone, NVS persistence or runtime reset observation is claimed from compilation/mocks. Battery calibration and life await the pack and later cards. T16 owns weather download, ext0 wake integration and the half-hourly schedule. T15 stays In progress until its criteria, independent QA, Jeremy acceptance and authorized merge all pass. No T16 work is dispatched. When T16 implements ext0 wake, start BOOT sampling before serial/wake-processing waits so its held-wake threshold starts immediately; this note is also on the T16 card.
+Actual normal flash/startup/setup AP IP are observed. Phone reachability, NVS persistence and runtime reset remain pending; compilation/mocks do not pass these physical criteria. Battery calibration and life await the pack and later cards. T16 owns weather download, ext0 wake integration and the half-hourly schedule. T15 stays In progress until its criteria, independent QA, Jeremy acceptance and authorized merge all pass. No T16 work is dispatched. When T16 implements ext0 wake, start BOOT sampling before serial/wake-processing waits so its held-wake threshold starts immediately; this note is also on the T16 card.

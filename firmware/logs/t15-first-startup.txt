@@ -1,0 +1,16 @@
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0x18 (SPI_FAST_FLASH_BOOT)
+Saved PC:0x4037ad92
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2810,len:0x103c
+load:0x403c8700,len:0x4
+load:0x403c8704,len:0xaf4
+load:0x403cb700,len:0x2e28
+entry 0x403c889c
+[T15] Wi-Fi provisioning; USER unused; BOOT hold 5s resets
+_Update_Full : 2201000
+_Update_Full : 2201001
+[T15] Setup frame displayed; panel hibernated
+[T15] Setup AP IP: 192.168.4.1
