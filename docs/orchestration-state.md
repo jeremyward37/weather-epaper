@@ -2,17 +2,17 @@
 
 This is the durable handoff ledger; update it with each run and approval. WORKLOG remains the append-only session history; Notion cards hold acceptance/status. Never store secrets.
 
-- **Updated:** 2026-10-07 15:54 MDT
-- **Active card:** T15 Wi-Fi provisioning
-- **Stage:** Original T15 functional criteria and independent QA Pass; normal restored/provisioned, monitor stopped. Awaiting final evidence-head CI and explicit acceptance/authorized merge.
-- **Branch / checkout:** `codex/t15-wifi-provisioning` / `/Users/jeremyward/.codex/worktrees/t15-wifi-provisioning/weather-epaper`
-- **Base / PR:** merged T14 `08be1ac4024d1c79c25814f0881469804ab096a8`; [T15 PR #20](https://github.com/jeremyward37/weather-epaper/pull/20), final firmware/config/test/workflow source `b8ae0c4c1680d6fd3857b6d413248e298599d8ee`. Later review records leave that source unchanged.
-- **Independent QA:** Software and original physical criteria Pass; separate epaper_qa GPT-6.1 Sol · High. See t15-qa.md and t15-hardware-qa.md. Recommended physical failure paths unrun; supplied photo reused accepted T14 reference, not fresh T15.
-- **Intended checks:** completed software checks in `t15-qa.md`; source CI build/firmware Pass in run 37676538752. Require final PR-head checks green before release/merge; latest result tracked in GitHub/Notion.
-- **Pending Jeremy action:** Review T15 packet and limits, then explicitly accept/authorize PR #20 merge if satisfied. T16 start requires explicit authorization; no more routine flash/phone steps for original criteria.
-- **Next eligible task:** T16 only after T15's own hardware/review/merge gates and explicit advancement; T21 separately eligible, not dispatched.
-- **Hardware:** T14 accepted; T15 original phone/BOOT/USER/power-cycle/timer-persistence evidence observed. Exact normal installed, raw observer stopped. Reused photo provenance and unrun recommended physical cases recorded. No battery, expected early November; continuous USB; battery calibration/life untested.
-- **Reconciliation:** PR #19 merged at 2026-10-07 13:16 MDT (`08be1ac`), required CI passed on accepted head `6b39baa`; Notion T14 Done and T15 In progress. PR #18 remains earlier acceptance bookkeeping; it is not a new delivery gate.
+- **Updated:** 2026-10-07 16:09 MDT
+- **Active card:** T16 wake, sync time, fetch frame, display and deep sleep
+- **Stage:** Implementation started after explicit T15 acceptance/merge/T16-start approval; own independent QA/review/hardware gates pending.
+- **Branch / checkout:** `codex/t16-wake-fetch-sleep` / `/Users/jeremyward/.codex/worktrees/t15-wifi-provisioning/weather-epaper` (clean attached checkout reused on new card branch)
+- **Base / PR:** merged T15 `637c2751c740f1a6dfe939a45acece1f09e5b74f`; T16 PR pending.
+- **Independent QA:** T15 original criteria Pass; T16 pending separate epaper_qa GPT-6.1 Sol · High.
+- **Intended checks:** native schedule/DST and failure preservation, TLS/exact-size frames, bounded operations, hash no-redraw, sleep shutdown, builds/CI; actual scheduled wakes/frame/offline and current measurement or documented limitation.
+- **Pending Jeremy action:** None during software preparation. T16 tested packet and frozen artifacts will precede any new hardware release/flash approval.
+- **Next eligible task:** No T17 advancement before T16 original criteria/review/authorized merge and explicit start.
+- **Hardware:** Accepted T15 normal installed/provisioned, monitor stopped. No battery until early November; continuous USB. Agent Terminal override persists for authorized operations, physical controls/credentials/photos remain Jeremy's.
+- **Reconciliation:** PR #20 merged at16:07:53 MDT as637c275; accepted head6e0c57f had both required CI jobs SUCCESS in run37693025721. T15 and T12 Done, T16 In progress; later cards not dispatched.
 
 ## Approval ledger
 
@@ -96,3 +96,7 @@ Jeremy said restart. Earlier pause revoked; approved Terminal upload/monitor/har
 ## T15 resumed sleep-test evidence — 2026-10-07
 
 Actual harness upload verified all four writes. Runtime logged saved reconnect, sleep entry, USB disappearance, raw reattachment, saved reconnect and Timer wake reconnected; persistence observed. Independent epaper_qa audit: one real timer-wake persistence cycle Pass; success cannot follow a USB reset or portal re-provision in unchanged source. Ten seconds configured, not independently timed. Raw observer omits DTR/RTS ioctl and disables HUPCL but host tty behavior prevents a universal reset-free claim. Exact approved normal restored successfully, saved reconnect observed; harness removed. Evidence in firmware/logs/t15-timer-persistence* and t15-normal-restore-record.md. BOOT/second physical-cycle/failure/USER/photo checks and acceptance/merge still pending.
+
+## T15 acceptance / PR20 merge / T16 start — 2026-10-07 16:07 MDT
+
+Jeremy: “So long as I should not be seeing the weather yet on it then yes I accept T15, merge PR #20 and start T16 please.” Setup retention at T15 is expected. Accepted head6e0c57f36abd041468066961de6ed02d627867b6, both required checks green in run37693025721. Exact-head-guarded squash merge637c2751c740f1a6dfe939a45acece1f09e5b74f at16:07:53 MDT; T15 Done. T16 start explicitly authorized, separate branch and log opened, card In progress. No T16 flash/release/merge or T17 advancement authorized by this message. Prior Terminal-operation override persists; no manual Terminal handoff is required for later approved device operations.

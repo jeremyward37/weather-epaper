@@ -1,5 +1,61 @@
 # Work log
 
+## Session — T16 wake, fetch, display and sleep implementation
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
+- **Started / finished:** 2026-10-07 16:09 MDT / pending
+- **Model:** Primary runtime; implementation GPT-6.1 Sol · High; independent QA GPT-6.1 Sol · High. Available model/effort verified against current collaboration runtime metadata.
+- **Branch / PR:** `codex/t16-wake-fetch-sleep` / pending
+- **Status at end:** In progress
+
+### Result
+Run opened after explicit T15 acceptance/merge/T16-start authorization. Reuse clean managed worktree on new card branch from merged T15 637c2751c740f1a6dfe939a45acece1f09e5b74f. T15 and T12 dependencies reconciled Done. T16 card set In progress before implementation dispatch.
+
+### Verification
+Host preflight verified custom/fallback certificate+hostname trust via certifi (system Python default CA lookup failed; no insecure bypass), HTTP200/exact15000-byte normal/lowbat with all published hashes matching. Pinned Pillow framediff: both raw-vs-PNG 0pixels; variant100glyphpixels inside approved136,281,14,10, zero outside. See docs/t16-live-endpoint.md. Meaningful native schedule/failure tests, finished source/builds, independent QA and required PR CI remain Pending at this stage. Physical scheduled wakes across at least onehour, changed/unchanged/offline and current measurement or documented limitation remain required.
+
+### Decisions
+Preserve approved frames and all original T16 criteria. Scope includes HTTPS exact 15000-byte fetch, retained panel on failure, NVS hash suppression, Mountain DST/window schedule, BOOT ext0/hold reset, bounded joins/NTP, panel/peripheral sleep shutdown. Battery thresholds remain provisional until T17; no battery is fitted. Implementation and QA are separately delegated; only root writes logs/state/Notion/Git.
+
+### Problems
+No pack is fitted: ADC0 selects provisional lowbat by the card rule, not detected charge. Live16:11MDT snapshot renderedAt11:49MDT; existing T21 publisher punctuality issue remains separately recorded, no hosting change. Early independent investigation identified target-slot/20s lead, overall DNS/TLS/read deadline, fresh NTP/RTC distinction, BOOT reset priority and pre-draw hash-invalidation/everShown cases; implementer is addressing and testing before full audit.
+
+### Needs Jeremy
+No action during software preparation; leave current T15 normal USB-connected. T16 flash/release and exact physical steps will be presented with a tested revision and frozen artifacts for approval. Terminal operation override persists; no repeat manual-command handoff.
+
+### Next
+Complete T16 implementation and independent QA, publish concrete PR/artifact packet with green CI, then stop at T16 review/hardware gate. No T17 advancement.
+
+---
+
+## Session — T15 acceptance and authorized merge
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 16:07 MDT / 2026-10-07 16:09 MDT
+- **Model:** Primary runtime; acceptance bookkeeping only.
+- **Branch / PR:** Accepted `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20; bookkeeping carried in next authorized card branch.
+- **Status at end:** Done
+
+### Result
+Jeremy explicitly accepted T15, authorized PR #20 merge and T16 start after confirming weather is not expected at T15. PR #20 merged as 637c2751c740f1a6dfe939a45acece1f09e5b74f at 16:07:53 MDT. T15 set Done; normal approved firmware remains provisioned/installed, observer stopped.
+
+### Verification
+Re-read actual PR head6e0c57f36abd041468066961de6ed02d627867b6 and both SUCCESS checks (run37693025721), merged with exact-head guard, read back state MERGED and merge SHA. Independent QA/all original hardware criteria Pass in accepted packet; recommended physical failure cases unrun remain disclosed. T12 card Done.
+
+### Decisions
+User: “So long as I should not be seeing the weather yet on it then yes I accept T15, merge PR #20 and start T16 please.” Setup retention is expected; T16 supplies weather fetch/display. Authorization starts T16 but does not authorize a new T16 flash/release/merge or T17.
+
+### Problems
+None.
+
+### Needs Jeremy
+None for accepted T15.
+
+### Next
+Run authorized T16 with separate branch/log/independent QA and hardware/review gate.
+
+---
+
 ## Session — T15 final evidence review gate
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
