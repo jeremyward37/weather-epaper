@@ -3,16 +3,16 @@
 ## Session — T23 Orchestrator handoff, independent QA, and review gates
 
 - **Task:** https://app.notion.com/p/3f2d9adbacad8146b8f8f2d5dea31b1e
-- **Started / finished:** 2026-10-07 10:48 MDT / pending
-- **Model:** GPT-6.1 Sol · High; independent audit subagent inherited model/effort
-- **Branch / PR:** `codex/t23-orchestration` / pending
+- **Started / finished:** 2026-10-07 10:48 MDT / 2026-10-07 10:59 MDT
+- **Model:** Codex (active session model/effort not exposed); independent audit subagent inherited settings. Recommended orchestrator: GPT-6.1 Sol · High.
+- **Branch / PR:** `codex/t23-orchestration` / PR pending (GitHub push server error)
 - **Status at end:** In progress
 
 ### Result
 Prepared orchestrator instructions, three project role definitions, a durable approval ledger, and updated T14–T21 cards/project page. Corrected dependency stages and stale status/scope prose. No firmware card implementation started.
 
 ### Verification
-Bundled Python parsed all four TOML files; relative links and task rows passed; approved design/implementation sources remain unchanged. `git diff --check` passed. Independent subagent reviewed the workflow and identified three clarifications, now fixed: unverified named-role loading, Jeremy-only completion, and preserving the existing scheduled publisher. Notion readback verified all eight remaining cards, dependencies, stages, model recommendations, gates and unchanged Not started statuses. PR CI pending.
+Bundled Python parsed all four TOML files; relative links and task rows passed; approved design/implementation sources remain unchanged. `git diff --check` passed. Independent subagent reviewed the workflow and identified three clarifications, now fixed: unverified named-role loading, Jeremy-only completion, and preserving the existing scheduled publisher. Notion readback verified all eight remaining cards, dependencies, stages, model recommendations, gates and unchanged Not started statuses. `./tools/render.sh` exited 2 because the Docker daemon is not running. GitHub branch pushes repeatedly returned Internal Server Error, including with the existing keyring credential; reconciliation found no remote branch/PR. Required PR CI has not run.
 
 ### Decisions
 - Jeremy requested this workflow 2026-10-07: implementation and separate QA children, concrete review pauses, hardware evidence before Done.
@@ -22,10 +22,10 @@ Bundled Python parsed all four TOML files; relative links and task rows passed; 
 Canonical checkout was behind origin/main and contained an unrelated `.gitignore` edit; isolated worktree `/private/tmp/weather-epaper-orchestration` preserves it. No physical bring-up evidence exists yet. Named-agent runtime loading is unverified; the start prompt supports scoped collaboration instructions. Notion update initially rejected URL-shaped page IDs; retried with observed page IDs and verified all results.
 
 ### Needs Jeremy
-Review/authorize merging T23 and starting T14. Later hardware steps are prepared by each task and performed by Jeremy.
+Review the local handoff if desired; authorize merging T23 and starting T14 after publication/CI are resolved. Unbox/check the board and have a USB data cable ready. Later hardware steps are prepared by each task and performed by Jeremy.
 
 ### Next
-T14 after handoff approval/merge; T21 remains separately eligible. No next-card execution in this session.
+Resume T23 first: retry push, create/attach PR, require green CI, then obtain Jeremy review/merge/advance approval. Instructions and branch are saved; no background orchestrator is running. T14 follows after the gate; T21 remains separately eligible. No next-card execution in this session.
 
 ---
 
