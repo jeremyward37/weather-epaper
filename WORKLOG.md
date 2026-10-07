@@ -1,5 +1,34 @@
 # Work log
 
+## Session — T14 approved flash and BOOT instructions
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 12:25 MDT / 2026-10-07 12:25 MDT
+- **Model:** Primary Codex runtime (identity/effort not exposed); no implementation change or new QA delegation.
+- **Branch / PR:** `codex/t14-bringup` / https://github.com/jeremyward37/weather-epaper/pull/19
+- **Status at end:** In progress
+
+### Result
+Recorded Jeremy's explicit T14 flash approval and prepared stepwise BOOT/download-mode guidance using the labeled BOOT and Reset controls in his photos. The approved source, firmware and build environment are unchanged.
+
+### Verification
+Current checkout is reviewed revision `b677f3d`; current app SHA-256 rechecked as `197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d`. Espressif's current ESP32-S3 boot-mode documentation confirms GPIO0 LOW at reset enters the ROM downloader; this board's BOOT is GPIO0. No device connection, upload or measurement was performed by the agent.
+
+### Decisions
+Jeremy's approval authorizes his T14 flash of the reviewed artifact. Merge, physical acceptance and T15 advancement remain separate gates. A retained Meshtastic image is not evidence that boot-mode entry failed, because e-paper retains pixels without active firmware drawing.
+
+### Problems
+None; USB enumeration and physical evidence are pending.
+
+### Needs Jeremy
+With device USB disconnected: connect cable to Mac, hold the labeled BOOT button, connect USB to device, hold briefly then release. If already powered, hold BOOT while pressing/releasing Reset, then release BOOT. Return connection confirmation so the USB port can be identified; do not press User for download mode. Perform the reviewed upload command only after port identification, then photo/serial/button checks.
+
+### Next
+Continue T14's approved flash and physical verification; no merge or next-card execution.
+
+---
+
+
 ## Session — T14 USB-powered board bring-up
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
