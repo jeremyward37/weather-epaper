@@ -1,91 +1,61 @@
-# T14 USB bring-up
+# T15 Wi-Fi provisioning
 
-This spike boots the RockBase NM-EPD-420-BW, transfers the embedded approved setup frame directly to the GYE042A87 panel, performs a full refresh, and hibernates the panel. The driver may first perform an initial white clearing refresh. The ESP32 stays awake and prints ADC and button diagnostics every two seconds. There is no Wi-Fi, HTTP, credential storage, or ESP deep sleep; the setup hotspot instructions on the frame are artwork for this test. T15 implements the hotspot, and T16 implements the scheduled device loop.
+The normal firmware draws the existing approved setup bitmap only when entering provisioning. It starts `WeatherStation-Setup` with the public setup password `firstlight`, captive DNS and HTTP at `192.168.4.1`, and waits without a portal timeout. The setup image remains after connection; T16 supplies fetch and scheduled sleep. A boot with saved credentials reconnects within 20 seconds without initializing/redrawing the display. Failed reconnect enters setup while retaining native credentials.
 
-Jeremy's current test uses continuous USB power with the battery connector empty. A battery is not expected until early November. T14 accepts a documented no-pack reading; battery calibration, thresholds and life remain T17/T19 work. See [HARDWARE.md](HARDWARE.md) for source evidence and the pending physical checks.
+BOOT (GPIO0) is the runtime button. Release after a short, debounced press requests the immediate-refresh hook (logged only until T16). Hold at least five seconds to reset credentials and enter setup. USER (GPIO45) is unused. A button already held at the first sample is timed, so T16 can call the same controller after ext0 wake. Keep BOOT released during reset/power connection; holding it then invokes the ROM downloader instead of running this firmware.
 
-## Install and build
+Wi-Fi credentials live only in native Wi-Fi NVS, never in Preferences, source, or logs. Preferences namespace `weather` holds `provisioned`, `lastFrameSha` (empty until T16 accepts a frame), and a reset-intent tombstone `resetPending`. Native config is authoritative to recover a save interrupted before the flag commit. The tombstone blocks reconnecting old credentials after interrupted/failed erase; successful replacement provisioning clears it. Entering setup invalidates the frame identity because setup replaces the panel image. Flash-storage or NVS hardware failure still requires physical investigation; software tests simulate selected failures only.
 
-PlatformIO Core **6.1.18** is the tested CLI version. Use the VS Code PlatformIO extension, or `pipx install platformio==6.1.18` followed by `pipx inject platformio esp-idf-size==1.6.1` if pipx is already installed. A Python virtual environment keeps Python build packages outside the global interpreter:
+`provisioning.h` exposes `hasCredentials()`, `runPortalBlocking()`, `clearCredentials()`, plus initialization, bounded reconnect and polling hooks. The external portal call blocks until connected and metadata saved. Internally it repeatedly processes WiFiManager and samples BOOT. The pinned library still has a default two-second captive-response delay and a wait even with `setSaveConnect(false)`; `setSaveConnectTimeout(1)` bounds that wait. An independent five-millisecond ESP timer samples BOOT and latches events during these waits, so a five-second hold cannot be lost when released during a form submission. The main thread applies a latched reset after the library returns, potentially roughly three seconds late. The following connection attempt runs asynchronously for up to 20 seconds, with continued button polling. A held reset fires once until release.
+
+## Install and verify
+
+Use PlatformIO Core **6.1.18** and `esp-idf-size` **1.6.1**, pinned in `build-requirements.txt`:
 
 ```sh
-python3 -m venv /private/tmp/weather-epaper-t14-venv
 cd ~/codeProjects/weather-epaper
-/private/tmp/weather-epaper-t14-venv/bin/python -m pip install -r firmware/build-requirements.txt
-export PATH="/private/tmp/weather-epaper-t14-venv/bin:$PATH"
-export PLATFORMIO_CORE_DIR=/private/tmp/weather-epaper-t14-pio
+python3 -m venv /private/tmp/weather-epaper-t15-venv
+/private/tmp/weather-epaper-t15-venv/bin/python -m pip install -r firmware/build-requirements.txt
+export PATH="/private/tmp/weather-epaper-t15-venv/bin:$PATH"
+export PLATFORMIO_CORE_DIR=/private/tmp/weather-epaper-t15-pio
 pio run -d firmware -e nm-epd-420-bw
+sh firmware/test/run-native.sh
 ```
 
-The first build downloads the vendor-pinned **pioarduino 54.03.21** platform, Arduino-ESP32 **3.2.1**, and the toolchain. `platformio.ini` pins GxEPD2 **1.6.8**, Adafruit GFX **1.12.1**, and BusIO **1.17.4**. It follows the vendor's `lilygo-t-display-s3` board definition, with 16 MB flash, DIO flash mode, `qio_opi` memory (8 MB OPI PSRAM), 80 MHz CPU, native USB CDC, and `huge_app.csv` partitions. This partition layout uses only part of the 16 MB flash; no filesystem or OTA feature is needed in T14. No fallback platform is selected.
+The platform is vendor-pinned pioarduino **54.03.21**, Arduino **3.2.1**, GxEPD2 **1.6.8**, GFX **1.12.1**, BusIO **1.17.4**, and tzapu/WiFiManager **2.0.17**. No vendor source is changed. `WM_NODEBUG`, runtime debug-off, and `CORE_DEBUG_LEVEL=0` suppress home-network identifiers and passwords, including upstream diagnostic output. Each nonempty submitted SSID and password is privately compared with native config before connection; the library callback alone cannot prove a save. Temporary comparison buffers are cleared and blank-SSID submissions are rejected. Only generic state/failure messages and the public AP IP are logged. Do not enable verbose network logging or save screenshots of credential forms.
 
-The vendor platform's installer also caches toolchains under `~/.platformio/tools`, even when `PLATFORMIO_CORE_DIR` points elsewhere. The first local build created that vendor cache; it was left intact. The temporary core directory does not fully isolate these downloads. This is the unmodified vendor platform; CI runs it on a disposable clean runner. `build-requirements.txt` also pins `esp-idf-size` **1.6.1**, because pioarduino 54.03.21 invokes the `--ng` option removed in 2.x. Install those requirements in the Python environment used by PlatformIO; an IDE-managed environment needs the same helper pin.
-
-The local app is `firmware/.pio/build/nm-epd-420-bw/firmware.bin`. A build alone proves neither panel fidelity nor battery/button operation. CI's separate `firmware` job performs a clean `pio run`, then uploads the app, ELF, bootloader, partitions, `SHA256SUMS`, source revision, and PlatformIO version. `firmware.bin` is an application binary, not a merged flash image. The reviewed T14 upload uses explicit offsets for all four flash components from the frozen bundle below.
-
-Record the actual app hash before flashing:
-
-```sh
-shasum -a 256 firmware/.pio/build/nm-epd-420-bw/firmware.bin
-```
-
-Local macOS and CI Linux builds may produce different binary hashes. Record the hash of the artifact actually flashed and its reviewed Git revision; do not assume a CI artifact and a local rebuild are identical.
+Portable tests compile the deployed provisioning module against fake hardware/storage adapters, and exercise bounce, exact hold threshold, rollover, single reset per hold, held-wake reset, saved reconnect and frame retention, bounded failure, reset with SDK erase failure, indefinite portal waiting, bad submission/retry, portal reset/restart, and metadata failure. They do not prove radio behavior or physical NVS persistence.
 
 ## Needs Jeremy
 
-Only Jeremy plugs in or flashes the board. Use the reviewed revision named in the review packet, after approval to flash. Keep the battery connector empty for this run. Leave LoRa unused; this firmware drives its power gate LOW and never transmits.
+Use only the exact reviewed artifact/revision and explicit-offset upload command supplied in the T15 review packet. The normal app is `firmware/.pio/build/nm-epd-420-bw/firmware.bin`. The separate harness app below is different: never substitute it without its own reviewed hash. Source and binary identity must be recorded for every flash. Agents do not operate ports or flash hardware.
 
-1. With both buttons released, plug the board into the Mac using the USB data cable. Discover its native USB port:
+1. With BOOT released, connect USB and identify the application port with `pio device list`. Keep the battery connector empty for this USB test. Close any serial monitor before upload.
+2. Enter ROM download mode by holding BOOT during USB reconnect, release it after enumeration, and rediscover the port. Upload the reviewed frozen bundle using explicit pairs `0x0000 bootloader.bin`, `0x8000 partitions.bin`, `0xe000 boot_app0.bin`, and `0x10000 firmware.bin`, DIO/80m/16MB. **Do not use `pio run -t nobuild -t upload`**: this vendor platform skips framework setup and loses offsets. The orchestrator provides the exact hash-checking esptool command for the new T15 bundle.
+3. Reconnect USB with BOOT released if the app does not start, rediscover its CDC port, then `pio device monitor -d firmware -e nm-epd-420-bw --port /dev/cu.usbmodemPORT --baud 115200`.
+4. Confirm the approved setup image is upright/unshifted black on white. Join `WeatherStation-Setup` / `firstlight`, open `http://192.168.4.1`, and submit home Wi-Fi credentials privately. Serial must show public AP IP `192.168.4.1`, generic submitted/complete messages and no home SSID/password. After success the hotspot closes; setup remains on the panel until T16 delivers a frame.
+5. Disconnect/reconnect USB with BOOT released. Expect `Saved Wi-Fi connected; panel retained`, no `Setup frame displayed`, and no panel refresh. Repeat power cycle. Record the actual behavior without copying home identifiers.
+6. With firmware running, briefly press/release BOOT. Expect one immediate-refresh-request message and no portal. Hold BOOT at least five seconds (allow up to three additional seconds for confirmation during a concurrent form save), then release. Expect credential reset, one setup redraw and the same hotspot. A continued hold must not repeatedly reset/redraw. Reconfigure, power cycle, and confirm replacement credentials reconnect. USER must do nothing.
+7. Test a wrong Wi-Fi submission: portal remains open after its 20-second connection attempt and accepts a corrected submission. Separately make saved Wi-Fi temporarily unavailable and power cycle: bounded reconnect fails, setup opens. Restore Wi-Fi and explicitly resubmit; confirm success. Record sanitized outcomes, whole-panel photo when entering setup, flash hash/revision, and any resets or `Busy Timeout!`.
 
-   ```sh
-   pio device list
-   ```
+## Bounded deep-sleep persistence harness
 
-2. Substitute that `/dev/cu.usbmodem...` port below; close any Arduino IDE or other serial monitor using it. Enter the ROM downloader by holding BOOT while reconnecting USB, release BOOT, then rediscover its port. Use the frozen bundle for source `4ac387dbbbb3672b11672222f360a83804c8d615`. This subshell verifies its recorded revision and every bundle hash before calling the installed esptool; it does not rebuild:
+This is a separate physical test build, not T16 schedule integration:
 
-   ```sh
-   (
-     cd /private/tmp/weather-epaper-t14-artifacts/4ac387dbbbb3672b11672222f360a83804c8d615 &&
-     test "$(cat SOURCE_REVISION)" = 4ac387dbbbb3672b11672222f360a83804c8d615 &&
-     shasum -a 256 -c SHA256SUMS &&
-     /private/tmp/weather-epaper-t14-venv/bin/python \
-       /private/tmp/weather-epaper-t14-pio/packages/tool-esptoolpy/esptool.py \
-       --chip esp32s3 --port /dev/cu.usbmodemPORT --baud 115200 \
-       --before no-reset --after hard-reset \
-       write-flash -z --flash-mode dio --flash-freq 80m --flash-size 16MB \
-       0x0000 bootloader.bin 0x8000 partitions.bin \
-       0xe000 boot_app0.bin 0x10000 firmware.bin
-   )
-   ```
-
-   All five hash checks must say `OK`. The reviewed app hash is `197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d`. Stop if the revision, hashes, or expected bundle files differ. `--before no-reset` assumes the preceding BOOT/reconnect step has already entered the ROM downloader. After a successful upload, reconnect USB with BOOT released if the application does not start, run `pio device list` again, then open its application CDC port:
-
-   ```sh
-   pio device monitor -d firmware -e nm-epd-420-bw --port /dev/cu.usbmodemPORT --baud 115200
-   ```
-
-   The earlier `pio run -t nobuild -t upload` instruction is withdrawn for this vendor version: its `nobuild` branch skips framework initialization, leaving the application offset and extra boot images unset. esptool rejects the resulting missing address/file pairs before connecting. The explicit command above supplies the four required pairs. Their offsets come from the pinned Arduino `tools/pioarduino-build.py` (S3 bootloader `0x0000`, partition table `0x8000`, boot-app/OTA data `0xe000`) and `huge_app.csv` (app `0x10000`).
-
-3. Let the panel finish flashing black/white and settle on the setup screen. Compare it with `design/exports/states/state-setup.png`. Photograph the whole panel straight-on, including all edges: text and logo upright, black on white, no mirroring, crop, shift, or missing columns. Save the photo as `firmware/photos/t14-setup.jpg` and attach it to the T14 Notion card. Do not rotate, invert, or retouch the photo to hide a mismatch.
-4. Copy several serial lines with both buttons released. Hold USER for at least three seconds, release for three seconds, then hold BOOT for three seconds and release. Do not reset or reconnect with BOOT held during this button test. Capture each LOW and return to HIGH. Buttons only report levels in T14.
-5. Record: Git revision, actual flashed app SHA-256, USB-only power, battery connector empty, observed ADC values, USER/BOOT transitions, photo path and interpretation. Serial has no network secrets in T14. The startup memory line should report `Flash=16777216 PSRAM=8388608`; retain any discrepancy or `Busy Timeout!` diagnostic.
-
-Serial field shape (placeholders, not measured evidence):
-
-```text
-[T14] ms=<time> BATT_ADC_raw=<0..4095> ADC_mV=<calibrated pin reading> sense_mV=<ADC_mV*2> USER=1 BOOT=1 (LOW=pressed; pack presence unknown)
+```sh
+cd ~/codeProjects/weather-epaper
+pio run -d firmware -e provisioning-persistence-test
+shasum -a 256 firmware/.pio/build/provisioning-persistence-test/firmware.bin
 ```
 
-`analogReadMilliVolts` uses the ESP32 ADC's calibration; the divider tolerance and battery voltage have not been calibrated against a meter. `sense_mV` is a voltage on the sensed battery rail, not USB's 5 V or proof of an attached pack. With an empty connector, charger/backfeed or floating-node behavior can produce zero, nonzero, or varying values. Record the actual no-pack reading without accepting it as state of charge. ADC enable returns LOW after each averaged reading.
+Have the orchestrator freeze/review this environment's four-image bundle before flashing it with the same explicit offsets. Once provisioned/connected, it waits 30 seconds with BOOT released, enters **one** ten-second timer deep sleep, then boots and reconnects through the same native-NVS provisioning path. `RTC_DATA_ATTR` prevents repeating sleep after that wake. CDC may disappear; rediscover and reopen the port. Expect `Timer wake reconnected; persistence observed`, no setup redraw/hotspot. Power cycling clears the RTC marker, so each power cycle runs another single sleep after connection. Record the wake line and retained panel, then restore the reviewed normal T15 bundle; confirm normal reconnect and BOOT behavior. It configures no ext0 wake and implements no weather fetch or refresh schedule.
 
-## Upload and serial recovery
+Both credential power-cycle and real deep-sleep persistence are **pending until Jeremy performs these tests**. A compile or mock cannot close them.
 
-If no port appears, verify the data cable/USB connection and run `pio device list`. To enter the ESP32-S3 ROM downloader, hold BOOT while reconnecting USB, then release BOOT after enumeration. Use the newly listed port for the upload command. Once upload finishes, disconnect/reconnect USB with BOOT released if the application does not start; rediscover its application CDC port and open the monitor. This is recovery only, not a credential-reset feature.
+## Recovery / historical evidence
 
-The firmware waits at most three seconds for serial, so an unopened monitor cannot prevent drawing. Startup output may have occurred before a monitor attaches; periodic diagnostics continue. If startup output is needed, open the monitor and reconnect/reset with BOOT released, then rediscover the port if necessary. A panel timeout, USB reset loop, zero PSRAM, or visually incorrect frame is failed bring-up evidence to return to the agent; successful compilation does not override it.
+For a missing port, use a known USB data cable and ROM entry above. After ROM flashing, normal USB reconnect with BOOT released exits downloader mode. Stop on boot loops, panel timeout, wrong polarity/crop, missing AP, or leaked home identifiers; do not post secret-bearing logs. Restore the frozen accepted T14 bundle only with the exact recorded revision/hash and command in [T14-BRINGUP.md](T14-BRINGUP.md). Its lack of Wi-Fi is intentional. This rollback retains existing NVS unless Jeremy deliberately erases flash; no broad flash erase is part of this task.
 
-## Stop / rollback
+[HARDWARE.md](HARDWARE.md) records the accepted T14 pin/panel evidence. T15 physical radio/reset/persistence evidence has not yet been collected. GPIO21 is not EPD power; unused peripherals stay disabled. ADC uses global 11dB attenuation to avoid the premature per-pin initialization warning; T17 still owns calibration and pack thresholds.
 
-There is no deployment, Wi-Fi configuration or server change in this spike. Before flashing, rollback is just discarding the proposed source revision; leave the device untouched. After flashing, stop the test by closing the monitor and disconnecting USB. E-paper retains its image without power. To restore previous device behavior, Jeremy must explicitly choose and flash a known previous firmware or vendor image; this project has no captured factory backup. Do not erase flash or change server packing flags as an automatic recovery action.
-
-If the photographed frame is inverted or bit-reversed, report it. T14's card directs any approved wire-format correction through `server/config.json` and `server/bin/pack-setup.js`, followed by another physical check; never compensate with on-device layout or edits to the canonical PNG. Orientation/crop defects likewise require investigation and a reviewed fix. Keep T14 In progress until all physical checks, independent QA, green CI, review and merge gates are met.
+Primary library/API sources checked 2026-10-07: [official v2.0.17 release](https://github.com/tzapu/WiFiManager/releases/tag/v2.0.17), [pinned WiFiManager implementation](https://github.com/tzapu/WiFiManager/blob/v2.0.17/WiFiManager.cpp), and [Arduino3.2.1 WiFi implementation](https://github.com/espressif/arduino-esp32/blob/3.2.1/libraries/WiFi/src/WiFiGeneric.cpp). These explain nonblocking portal processing, NVS save/erase, bounded save waits and initial storage selection.

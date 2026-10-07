@@ -1,5 +1,61 @@
 # Work log
 
+## Session — T15 Wi-Fi provisioning
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 13:17 MDT / In progress
+- **Model:** Implementation GPT-6.1 Sol · Medium; independent QA GPT-6.1 Sol · High, reverified available in current collaboration tool schema. Primary runtime identity/effort not exposed.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / Pending
+- **Status at end:** In progress
+
+### Result
+Starting the explicitly authorized T15 run from merged T14 commit 08be1ac4024d1c79c25814f0881469804ab096a8 in a managed worktree. Implementing provisioning, persistent state and BOOT reset, with independent QA and hardware handoff. No T15 hardware release or operation authorized/performed.
+
+### Verification
+Pending implementation, meaningful software tests, frame preservation, firmware build, CI and independent QA. Jeremy's phone, reconnect, reset and persistence checks remain pending.
+
+### Decisions
+Default to pinned WiFiManager. Preserve approved hotspot/password/address and setup frame. T16 owns downloads and scheduled sleep; T15 may include an explicit bounded persistence-test harness. Never collect or print home credentials in agent logs/chat.
+
+### Problems
+None at start. No battery pack; USB power continues. The original primary checkout and unrelated .gitignore edit are preserved.
+
+### Needs Jeremy
+No action during implementation. Review and explicitly approve the resulting T15 frozen firmware before personally flashing/testing it.
+
+### Next
+Complete only T15 software preparation and independent QA, then pause at review/hardware gate. No T16 advancement.
+
+---
+
+## Session — T14 accepted merge and T15 advancement
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 13:14 MDT / 2026-10-07 13:17 MDT
+- **Model:** Primary Codex runtime; approval/merge bookkeeping only.
+- **Branch / PR:** Accepted `codex/t14-bringup` / https://github.com/jeremyward37/weather-epaper/pull/19; completion carried into T15 branch from merged main.
+- **Status at end:** Done
+
+### Result
+Jeremy explicitly said “Accept T14, merge PR #19, and start T15.” Merged the exact accepted revision 6b39baa9c2851735d2e6b2f3497d816725c8adc2 using a head-match guard. PR #19 merged at 13:16 MDT as 08be1ac4024d1c79c25814f0881469804ab096a8. Notion T14 Done; T15 In progress. All technical/physical criteria, independent QA, acceptance and merge gates passed.
+
+### Verification
+Both required CI jobs on the exact accepted revision succeeded in run 37671983034; GitHub confirmed MERGED and the squash commit. Actual display, no-pack ADC, button and runtime memory evidence are preserved in firmware/photos and firmware/logs. Frozen flashed app hash remains 197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d.
+
+### Decisions
+The same human message authorizes T15 implementation start. It does not authorize its later flash/acceptance/merge or T16 advancement. Keep T14 firmware snapshot intact; no hardware action by agents.
+
+### Problems
+None. Battery measurement remains later-card work.
+
+### Needs Jeremy
+None for completed T14. Leave USB connected if desired; T15 hardware instructions will follow a concrete review packet.
+
+### Next
+Authorized T15 only, with its own branch, worklog and independent QA.
+
+---
+
 ## Session — T14 button evidence and acceptance handoff
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b

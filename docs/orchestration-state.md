@@ -2,17 +2,17 @@
 
 This is the durable handoff ledger; update it with each run and approval. WORKLOG remains the append-only session history; Notion cards hold acceptance/status. Never store secrets.
 
-- **Updated:** 2026-10-07 13:05 MDT
-- **Active card:** T14 USB-powered board bring-up
-- **Stage:** All original T14 technical criteria and independent evidence QA Pass; awaiting Jeremy acceptance and merge authorization
-- **Branch / checkout:** `codex/t14-bringup` / `/private/tmp/weather-epaper-t14`
-- **Base / PR:** merged main `6887c8413abe53e705b5fc1ec6cacae30771229a`; [T14 PR #19](https://github.com/jeremyward37/weather-epaper/pull/19), reviewed implementation `4ac387dbbbb3672b11672222f360a83804c8d615`; subsequent review docs do not change firmware/config/workflow
-- **Independent QA:** Pass for clean build/frame/driver, corrected upload parsing, actual photo/memory/no-pack ADC/buttons and startup-warning assessment; separate `epaper_qa` GPT-6.1 Sol · High. Final-head CI required before merge. See `t14-qa.md`.
-- **Intended checks:** PlatformIO clean build, embedded setup header 15,000-byte/zero-pixel comparison, existing CI plus firmware build and artifact hashes.
-- **Pending Jeremy action:** Review completed PR #19 evidence and explicitly accept T14/authorize merge. Authorize T15 advancement if desired. All required photo/serial/button evidence is now supplied; no repeat flash/test requested. Ctrl-C may stop monitoring with USB left connected. Acceptance, merge and T15 advancement remain unauthorized.
-- **Next eligible task:** T15 only after T14's hardware/review/merge gates; T21 separately eligible, not dispatched.
-- **Hardware:** Jeremy flashed the reviewed T14 app, supplied matching setup photo and actual startup/ADC/button output. No battery; expected early November 2026. Jeremy intends continuous USB power until then. Technical hardware checks Pass; explicit acceptance pending, battery calibration/life untested.
-- **Reconciliation:** GitHub PR #17 merged at 2026-10-07 11:38:30 MDT (`6887c84`), required CI passed on final head `7e36c61`; Notion T23 Done. PR #18 (`bee7e19`) is open acceptance bookkeeping with passing CI, not a new T23 gate.
+- **Updated:** 2026-10-07 13:17 MDT
+- **Active card:** T15 Wi-Fi provisioning
+- **Stage:** T14 accepted/merged/Done; authorized T15 implementation and independent QA starting
+- **Branch / checkout:** `codex/t15-wifi-provisioning` / `/Users/jeremyward/.codex/worktrees/t15-wifi-provisioning/weather-epaper`
+- **Base / PR:** merged T14 `08be1ac4024d1c79c25814f0881469804ab096a8`; T15 PR pending. T14 PR #19 merged after acceptance of head `6b39baa9c2851735d2e6b2f3497d816725c8adc2`.
+- **Independent QA:** T15 pending; separate `epaper_qa` GPT-6.1 Sol · High. T14 final software and actual hardware evidence passed; see `t14-qa.md`.
+- **Intended checks:** native button/provisioning tests, clean production and bounded persistence-harness builds, setup-header byte identity, credential-log audit, corrected upload parsing and final-head CI.
+- **Pending Jeremy action:** None during T15 implementation. Its new firmware review/flash/phone/persistence/reset evidence, acceptance and merge remain pending. T14 acceptance/merge and T15 start are explicitly authorized below.
+- **Next eligible task:** T16 only after T15's own hardware/review/merge gates and explicit advancement; T21 separately eligible, not dispatched.
+- **Hardware:** T14 accepted: Jeremy flashed reviewed app, supplied setup photo, startup/no-pack ADC and button evidence. T15 physical provisioning/power-cycle/deep-sleep/reset tests pending. No battery; expected early November 2026; continuous USB intended. Battery calibration/life untested.
+- **Reconciliation:** PR #19 merged at 2026-10-07 13:16 MDT (`08be1ac`), required CI passed on accepted head `6b39baa`; Notion T14 Done and T15 In progress. PR #18 remains earlier acceptance bookkeeping; it is not a new delivery gate.
 
 ## Approval ledger
 
@@ -57,3 +57,11 @@ Source `4ac387d`: local and independent clean build successful; embedded frame 1
 - **Approved action:** Jeremy may connect in BOOT/download mode and flash this T14 artifact. No new permission question is required for that action. Agents still do not operate hardware or run upload commands under AGENTS.md rule 13.
 - **CI:** Both build and firmware passed on final reviewed revision in run 37665386687; any new software change requires QA and new revision approval.
 - **Remaining gates:** physical setup photo, actual no-pack ADC/button/startup readings, wire confirmation, Jeremy acceptance, authorized merge and separate T15 advancement. None passed by this approval alone.
+
+## T14 acceptance, merge and T15 start — 2026-10-07 13:14–13:17 MDT
+
+- **Human source:** Jeremy in this chat: “Accept T14, merge PR #19, and start T15.”
+- **Accepted revision:** PR #19 head `6b39baa9c2851735d2e6b2f3497d816725c8adc2`, firmware implementation `4ac387dbbbb3672b11672222f360a83804c8d615`, frozen app SHA-256 `197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d`.
+- **Completed action:** both required jobs passed in run 37671983034; authorized squash merge completed 13:16 MDT as `08be1ac4024d1c79c25814f0881469804ab096a8`. Notion T14 set Done.
+- **Authorized advancement:** start T15 Wi-Fi provisioning from the merged T14 code, with GPT-6.1 Sol · Medium implementation and separate GPT-6.1 Sol · High QA (availability checked in current runtime). Notion T15 set In progress, new managed worktree/branch and separate WORKLOG entry opened.
+- **Remaining restrictions:** this does not authorize a new T15 flash, acceptance, merge, scheduled deployment change, or T16 advancement. Hardware remains Jeremy's under AGENTS.md rule 13.

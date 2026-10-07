@@ -1,6 +1,6 @@
 # NM-EPD-420-BW hardware record
 
-Status: **setup photo, runtime memory, USB-only no-pack ADC and both button transitions observed 2026-10-07; Jeremy acceptance/merge pending**. Jeremy flashed the reviewed spike. This T14 run uses continuous USB power and an empty battery connector; a pack is not expected until early November. Battery calibration, actual battery voltage and power consumption remain unmeasured.
+Status: **setup photo, runtime memory, USB-only no-pack ADC and both button transitions observed 2026-10-07; Jeremy accepted and authorized merge; T14 Done and PR #19 merged**. Jeremy flashed the reviewed spike. This T14 run uses continuous USB power and an empty battery connector; a pack is not expected until early November. Battery calibration, actual battery voltage and power consumption remain unmeasured.
 
 ## Primary sources
 
@@ -32,7 +32,7 @@ ESP32-S3R8: 16 MB QSPI flash and 8 MB on-package OPI PSRAM. USB Type-C is native
 | LORA_EN | 47 | LoRa supply; LOW; no antenna needed for this non-radio test |
 | SD CS / LoRa NSS | 7 / 8 | Both deselected HIGH; neither bus initialized |
 
-EPD power is hard-wired to 3V3; **GPIO21 is I2S MCLK, not EPD power**. This project does not copy the misleading EPD power definition from the weather-demo port. Disable unused power-gated modules before initializing the display. Panel hibernation stops its controller after refresh; it does not put the ESP32 into deep sleep. No LoRa or Wi-Fi stack is initialized.
+EPD power is hard-wired to 3V3; **GPIO21 is I2S MCLK, not EPD power**. This project does not copy the misleading EPD power definition from the weather-demo port. Disable unused power-gated modules before initializing the display. Panel hibernation stops its controller after refresh; it does not put the ESP32 into deep sleep. No LoRa or Wi-Fi stack was initialized in the T14 spike; T15 initializes Wi-Fi.
 
 ## Display and wire format
 
@@ -40,7 +40,7 @@ Panel: GYE042A87, 400 × 300, black/white, SSD1683. Pinned driver: `GxEPD2_420_G
 
 Software wire contract: **15,000 bytes**, no header/compression, 1 bpp, row-major, 50 bytes per row, MSB first, **1 = white / 0 = black**. Pixel `(x,y)` is bit `7 - (x % 8)` of byte `y * 50 + x / 8`; origin is the top-left. `firmware/assets/setup_frame.h` is generated from the approved PNG by `node server/bin/pack-setup.js`, using `server/config.json`. Firmware does not draw text, decode PNG, reverse bits, or invert colors.
 
-A zero-pixel comparison of embedded bytes with `design/exports/states/state-setup.png` establishes software packing fidelity. Jeremy's actual photo [photos/t14-setup.jpg](photos/t14-setup.jpg), supplied as IMG_2842.JPG, establishes upright/unmirrored text and logo, black-on-white polarity, complete content and no visible crop, shift or missing columns. The orchestrator and separate QA both passed visual comparison with the canonical setup PNG. Camera angle and lighting limit this to visual inspection, not a pixel measurement of the photo. The frame used the default row-major/MSB-first/1=white wire contract without correction; scope §9 and decisions record this evidence. Jeremy's explicit acceptance remains pending.
+A zero-pixel comparison of embedded bytes with `design/exports/states/state-setup.png` establishes software packing fidelity. Jeremy's actual photo [photos/t14-setup.jpg](photos/t14-setup.jpg), supplied as IMG_2842.JPG, establishes upright/unmirrored text and logo, black-on-white polarity, complete content and no visible crop, shift or missing columns. The orchestrator and separate QA both passed visual comparison with the canonical setup PNG. Camera angle and lighting limit this to visual inspection, not a pixel measurement of the photo. The frame used the default row-major/MSB-first/1=white wire contract without correction; scope §9 and decisions record this evidence. Jeremy explicitly accepted T14 on 2026-10-07; PR #19 is merged.
 
 ## ADC, power and charger
 
@@ -60,10 +60,12 @@ Startup warnings were independently traced in the pinned sources. The premature 
 
 | Check | Evidence needed | Current result |
 |---|---|---|
-| Setup frame and wire format | Reviewed revision + flashed SHA-256 + whole-panel photo at `photos/t14-setup.jpg`; Jeremy confirms orientation, crop, shift and polarity | Photo and separate visual QA Pass; Jeremy acceptance pending |
+| Setup frame and wire format | Reviewed revision + flashed SHA-256 + whole-panel photo at `photos/t14-setup.jpg`; Jeremy confirms orientation, crop, shift and polarity | Photo, separate visual QA and Jeremy acceptance Pass |
 | USB-only ADC | Actual raw / ADC_mV / sense_mV lines, power source and no-pack note | Observed raw=0 / ADC_mV=0 / sense_mV=0, USB-only with no pack; not a battery measurement |
 | USER / BOOT | Each released HIGH → held LOW → released HIGH in serial | Pass: USER at 643956→645959→649965 ms; BOOT at 649965→651968→653971 ms; actual excerpt `logs/t14-buttons.txt` |
 | Flash / PSRAM | Startup capacity line, no reset loop / panel timeout | Observed 16777216 / 8388608 bytes; stable diagnostics, no timeout in supplied output |
 | Battery readings, calibration and sleep current | Pack and meter measurements in later cards | Not attempted |
 
-Exact flash, monitor, downloader recovery and stop/rollback steps are in [README.md](README.md). All original technical criteria have observed/software evidence. T14 stays In progress pending Jeremy acceptance; merge requires separate authorization and green CI.
+Exact flash, monitor, downloader recovery and stop/rollback steps are in [T14-BRINGUP.md](T14-BRINGUP.md). All original technical criteria have observed/software evidence. T14 is Done after Jeremy acceptance and authorized merge with green CI. T15 radio/reset/persistence physical checks remain pending.
+
+T14 merged revision: `08be1ac4024d1c79c25814f0881469804ab096a8` (PR #19). Current T15 build/test/hardware instructions are in [README.md](README.md); hotspot, credential persistence, reset behavior and the bounded deep-sleep harness await Jeremy evidence.

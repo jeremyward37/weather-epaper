@@ -1,7 +1,7 @@
 # T14 review packet — USB bring-up
 
 Task: [T14](https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b) · [PR #19](https://github.com/jeremyward37/weather-epaper/pull/19).
-Status: **In progress; all original technical criteria have evidence; Jeremy acceptance and authorized merge pending**. Updated 2026-10-07. Jeremy flashed the approved build and supplied setup photo, startup, no-pack ADC and both button transitions. All physical actions were Jeremy's; agents did not upload, reset or operate the board. Actual evidence is in `firmware/HARDWARE.md`, `firmware/photos/t14-setup.jpg` and `firmware/logs/`.
+Status: **Done; accepted by Jeremy and PR #19 merged**. Jeremy explicitly said “Accept T14, merge PR #19, and start T15.” Final accepted head `6b39baa9c2851735d2e6b2f3497d816725c8adc2` passed both required jobs in [run 37671983034](https://github.com/jeremyward37/weather-epaper/actions/runs/37671983034); squash merge `08be1ac4024d1c79c25814f0881469804ab096a8` completed 2026-10-07 13:16 MDT. T15 is separately In progress. Updated 2026-10-07. Jeremy flashed the approved build and supplied setup photo, startup, no-pack ADC and both button transitions. All physical actions were Jeremy's; agents did not upload, reset or operate the board. Actual evidence is in `firmware/HARDWARE.md`, `firmware/photos/t14-setup.jpg` and `firmware/logs/`.
 
 ## Reviewed software and evidence
 
@@ -17,10 +17,10 @@ Independent QA: separate `epaper_qa` (GPT-6.1 Sol · High), software and actual 
 | Clean firmware build and CI job | Independent clean PlatformIO build; firmware CI success | Pass on source revision; recheck final PR head |
 | Existing renderer/server regression gates | CI build: pinned build/verify, 7 zero-diff frames, 6 byte-identical CLI fixtures and tool/design/server tests | Pass on source revision; recheck final PR head |
 | HARDWARE.md | Pins, GYE042A87 driver, ADC, power/charger sources, explicit pending observations | Pass |
-| Setup photo and physical wire format | Jeremy's actual photo; independent visual QA Pass; findings recorded in scope/decisions | Photo QA Pass; Jeremy acceptance pending |
+| Setup photo and physical wire format | Jeremy's actual photo; independent visual QA Pass; findings recorded in scope/decisions | Pass; accepted by Jeremy |
 | Serial ADC and both buttons | Actual USB-only/no-pack raw=0, ADC_mV=0, sense_mV=0; both HIGH→LOW→HIGH in `firmware/logs/t14-buttons.txt` | Pass |
 | Independent software QA | Separate review and meaningful rerun | Pass |
-| Jeremy flash/review acceptance and authorized merge | Explicit human approval and physical evidence | Pending |
+| Jeremy flash/review acceptance and authorized merge | Explicit human approval; final-head green CI; PR #19 merged as `08be1ac` | Pass |
 
 ## Frozen artifact
 
@@ -33,7 +33,7 @@ Build environment: PlatformIO 6.1.18, pioarduino 54.03.21, Arduino-ESP32 3.2.1, 
 
 ## Needs Jeremy
 
-Review PR #19 and this completed evidence packet, then explicitly accept T14 and authorize its merge after current-head CI is green. Starting T15 requires explicit advancement authorization. No additional flash or physical test is required by the current evidence. T14 remains In progress until acceptance and authorized merge.
+None for T14. Jeremy accepted it, authorized merge and T15 advancement, and PR #19 is merged. The following procedure and frozen artifact are retained for recovery/reproduction; T15 has its own review and hardware gates.
 
 ## Completed hardware procedure — reference
 
