@@ -3,28 +3,28 @@
 ## Session — T15 Wi-Fi provisioning
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
-- **Started / finished:** 2026-10-07 13:17 MDT / In progress
+- **Started / finished:** 2026-10-07 13:17 MDT / 2026-10-07 13:52 MDT
 - **Model:** Implementation GPT-6.1 Sol · Medium; independent QA GPT-6.1 Sol · High, reverified available in current collaboration tool schema. Primary runtime identity/effort not exposed.
-- **Branch / PR:** `codex/t15-wifi-provisioning` / Pending
-- **Status at end:** In progress
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress; awaiting Jeremy review/flash and hardware evidence
 
 ### Result
-Starting the explicitly authorized T15 run from merged T14 commit 08be1ac4024d1c79c25814f0881469804ab096a8 in a managed worktree. Implementing provisioning, persistent state and BOOT reset, with independent QA and hardware handoff. No T15 hardware release or operation authorized/performed.
+Prepared T15 from accepted/merged T14 08be1ac in a managed worktree. Pinned WiFiManager 2.0.17, Wi-Fi-only portal, native NVS credentials, Preferences provisioning/frame/reset metadata, bounded reconnect and timer-latched BOOT reset/refresh hook. Setup redraw requires checked prior frame-hash invalidation. Separate bounded ten-second sleep harness supports physical persistence review. Final firmware/config/test/workflow source b8ae0c4c1680d6fd3857b6d413248e298599d8ee; approved frames/header/photo/log assets unchanged. No agent hardware operation.
 
 ### Verification
-Pending implementation, meaningful software tests, frame preservation, firmware build, CI and independent QA. Jeremy's phone, reconnect, reset and persistence checks remain pending.
+Ten deployed native scenarios and fourteen independent ESP timer/NVS failure scenarios passed. Independent clean normal/harness builds passed; regenerated embedded header unchanged, 15,000 bytes and zero differing pixels. Credential logging/upstream compile flags, parser-only esptool with serial denied, offline flash ranges/partition fit/image headers passed. Both source CI jobs passed in run 37676538752; final review-record head CI is required and tracked on PR #20/Notion before release or merge. Frozen read-only bundles under /private/tmp/weather-epaper-t15-artifacts/b8ae0c4c1680d6fd3857b6d413248e298599d8ee: normal app 1,132,240 bytes SHA-256 736c18b0ae031f60d32c1980192d0bc36a9de83fa0afa4f646ba0494a3556b3a; harness 1,140,000 bytes SHA-256 302af824bfe29974268d555605b6acb756945d4f16f13f93471d203d05a4fbd2. Root checked all copied bundle hashes and shell syntax without executing upload.
 
 ### Decisions
-Default to pinned WiFiManager. Preserve approved hotspot/password/address and setup frame. T16 owns downloads and scheduled sleep; T15 may include an explicit bounded persistence-test harness. Never collect or print home credentials in agent logs/chat.
+Preserve approved hotspot/password/address and exact setup bytes. Native credentials are authoritative; interrupted reset intent blocks old-config recovery. Capture five-second holds independently while portal processing blocks; apply events and storage/display work on the main thread. Verify submitted native config before completing setup. Checked frame invalidation prevents retaining an old normal-frame hash under the setup image. No fetch/scheduled sleep integration. All actual radio/NVS/reset criteria remain Pending until Jeremy tests.
 
 ### Problems
-None at start. No battery pack; USB power continues. The original primary checkout and unrelated .gitignore edit are preserved.
+Independent QA findings were fixed before the final source: missed hold during form save, false persistence success after portal recovery, stale-config success after failed save, Linux temp-path portability and unchecked frame-hash removal. No unresolved software blocker. Local Docker remains unavailable; required CI supplies canonical renderer/server regression evidence. The first branch push used an injected token without workflow scope; retry with existing keyring authorization succeeded, without changing credentials or Git configuration. No battery; USB continues. Original primary checkout/unrelated .gitignore edit and frozen T14 rollback bundle are preserved.
 
 ### Needs Jeremy
-No action during implementation. Review and explicitly approve the resulting T15 frozen firmware before personally flashing/testing it.
+Review PR #20 and docs/t15-review.md, then explicitly approve the normal T15 flash and separate persistence test. Jeremy performs ROM entry/verified upload, phone setup/private credential entry, power-cycle reconnect, BOOT/USER checks, failure/retry and actual timer-sleep reconnect; restore normal firmware afterward and return sanitized serial plus a whole-panel setup photo. No home credentials in chat. T15 acceptance/merge remain pending.
 
 ### Next
-Complete only T15 software preparation and independent QA, then pause at review/hardware gate. No T16 advancement.
+Pause at T15 review/hardware gate; no T16 dispatch. A handoff note on T16 records starting BOOT sampling before serial/wake delays when ext0 is integrated and reconciling its retained-frame network-failure policy. T16 requires later acceptance/merge and explicit advancement. Battery calibration/life remain later cards.
 
 ---
 

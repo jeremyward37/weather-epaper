@@ -2,14 +2,14 @@
 
 This is the durable handoff ledger; update it with each run and approval. WORKLOG remains the append-only session history; Notion cards hold acceptance/status. Never store secrets.
 
-- **Updated:** 2026-10-07 13:17 MDT
+- **Updated:** 2026-10-07 13:47 MDT
 - **Active card:** T15 Wi-Fi provisioning
-- **Stage:** T14 accepted/merged/Done; authorized T15 implementation and independent QA starting
+- **Stage:** T15 software QA Pass; awaiting Jeremy review/flash and hardware evidence. Final review-record CI must pass before release/merge.
 - **Branch / checkout:** `codex/t15-wifi-provisioning` / `/Users/jeremyward/.codex/worktrees/t15-wifi-provisioning/weather-epaper`
-- **Base / PR:** merged T14 `08be1ac4024d1c79c25814f0881469804ab096a8`; T15 PR pending. T14 PR #19 merged after acceptance of head `6b39baa9c2851735d2e6b2f3497d816725c8adc2`.
-- **Independent QA:** T15 pending; separate `epaper_qa` GPT-6.1 Sol · High. T14 final software and actual hardware evidence passed; see `t14-qa.md`.
-- **Intended checks:** native button/provisioning tests, clean production and bounded persistence-harness builds, setup-header byte identity, credential-log audit, corrected upload parsing and final-head CI.
-- **Pending Jeremy action:** None during T15 implementation. Its new firmware review/flash/phone/persistence/reset evidence, acceptance and merge remain pending. T14 acceptance/merge and T15 start are explicitly authorized below.
+- **Base / PR:** merged T14 `08be1ac4024d1c79c25814f0881469804ab096a8`; [T15 PR #20](https://github.com/jeremyward37/weather-epaper/pull/20), final firmware/config/test/workflow source `b8ae0c4c1680d6fd3857b6d413248e298599d8ee`. Later review records leave that source unchanged.
+- **Independent QA:** T15 software Pass; separate `epaper_qa` GPT-6.1 Sol · High. Ten deployed native plus fourteen independent timer/NVS failure scenarios, clean normal/harness builds, zero-pixel setup match, logging/upload/partition checks. Physical criteria Pending; see `t15-qa.md`.
+- **Intended checks:** completed software checks in `t15-qa.md`; source CI build/firmware Pass in run 37676538752. Require final PR-head checks green before release/merge; latest result tracked in GitHub/Notion.
+- **Pending Jeremy action:** review `t15-review.md` / PR #20 and explicitly approve normal T15 flash plus separate persistence test. Jeremy phone/save, power-cycle, runtime BOOT reset, actual deep-sleep persistence and sanitized evidence remain Pending, followed by acceptance and authorized merge.
 - **Next eligible task:** T16 only after T15's own hardware/review/merge gates and explicit advancement; T21 separately eligible, not dispatched.
 - **Hardware:** T14 accepted: Jeremy flashed reviewed app, supplied setup photo, startup/no-pack ADC and button evidence. T15 physical provisioning/power-cycle/deep-sleep/reset tests pending. No battery; expected early November 2026; continuous USB intended. Battery calibration/life untested.
 - **Reconciliation:** PR #19 merged at 2026-10-07 13:16 MDT (`08be1ac`), required CI passed on accepted head `6b39baa`; Notion T14 Done and T15 In progress. PR #18 remains earlier acceptance bookkeeping; it is not a new delivery gate.
@@ -65,3 +65,7 @@ Source `4ac387d`: local and independent clean build successful; embedded frame 1
 - **Completed action:** both required jobs passed in run 37671983034; authorized squash merge completed 13:16 MDT as `08be1ac4024d1c79c25814f0881469804ab096a8`. Notion T14 set Done.
 - **Authorized advancement:** start T15 Wi-Fi provisioning from the merged T14 code, with GPT-6.1 Sol · Medium implementation and separate GPT-6.1 Sol · High QA (availability checked in current runtime). Notion T15 set In progress, new managed worktree/branch and separate WORKLOG entry opened.
 - **Remaining restrictions:** this does not authorize a new T15 flash, acceptance, merge, scheduled deployment change, or T16 advancement. Hardware remains Jeremy's under AGENTS.md rule 13.
+
+## T15 software review gate — 2026-10-07 13:47 MDT
+
+Final source `b8ae0c4`: independent software QA Pass and both source CI jobs Pass (run 37676538752). Frozen read-only bundles: `/private/tmp/weather-epaper-t15-artifacts/b8ae0c4c1680d6fd3857b6d413248e298599d8ee/`, normal app SHA-256 `736c18b0ae031f60d32c1980192d0bc36a9de83fa0afa4f646ba0494a3556b3a`, bounded persistence-harness app `302af824bfe29974268d555605b6acb756945d4f16f13f93471d203d05a4fbd2`. Whole bundles/checksums and exact commands are in `t15-review.md`; earlier T15 build hashes are superseded. Final review-record CI remains required before release/merge and is recorded on GitHub/Notion. Jeremy has not yet approved these new flashes, performed physical T15 checks, accepted T15, or authorized its merge/T16 advancement. Card remains In progress; stop at this gate.

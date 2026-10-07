@@ -1,10 +1,10 @@
 # T15 review packet — Wi-Fi provisioning
 
-Task: [T15](https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b). Branch: `codex/t15-wifi-provisioning`, based on accepted/merged T14 `08be1ac`. PR/source revision and frozen hashes will be recorded after independent QA. Status **In progress; software preparation underway; all T15 physical checks Pending**. T14 was accepted by Jeremy and PR #19 merged; that approval authorizes T15 preparation, not its new firmware release.
+Task: [T15](https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b). Branch: `codex/t15-wifi-provisioning`, based on accepted/merged T14 `08be1ac`. [PR #20](https://github.com/jeremyward37/weather-epaper/pull/20). Final firmware/config/test/workflow source: `b8ae0c4c1680d6fd3857b6d413248e298599d8ee`; frozen hashes are below. Status **In progress; software QA Pass; awaiting Jeremy review/flash and hardware evidence**. T14 was accepted by Jeremy and PR #19 merged; that approval authorizes T15 preparation, not its new firmware release.
 
 ## Behavior
 
-The approved setup bitmap is drawn on provisioning entry. A password-protected `WeatherStation-Setup` hotspot serves the Wi-Fi-only captive portal at `192.168.4.1`; the public setup password is `firstlight`. Saved credentials reconnect on the next boot without a panel redraw. Setup remains visible until T16 downloads a frame. Runtime BOOT short release invokes a logged T16 refresh hook; a five-second hold clears credentials and returns to setup. USER is unused. Holding BOOT during physical reset enters the ROM downloader instead.
+The approved setup bitmap is drawn on provisioning entry after the previous frame hash is confirmed cleared. A metadata failure retries with BOOT handling active before any redraw. A password-protected `WeatherStation-Setup` hotspot serves the Wi-Fi-only captive portal at `192.168.4.1`; the public setup password is `firstlight`. Saved credentials reconnect on the next boot without a panel redraw. Setup remains visible until T16 downloads a frame. Runtime BOOT short release invokes a logged T16 refresh hook; a five-second hold clears credentials and returns to setup. USER is unused. Holding BOOT during physical reset enters the ROM downloader instead.
 
 Credentials remain in native Wi-Fi NVS. Preferences stores provisioning/frame metadata and reset intent; home identifiers/passwords are not logged. The approved frames, server, fetch behavior and refresh schedule are unchanged. The normal firmware stays awake on USB. A separate bounded persistence harness enters one ten-second timer sleep after a thirty-second grace period, then verifies saved reconnect without entering setup; it is a distinct artifact, not the T16 schedule.
 
@@ -12,24 +12,24 @@ Credentials remain in native Wi-Fi NVS. Preferences stores provisioning/frame me
 
 | Criterion | Evidence | Result |
 |---|---|---|
-| Pinned WiFiManager and required API/hotspot/portal | Source review and build; actual phone reachability still required | Software QA pending; physical Pending |
-| BOOT reset and short refresh hook, USER unused | Production-controller tests; actual runtime check required | Software QA pending; physical Pending |
-| Setup only on provisioning entry; frame identity slot | Source/native checks; setup header must remain byte-identical | Software QA pending |
+| Pinned WiFiManager and required API/hotspot/portal | Source review and build; actual phone reachability still required | Software Pass; physical Pending |
+| BOOT reset and short refresh hook, USER unused | Production-controller tests; actual runtime check required | Software Pass; physical Pending |
+| Setup only on provisioning entry; frame identity slot | Source/native checks; setup header must remain byte-identical | Software Pass |
 | Credentials survive power cycle and deep sleep | Native NVS path and separate bounded test build; Jeremy's serial/panel observations required | Physical Pending |
-| No credentials printed or committed | Source/upstream logging audit plus sanitized actual serial | Software QA pending; physical Pending |
+| No credentials printed or committed | Source/upstream logging audit plus sanitized actual serial | Software Pass; physical Pending |
 | Original four Jeremy checks with serial excerpts | Flash, phone/save, reconnect and long press | Pending |
-| Independent QA and final-head CI | Separate GPT-6.1 Sol · High audit, normal/harness builds, renderer/server checks | Pending |
+| Independent QA and final-head CI | Separate GPT-6.1 Sol · High audit: 10 deployed native scenarios, 14 independent timer/NVS failure scenarios, clean normal/harness builds, header regeneration/zero-pixel framediff, secret-log audit and offline upload checks. Source CI passed; final PR-head CI tracked on GitHub/Notion before release/merge | Software Pass; latest CI gate required |
 | Jeremy acceptance and authorized merge | Explicit instruction after evidence | Pending |
 
 ## Needs Jeremy
 
-First review this packet and its PR, then explicitly approve **T15 normal firmware flash and the separate persistence test**. Agents prepare the bundles but do not upload or operate hardware under [AGENTS.md](../AGENTS.md) rule 13. Do not repeat T14 flashing: these are new artifacts with their own hashes. Leave USB connected while software preparation runs.
+First review this packet and its PR, then explicitly approve **T15 normal firmware flash and the separate persistence test**. Agents prepare the bundles but do not upload or operate hardware under [AGENTS.md](../AGENTS.md) rule 13. Do not repeat T14 flashing: these are new artifacts with their own hashes. USB can remain connected until the approved flash procedure begins. Stop the existing monitor before upload.
 
 After approval, the orchestrator will guide these steps in order:
 
 1. Close the current monitor with Ctrl+C. Discover the serial port. With USB connected, hold **BOOT**, press/release **RESET**, wait two seconds, then release BOOT. Rediscover the ROM port; e-paper can keep its old image during this step.
 2. Verify the normal bundle's source revision and all SHA-256 checks, then upload the four explicit address/file pairs: bootloader `0x0000`, partitions `0x8000`, boot_app0 `0xe000`, app `0x10000`, DIO/80m/16MB. Use the frozen-bundle command supplied below. Do not use the broken vendor `nobuild` uploader. Press/release RESET with BOOT released if the app remains in downloader mode; rediscover its application port and open the monitor.
-3. Confirm the approved setup frame and `Setup AP IP: 192.168.4.1`. On a phone join `WeatherStation-Setup` with `firstlight`, open `http://192.168.4.1`, and enter home Wi-Fi credentials privately. Expect generic `Trying submitted Wi-Fi` / `Provisioning complete; setup frame retained`, hotspot closure, and the unchanged panel. Return sanitized serial only; do not share home SSID/password or credential-form screenshots.
+3. Confirm the approved setup frame and `Setup AP IP: 192.168.4.1`. If an existing native config reconnects instead, hold BOOT at least five seconds while the app is running to enter fresh setup. On a phone join `WeatherStation-Setup` with `firstlight`, open `http://192.168.4.1`, and enter home Wi-Fi credentials privately. Expect generic `Trying submitted Wi-Fi` / `Provisioning complete; setup frame retained`, hotspot closure, and the unchanged panel. Return sanitized serial only; do not share home SSID/password or credential-form screenshots.
 4. Disconnect/reconnect USB with BOOT released twice. Expect `Saved Wi-Fi connected; panel retained`, no setup-display log, no hotspot and no panel refresh. Keep the battery connector empty.
 5. Briefly press/release BOOT: expect one refresh-hook message. While firmware is running, hold BOOT at least five seconds, then release: expect reset, one setup redraw and the portal. A continued hold must not repeatedly redraw; USER should do nothing. Re-provision and confirm another power-cycle reconnect. Also check a wrong Wi-Fi submission remains in setup and permits a corrected submission; saved-network unavailability should enter setup after the bounded reconnect wait.
 6. After reviewing its separate hash, flash the persistence harness by the same ROM/hash/offset procedure. Provision if needed. Leave BOOT released: after thirty seconds it enters one ten-second timer sleep. CDC may disappear; rediscover/reopen the application port. Expect `Timer wake reconnected; persistence observed`, retained panel and no hotspot/redraw. A `FAIL timer wake required portal; persistence unproven` message does not pass persistence even if re-provisioning subsequently succeeds.
@@ -37,8 +37,70 @@ After approval, the orchestrator will guide these steps in order:
 
 ## Artifacts and exact commands
 
-Pending final independent QA/source revision. The completed packet will list both distinct bundles and their source/app hashes before any release approval is requested. Existing T14 snapshot remains unchanged at `/private/tmp/weather-epaper-t14-artifacts/4ac387dbbbb3672b11672222f360a83804c8d615/` for recovery under the accepted [T14 packet](t14-review.md).
+Source revision for both independent clean builds: **`b8ae0c4c1680d6fd3857b6d413248e298599d8ee`**. Later review/QA records do not alter firmware, config, tests or workflow. [Independent QA report](t15-qa.md) records commands and failure checks. Required source CI: [run 37676538752](https://github.com/jeremyward37/weather-epaper/actions/runs/37676538752); final PR-head checks must also be green before release/merge.
+
+Frozen local bundle root: `/private/tmp/weather-epaper-t15-artifacts/b8ae0c4c1680d6fd3857b6d413248e298599d8ee/`. Each environment folder contains the four flash images, firmware.elf, SHA256SUMS, SOURCE_REVISION and BUILD_VERSION; files are read-only. Root independently matched QA's app hashes and copied the pinned boot_app0 image. These exact local apps are the proposed release artifacts; CI Linux builds can have different hashes. Earlier implementer/QA app hashes are superseded. A rebuild is a different review artifact.
+
+| Environment folder | App bytes | App SHA-256 |
+|---|---:|---|
+| `nm-epd-420-bw` (normal) | 1,132,240 | `736c18b0ae031f60d32c1980192d0bc36a9de83fa0afa4f646ba0494a3556b3a` |
+| `provisioning-persistence-test` (bounded harness) | 1,140,000 | `302af824bfe29974268d555605b6acb756945d4f16f13f93471d203d05a4fbd2` |
+
+Both: PlatformIO 6.1.18, pioarduino 54.03.21, Arduino3.2.1, WiFiManager2.0.17, GxEPD2 1.6.8, GFX1.12.1, BusIO1.17.4, esp-idf-size1.6.1, 80MHz CPU/16MB DIO flash/8MB OPI PSRAM. Clean normal RAM63,204/app-flash1,131,838 bytes; harness RAM63,300/app-flash1,139,498. Firmware fits the 3MB app partition.
+
+Discover ports without opening the device:
+
+```sh
+/private/tmp/weather-epaper-t14-venv/bin/python -m serial.tools.list_ports -v
+```
+
+Last read-only enumeration: `/dev/cu.usbmodem14101`, USB JTAG/serial debug unit, VID:PID303A:1001, serial28:84:85:9F:0E:FC. Rediscover after ROM/reset/sleep; replace the port in commands if it changes. The following commands are **for Jeremy after explicit T15 approval**. They validate all five image/ELF hashes and the source revision before any write. They leave NVS untouched; do not add an erase-flash step.
+
+Normal flash, also used to restore normal firmware after the harness:
+
+```sh
+(
+  cd /private/tmp/weather-epaper-t15-artifacts/b8ae0c4c1680d6fd3857b6d413248e298599d8ee/nm-epd-420-bw &&
+  test "$(cat SOURCE_REVISION)" = b8ae0c4c1680d6fd3857b6d413248e298599d8ee &&
+  shasum -a 256 -c SHA256SUMS &&
+  /private/tmp/weather-epaper-t14-venv/bin/python \
+    /private/tmp/weather-epaper-t14-pio/packages/tool-esptoolpy/esptool.py \
+    --chip esp32s3 --port /dev/cu.usbmodem14101 --baud 115200 \
+    --before no-reset --after hard-reset \
+    write-flash -z --flash-mode dio --flash-freq 80m --flash-size 16MB \
+    0x0000 bootloader.bin 0x8000 partitions.bin \
+    0xe000 boot_app0.bin 0x10000 firmware.bin
+)
+```
+
+Separate harness flash, only for the reviewed persistence test:
+
+```sh
+(
+  cd /private/tmp/weather-epaper-t15-artifacts/b8ae0c4c1680d6fd3857b6d413248e298599d8ee/provisioning-persistence-test &&
+  test "$(cat SOURCE_REVISION)" = b8ae0c4c1680d6fd3857b6d413248e298599d8ee &&
+  shasum -a 256 -c SHA256SUMS &&
+  /private/tmp/weather-epaper-t14-venv/bin/python \
+    /private/tmp/weather-epaper-t14-pio/packages/tool-esptoolpy/esptool.py \
+    --chip esp32s3 --port /dev/cu.usbmodem14101 --baud 115200 \
+    --before no-reset --after hard-reset \
+    write-flash -z --flash-mode dio --flash-freq 80m --flash-size 16MB \
+    0x0000 bootloader.bin 0x8000 partitions.bin \
+    0xe000 boot_app0.bin 0x10000 firmware.bin
+)
+```
+
+After BOOT is released and normal RESET has started the app, monitor the rediscovered application port:
+
+```sh
+env PLATFORMIO_CORE_DIR=/private/tmp/weather-epaper-t14-pio \
+/private/tmp/weather-epaper-t14-venv/bin/pio device monitor \
+-d /Users/jeremyward/.codex/worktrees/t15-wifi-provisioning/weather-epaper/firmware \
+-e nm-epd-420-bw --port /dev/cu.usbmodem14101 --baud 115200
+```
+
+Offline QA validated esptool argument parsing while denying serial access, merged-image address ranges, partition fit and bootloader/app headers. No upload/reset/monitor was run by agents. On missing AP, credential leakage, boot loops, wrong panel content or Busy Timeout, stop and return sanitized evidence. Existing accepted T14 snapshot remains unchanged at `/private/tmp/weather-epaper-t14-artifacts/4ac387dbbbb3672b11672222f360a83804c8d615/`; recovery is the exact accepted T14 command in [T14 packet](t14-review.md) / [historical bring-up guide](../firmware/T14-BRINGUP.md), with its recorded app hash. No broad flash erase is included.
 
 ## Limits and next gate
 
-No actual radio, phone, NVS persistence or runtime reset observation is claimed from compilation/mocks. Battery calibration and life await the pack and later cards. T16 owns weather download, ext0 wake integration and the half-hourly schedule. T15 stays In progress until its criteria, independent QA, Jeremy acceptance and authorized merge all pass. No T16 work is dispatched.
+No actual radio, phone, NVS persistence or runtime reset observation is claimed from compilation/mocks. Battery calibration and life await the pack and later cards. T16 owns weather download, ext0 wake integration and the half-hourly schedule. T15 stays In progress until its criteria, independent QA, Jeremy acceptance and authorized merge all pass. No T16 work is dispatched. When T16 implements ext0 wake, start BOOT sampling before serial/wake-processing waits so its held-wake threshold starts immediately; this note is also on the T16 card.
