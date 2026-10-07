@@ -1,5 +1,61 @@
 # Work log
 
+## Session — T15 final evidence review gate
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 15:52 MDT / 2026-10-07 15:58 MDT
+- **Model:** Primary runtime; independent epaper_qa GPT-6.1 Sol · High actual-evidence reconciliation.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress; awaiting final evidence-head CI and Jeremy acceptance/authorized merge
+
+### Result
+Independent hardware audit passes all original T15 functional criteria: four checks with serial, power-cycle/timer-sleep persistence and long BOOT clear, no credentials in reviewed source/observed logs. Jeremy confirms USER and repeated physical-cycle panel retention. Normal restored/provisioned; stopped raw observer normally. Supplied IMG_2842.JPG matches accepted T14 photo byte-for-byte and is recorded as reused visual reference, not fresh T15 exposure. Original card has no separate fresh-photo criterion. Updated packet, hardware reconciliation, current firmware docs and state; no source or approved frame change.
+
+### Verification
+Actual serial/flash records and independent audit in docs/t15-hardware-qa.md. Photo SHAfe30c95d... matches firmware/photos/t14-setup.jpg. One TIMER-only harness success cycle; second USB disconnect/reattach/saved reconnect directly captured. No credential values in captures. Both prior-head CI jobs passed on10a0682/run37691530555; final evidence-head CI remains required before merge. git diff --check passed before publication. Independent final packet audit confirmed original criteria Pass and production source/tests/config/assets/workflow unchanged; corrected its two documentation findings (stale live limits and fallback port).
+
+### Decisions
+Distinguish original acceptance criteria from recommended physical wrong-submission/unavailable-network coverage: software-tested, physically unrun, limitations preserved. Reused photo plus current panel reports and exact unchanged frame bytes do not become a fresh exposure. Present original-criteria Pass with honest limits; retain In progress until explicit acceptance/authorized merge. T16 remains separate.
+
+### Problems
+No original-criteria blocker. No new fresh photo supplied; prior accepted visual reference is reused. No battery measurements.
+
+### Needs Jeremy
+Review concrete PR #20/evidence/limits and explicitly accept T15/authorize merge if satisfied; separately authorize T16 start if desired. No repeated flash or private Wi-Fi entry required.
+
+### Next
+Read final evidence-head CI, then stop at review gate. Merge only with explicit authorization and green exact-head CI. No T16 work before authorized advancement.
+
+---
+
+## Session — T15 portal return and re-provision
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 15:48 MDT / 2026-10-07 15:51 MDT
+- **Model:** Primary runtime; actual hardware evidence capture, no implementation change.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress
+
+### Result
+Jeremy rejoined the returned portal and reentered correct home settings before the planned failed-submission check. Actual logs now confirm Setup AP IP192.168.4.1, Trying submitted Wi-Fi, and Provisioning complete; setup frame retained. Portal return after the runtime BOOT clear and correct re-provision succeed. Saved full sanitized sequence as firmware/logs/t15-reset-reprovision.txt. No reason to repeat correct setup. While the requested USER/power-cycle steps were pending, observer captured USB disconnect, same-board reattach and Saved Wi-Fi connected; panel retained, without setup redraw/AP. Jeremy confirms brief USER then unplug/wait/replug/wait completed and screen stayed unchanged through both. USER inactivity and directly observed second USB-cycle saved reconnect/no redraw Pass.
+
+### Verification
+Actual restored-normal runtime sequence contains one short hook, one credential-reset/setup display, AP callback and successful new phone save. No home identifiers/passwords in observed capture. Approved source b8ae0c4/app736c18b0 unchanged, no new upload. Failed-submission/retry was not exercised; do not claim it passed. USER/panel report plus actual observer disconnect/reattach/saved reconnect complete the second physical cycle. No new setup-display/AP line after reconnect. Both pre-update CI jobs passed on10a0682, run37691530555.
+
+### Decisions
+Accept Jeremy's correct submission as the intended re-provision evidence. Do not erase working settings merely because he entered them sooner than requested. Preserve failed-submission/saved-network-unavailability checks as unobserved software-tested cases for the review packet.
+
+### Problems
+None established. Portal return/AP IP are now observed, resolving the previously absent callback evidence.
+
+### Needs Jeremy
+Send a fresh whole-panel setup photograph. Original functional checks now have actual evidence; independent hardware criterion reconciliation and explicit acceptance/authorized merge remain. No additional credential entry required at this point.
+
+### Next
+Receive/check photo, reconcile independent hardware QA and unrun recommended physical failure-path checks, then present the concrete acceptance/merge gate. T15 In progress, no merge or T16 advancement yet.
+
+---
+
 ## Session — T15 physical BOOT observation
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b

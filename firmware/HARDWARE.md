@@ -66,6 +66,6 @@ Startup warnings were independently traced in the pinned sources. The premature 
 | Flash / PSRAM | Startup capacity line, no reset loop / panel timeout | Observed 16777216 / 8388608 bytes; stable diagnostics, no timeout in supplied output |
 | Battery readings, calibration and sleep current | Pack and meter measurements in later cards | Not attempted |
 
-Exact flash, monitor, downloader recovery and stop/rollback steps are in [T14-BRINGUP.md](T14-BRINGUP.md). All original technical criteria have observed/software evidence. T14 is Done after Jeremy acceptance and authorized merge with green CI. T15 radio/reset/persistence physical checks remain pending.
+Exact flash, monitor, downloader recovery and stop/rollback steps are in [T14-BRINGUP.md](T14-BRINGUP.md). All original technical criteria have observed/software evidence. T14 is Done after Jeremy acceptance and authorized merge with green CI. T15 radio/reset/power-cycle/timer-persistence original checks are now observed and independently reconciled; acceptance/authorized merge remain pending. See ../docs/t15-hardware-qa.md for limits.
 
-T14 merged revision: `08be1ac4024d1c79c25814f0881469804ab096a8` (PR #19). Current T15 build/test/hardware instructions are in [README.md](README.md); hotspot, credential persistence, reset behavior and the bounded deep-sleep harness await Jeremy evidence.
+T14 merged revision: `08be1ac4024d1c79c25814f0881469804ab096a8` (PR #19). Current T15 build/test/hardware instructions are in [README.md](README.md); hotspot, credential persistence, reset behavior and one bounded timer-sleep cycle have actual evidence; exact normal restored. Final review gates and unrun recommended physical cases are in ../docs/t15-hardware-qa.md.

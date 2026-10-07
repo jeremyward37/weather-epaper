@@ -1,6 +1,6 @@
 # T15 review packet — Wi-Fi provisioning
 
-Task: [T15](https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b). Branch: `codex/t15-wifi-provisioning`, based on accepted/merged T14 `08be1ac`. [PR #20](https://github.com/jeremyward37/weather-epaper/pull/20). Final firmware/config/test/workflow source: `b8ae0c4c1680d6fd3857b6d413248e298599d8ee`; frozen hashes are below. Status **In progress; software QA Pass; normal flash and persistence test approved; normal firmware flashed; phone save and actual timer-sleep persistence passed; normal restored; awaiting remaining physical reset/reconnect evidence**. T14 was accepted by Jeremy and PR #19 merged; that approval authorizes T15 preparation, not its new firmware release.
+Task: [T15](https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b). Branch: `codex/t15-wifi-provisioning`, based on accepted/merged T14 `08be1ac`. [PR #20](https://github.com/jeremyward37/weather-epaper/pull/20). Final firmware/config/test/workflow source: `b8ae0c4c1680d6fd3857b6d413248e298599d8ee`; frozen hashes are below. Status **In progress; original functional criteria and independent QA Pass; approved normal installed; awaiting final evidence-head CI, Jeremy acceptance and authorized merge**. T14 was accepted by Jeremy and PR #19 merged; that approval authorizes T15 preparation, not its new firmware release.
 
 ## Behavior
 
@@ -13,21 +13,23 @@ Credentials remain in native Wi-Fi NVS. Preferences stores provisioning/frame me
 | Criterion | Evidence | Result |
 |---|---|---|
 | Pinned WiFiManager and required API/hotspot/portal | Source review/build plus Jeremy phone submission and actual Provisioning complete serial line in t15-phone-provisioning.txt | Pass |
-| BOOT reset and short refresh hook, USER unused | Production-controller tests and t15-boot-reset.txt plus Jeremy panel report: one short hook, one reset/setup after ten-second hold; USER/portal re-entry still pending | BOOT observed; remainder Pending |
+| BOOT reset and short refresh hook, USER unused | Production-controller tests and t15-boot-reset.txt plus Jeremy panel report: one short hook, one reset/setup after ten-second hold; AP/phone re-entry/correct re-provision observed in t15-reset-reprovision.txt; Jeremy confirms USER has no visible effect | Pass for observed runtime checks |
 | Setup only on provisioning entry; frame identity slot | Source/native checks; setup header must remain byte-identical | Software Pass |
-| Credentials survive power cycle and deep sleep | Actual harness saved reconnect after TIMER wake: t15-timer-persistence.txt; independent audit Pass. Earlier power-cycle panel retained reported; directly captured repeat pending | Timer sleep Pass; physical cycle Partial |
+| Credentials survive power cycle and deep sleep | Actual harness TIMER-wake saved reconnect, independent audit Pass; second physical USB transition/saved reconnect captured in t15-reset-reprovision.txt, Jeremy confirms unchanged panel | Pass for observed cycles |
 | No credentials printed or committed | Source/upstream logging audit and sanitized actual startup/phone serial | Pass for observed runs |
-| Original four Jeremy checks with serial excerpts | Flash and phone/save observed; monitor-induced-reset saved reconnect observed; physical power cycle/long press pending | Partial |
+| Original four Jeremy checks with serial excerpts | Normal/harness/restore verified, phone save/re-provision, physical power-cycle saved reconnect and long BOOT reset/portal return observed | Pass; independent original-criteria audit complete |
 | Independent QA and final-head CI | Separate GPT-6.1 Sol · High audit: 10 deployed native scenarios, 14 independent timer/NVS failure scenarios, clean normal/harness builds, header regeneration/zero-pixel framediff, secret-log audit and offline upload checks. Source CI passed; final PR-head CI tracked on GitHub/Notion before release/merge | Software Pass; latest CI gate required |
 | Jeremy acceptance and authorized merge | Explicit instruction after evidence | Pending |
 
 ## Needs Jeremy
 
+Review [the independent hardware reconciliation](t15-hardware-qa.md) and this packet, including the unrun recommended physical failure paths and reused-photo provenance. Original card functional criteria passed; normal is restored and provisioned. No more routine phone/flash steps are required for those criteria. Explicitly accept T15 and authorize PR #20 merge when satisfied; T16 start requires separate authorization (may be combined in one instruction). Latest-head CI must be green before merge.
+
 Jeremy explicitly approved **T15 normal firmware flash and the separate persistence test** for reviewed PR head `250ec59` and both exact frozen hashes below; both required CI jobs passed in run 37677877843. His subsequent request that the agent run Terminal commands overrides AGENTS.md rule 13's manual Terminal handoff for these approved operations. The agent completed the normal upload with automatic BOOT entry (`--before default-reset`), exit 0 and all written-image hashes verified. Startup confirmed the setup frame and AP IP 192.168.4.1; see [flash record](../firmware/logs/t15-normal-flash-record.md) and [startup capture](../firmware/logs/t15-first-startup.txt). The agent handles upload/monitor/harness/normal restore; Jeremy handles private phone credentials, buttons, physical power cycles and photos. No repeat approval is needed.
 
 The steps and commands below remain a manual fallback reference; normal flashing is already complete.
 
-The remaining test sequence is:
+Completed test/reference sequence (recommended additional physical failure cases remain unrun as recorded):
 
 1. Close the current monitor with Ctrl+C. Discover the serial port. With USB connected, hold **BOOT**, press/release **RESET**, wait two seconds, then release BOOT. Rediscover the ROM port; e-paper can keep its old image during this step.
 2. Verify the normal bundle's source revision and all SHA-256 checks, then upload the four explicit address/file pairs: bootloader `0x0000`, partitions `0x8000`, boot_app0 `0xe000`, app `0x10000`, DIO/80m/16MB. Use the frozen-bundle command supplied below. Do not use the broken vendor `nobuild` uploader. Press/release RESET with BOOT released if the app remains in downloader mode; rediscover its application port and open the monitor.
@@ -56,7 +58,7 @@ Discover ports without opening the device:
 /private/tmp/weather-epaper-t14-venv/bin/python -m serial.tools.list_ports -v
 ```
 
-Last read-only enumeration: `/dev/cu.usbmodem14101`, USB JTAG/serial debug unit, VID:PID303A:1001, serial28:84:85:9F:0E:FC. Rediscover after ROM/reset/sleep; replace the port in commands if it changes. The following commands are the approved upload reference; the agent may execute them under the recorded Terminal override. Automatic entry uses `--before default-reset`; the shown `no-reset` variant requires manual ROM entry. They validate all five image/ELF hashes and the source revision before any write. They leave NVS untouched; do not add an erase-flash step.
+Latest resumed enumeration: `/dev/cu.usbmodem114101`, USB JTAG/serial debug unit, VID:PID303A:1001, serial28:84:85:9F:0E:FC. Rediscover after ROM/reset/sleep; replace the port in commands if it changes. The following commands are the approved upload reference; the agent may execute them under the recorded Terminal override. Automatic entry uses `--before default-reset`; the shown `no-reset` variant requires manual ROM entry. They validate all five image/ELF hashes and the source revision before any write. They leave NVS untouched; do not add an erase-flash step.
 
 Normal flash, also used to restore normal firmware after the harness:
 
@@ -67,7 +69,7 @@ Normal flash, also used to restore normal firmware after the harness:
   shasum -a 256 -c SHA256SUMS &&
   /private/tmp/weather-epaper-t14-venv/bin/python \
     /private/tmp/weather-epaper-t14-pio/packages/tool-esptoolpy/esptool.py \
-    --chip esp32s3 --port /dev/cu.usbmodem14101 --baud 115200 \
+    --chip esp32s3 --port /dev/cu.usbmodem114101 --baud 115200 \
     --before no-reset --after hard-reset \
     write-flash -z --flash-mode dio --flash-freq 80m --flash-size 16MB \
     0x0000 bootloader.bin 0x8000 partitions.bin \
@@ -84,7 +86,7 @@ Separate harness flash, only for the reviewed persistence test:
   shasum -a 256 -c SHA256SUMS &&
   /private/tmp/weather-epaper-t14-venv/bin/python \
     /private/tmp/weather-epaper-t14-pio/packages/tool-esptoolpy/esptool.py \
-    --chip esp32s3 --port /dev/cu.usbmodem14101 --baud 115200 \
+    --chip esp32s3 --port /dev/cu.usbmodem114101 --baud 115200 \
     --before no-reset --after hard-reset \
     write-flash -z --flash-mode dio --flash-freq 80m --flash-size 16MB \
     0x0000 bootloader.bin 0x8000 partitions.bin \
@@ -98,14 +100,14 @@ After BOOT is released and normal RESET has started the app, monitor the redisco
 env PLATFORMIO_CORE_DIR=/private/tmp/weather-epaper-t14-pio \
 /private/tmp/weather-epaper-t14-venv/bin/pio device monitor \
 -d /Users/jeremyward/.codex/worktrees/t15-wifi-provisioning/weather-epaper/firmware \
--e nm-epd-420-bw --port /dev/cu.usbmodem14101 --baud 115200
+-e nm-epd-420-bw --port /dev/cu.usbmodem114101 --baud 115200
 ```
 
 Offline QA validated esptool argument parsing while denying serial access, merged-image address ranges, partition fit and bootloader/app headers. That offline QA involved no device access. The subsequent approved normal upload and startup capture are recorded above. On missing AP, credential leakage, boot loops, wrong panel content or Busy Timeout, stop and return sanitized evidence. Existing accepted T14 snapshot remains unchanged at `/private/tmp/weather-epaper-t14-artifacts/4ac387dbbbb3672b11672222f360a83804c8d615/`; recovery is the exact accepted T14 command in [T14 packet](t14-review.md) / [historical bring-up guide](../firmware/T14-BRINGUP.md), with its recorded app hash. No broad flash erase is included.
 
 ## Limits and next gate
 
-Actual phone reachability/save, normal flash/startup, one timer-sleep saved reconnect and normal restore are observed. Remaining physical power-cycle/BOOT/USER/failure/photo observations and acceptance/merge stay pending; compilation/mocks do not pass these criteria. Battery calibration and life await the pack and later cards. T16 owns weather download, ext0 wake integration and the half-hourly schedule. T15 stays In progress until its criteria, independent QA, Jeremy acceptance and authorized merge all pass. No T16 work is dispatched. When T16 implements ext0 wake, start BOOT sampling before serial/wake-processing waits so its held-wake threshold starts immediately; this note is also on the T16 card.
+All original T15 functional criteria and independent hardware QA pass: actual phone save, physical USB-cycle saved reconnect, one timer-sleep saved reconnect, runtime BOOT clear/re-provision, USER inactivity and normal restore are observed. Recommended wrong-submission and unavailable-network cases remain physically unrun, with software coverage. The supplied photo is the accepted T14 reference reused byte-for-byte; current T15 panel reports and unchanged setup frame bytes are separately recorded. Final evidence-head CI, Jeremy acceptance and authorized merge remain pending. Battery calibration and life await the pack and later cards. T16 owns weather download, ext0 wake integration and the half-hourly schedule. T15 stays In progress until its criteria, independent QA, Jeremy acceptance and authorized merge all pass. No T16 work is dispatched. When T16 implements ext0 wake, start BOOT sampling before serial/wake-processing waits so its held-wake threshold starts immediately; this note is also on the T16 card.
 
 ## Actual phone save — 2026-10-07 14:21 MDT
 
@@ -120,3 +122,15 @@ Exact approved normal bundle restored, all four write hashes verified and `Saved
 ## Actual normal runtime BOOT observation — 2026-10-07
 
 Jeremy confirmed panel refresh back to Wi-Fi setup after brief BOOT press/release, two-second wait, ten-second hold/release without RESET. [Actual runtime](../firmware/logs/t15-boot-reset.txt) records one short refresh hook, one credential reset and one setup display; driver two full-update phases are one setup entry, not repeated hold resets. Phone portal re-entry still pending because AP callback line has not yet appeared. No actual credential-erasure success is inferred solely from setup image. USER, failed submission/correct retry, directly captured second physical USB cycle and setup photo remain pending. Frozen restored normal/source unchanged.
+
+## Actual portal return and correct re-provision — 2026-10-07
+
+Jeremy rejoined the setup portal and submitted correct home settings again. [Full restored-normal sequence](../firmware/logs/t15-reset-reprovision.txt) now includes AP IP192.168.4.1, new submission and Provisioning complete after the short/long BOOT reset. Portal return and correct re-provision Pass. Failed-submission/corrected-retry was skipped by this submission, so remains physically unobserved; saved-network-unavailable physical case also unobserved, software tests Pass for both. Working credentials retained; no extra reset performed just to repeat setup. USER, directly captured second physical cycle and fresh photo remain pending, followed by acceptance/authorized merge.
+
+Post-reprovision observer also captured USB disconnect, same-board raw reattach and saved reconnect without setup redraw/AP in t15-reset-reprovision.txt. Normal firmware has no ESP sleep; this is a new USB transition while Jeremy's physical cycle/panel/USER report is pending. Do not mark USER/panel observation Pass from serial absence alone.
+
+Jeremy subsequently confirmed requested brief USER plus five-second USB unplug/replug and twenty-second wait, with the screen unchanged through both. Actual capture already showed USB disconnect/reattach and saved reconnect without redraw/AP; USER inactivity and this second physical cycle Pass. Fresh whole-panel photo requested; independent final hardware reconciliation is pending, with failed-submission/saved-network-unavailable physical cases still explicitly unobserved (software tests Pass). Acceptance/merge and T16 advancement remain unauthorized.
+
+## Final original-criteria gate and photo provenance — 2026-10-07
+
+Independent hardware reconciliation [t15-hardware-qa.md](t15-hardware-qa.md) passes all original T15 functional criteria. Wrong-submission/retry and saved-network-unavailable remain physically unobserved recommendations with passing software coverage; no extra physical failure result is claimed. Supplied IMG_2842.JPG is byte-identical to accepted [T14 setup photo](../firmware/photos/t14-setup.jpg), reused visual reference rather than a fresh T15 exposure. Jeremy's actual T15 redraw/retention reports and unchanged exact setup bytes are separate evidence. Original card has no fresh-photo requirement. Normal installed/provisioned; raw monitor stopped. Final evidence-head CI and explicit acceptance/authorized merge remain required; no T16 authorization.
