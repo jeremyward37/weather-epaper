@@ -4,7 +4,7 @@ Updated 2026-10-07. Jeremy requested implementation subagents, independent testi
 
 ## Current handoff
 
-Reconciled 2026-10-07: T01–T15, T22 and T23 are Done; T15 PR #20 merged as `637c275` after green accepted-head CI. Jeremy accepted T15 and explicitly authorized T16 start. T16 is In progress; T17–T21 remain Not started. Original T14/T15 hardware criteria and independent QA passed. Jeremy plans continuous USB until the battery arrives in early November. Resume T16 from orchestration-state.md; its own software, flash/hardware, acceptance and merge gates remain required.
+Reconciled 2026-10-07: T01–T15, T22 and T23 are Done; T15 PR #20 merged as `637c275` after green accepted-head CI. Jeremy accepted T15 and explicitly authorized T16 start. T16 is In progress in PR #21, awaiting reviewed production flash/test approval after software QA and required CI. Original physical criteria remain Pending; T17–T21 remain Not started. Original T14/T15 hardware criteria and independent QA passed. Jeremy plans continuous USB until the battery arrives in early November. Resume T16 from orchestration-state.md; its own software, flash/hardware, acceptance and merge gates remain required.
 
 ## Start or resume
 

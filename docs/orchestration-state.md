@@ -2,17 +2,20 @@
 
 This is the durable handoff ledger; update it with each run and approval. WORKLOG remains the append-only session history; Notion cards hold acceptance/status. Never store secrets.
 
-- **Updated:** 2026-10-07 16:09 MDT
+- **Updated:** 2026-10-07 16:41 MDT
 - **Active card:** T16 wake, sync time, fetch frame, display and deep sleep
-- **Stage:** Implementation started after explicit T15 acceptance/merge/T16-start approval; own independent QA/review/hardware gates pending.
-- **Branch / checkout:** `codex/t16-wake-fetch-sleep` / `/Users/jeremyward/.codex/worktrees/t15-wifi-provisioning/weather-epaper` (clean attached checkout reused on new card branch)
-- **Base / PR:** merged T15 `637c2751c740f1a6dfe939a45acece1f09e5b74f`; T16 PR pending.
-- **Independent QA:** T15 original criteria Pass; T16 pending separate epaper_qa GPT-6.1 Sol · High.
-- **Intended checks:** native schedule/DST and failure preservation, TLS/exact-size frames, bounded operations, hash no-redraw, sleep shutdown, builds/CI; actual scheduled wakes/frame/offline and current measurement or documented limitation.
-- **Pending Jeremy action:** None during software preparation. T16 tested packet and frozen artifacts will precede any new hardware release/flash approval.
+- **Stage:** Awaiting Jeremy review / production flash and one-hour physical-test approval. Software QA passed; physical criteria remain Pending.
+- **Branch / checkout:** `codex/t16-wake-fetch-sleep` / `/Users/jeremyward/.codex/worktrees/t15-wifi-provisioning/weather-epaper` (attached managed checkout reused on new branch)
+- **Base / PR:** merged T15 `637c2751c740f1a6dfe939a45acece1f09e5b74f`; [PR #21](https://github.com/jeremyward37/weather-epaper/pull/21).
+- **Software/artifact revision:** `068113577d1739da8b7ac13cfc77dec5d3b7d7c6`. Review/QA documentation-only commits do not change firmware/config/tests/workflow or frozen bundles.
+- **Independent QA:** epaper_qa GPT-6.1 Sol · High software Pass: exact source, baseline25+32 independent deployed-code cases, native Unity, three clean builds, zero setup diff, frozen image/CLI/packet checks. Report `docs/t16-qa.md`; original physical criteria Pending.
+- **CI:** Source head0681135 build/firmware both SUCCESS, run37696744465. Require latest documentation-head success before release/merge; exact final readback recorded on GitHub/Notion.
+- **Frozen root / proposed production:** `/private/tmp/weather-epaper-t16-artifacts/068113577d1739da8b7ac13cfc77dec5d3b7d7c6/`; normal app1320544 bytes, SHA17122de56f655b7b37bcc3464f310416ec8b48e189730157e95b9b9a0bc29957. Debug/harness are separately hashed regression artifacts, not proposed production releases. See `docs/t16-review.md`.
+- **Pending Jeremy action:** Review packet; approve exact production T16 flash/one-hour physical test. Agent handles Terminal under enduring override; Jeremy handles physical controls/private credentials/photos/measurement or limitation. No T16 upload yet.
+- **Physical criteria:** actual production wakes across at least one hour, matching preview/changed/unchanged/offline retention, deep-sleep current or documented reason unavailable; not established by compilation/native fakes.
 - **Next eligible task:** No T17 advancement before T16 original criteria/review/authorized merge and explicit start.
-- **Hardware:** Accepted T15 normal installed/provisioned, monitor stopped. No battery until early November; continuous USB. Agent Terminal override persists for authorized operations, physical controls/credentials/photos remain Jeremy's.
-- **Reconciliation:** PR #20 merged at16:07:53 MDT as637c275; accepted head6e0c57f had both required CI jobs SUCCESS in run37693025721. T15 and T12 Done, T16 In progress; later cards not dispatched.
+- **Hardware:** Accepted T15 normal installed/provisioned, monitor stopped; continuous USB, no battery until early November. ADC0 selects provisional lowbat, not detected charge/pack presence.
+- **Reconciliation:** PR20 merged16:07:53 MDT as637c275 after both accepted-head CI jobs SUCCESS. T15/T12 Done, T16 In progress. Host endpoint trusted/exact-size/hash/zero-diff checks pass; observed stale footer/T21 reliability issue remains separate. No hosting changes or later-card work.
 
 ## Approval ledger
 
@@ -100,3 +103,7 @@ Actual harness upload verified all four writes. Runtime logged saved reconnect, 
 ## T15 acceptance / PR20 merge / T16 start — 2026-10-07 16:07 MDT
 
 Jeremy: “So long as I should not be seeing the weather yet on it then yes I accept T15, merge PR #20 and start T16 please.” Setup retention at T15 is expected. Accepted head6e0c57f36abd041468066961de6ed02d627867b6, both required checks green in run37693025721. Exact-head-guarded squash merge637c2751c740f1a6dfe939a45acece1f09e5b74f at16:07:53 MDT; T15 Done. T16 start explicitly authorized, separate branch and log opened, card In progress. No T16 flash/release/merge or T17 advancement authorized by this message. Prior Terminal-operation override persists; no manual Terminal handoff is required for later approved device operations.
+
+## T16 software review packet — 2026-10-07 16:41 MDT
+
+Source0681135: independent software QA Pass, both source CI jobs SUCCESS in run37696744465; concrete PR21/review packet and frozen normal17122de5 app prepared. Exact latest-head CI readback is required and recorded on GitHub/Notion before presenting approval. No hardware upload/access or new hosting change occurred. Production-only flash and one-hour test is requested, with agent Terminal operations under the existing override. Original physical criteria/current measurement or documented limitation, Jeremy acceptance, authorized merge and T17 advancement remain Pending; T16 In progress. No debug/harness flash approval inferred.

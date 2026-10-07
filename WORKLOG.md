@@ -3,28 +3,28 @@
 ## Session — T16 wake, fetch, display and sleep implementation
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
-- **Started / finished:** 2026-10-07 16:09 MDT / pending
+- **Started / finished:** 2026-10-07 16:09 MDT / 2026-10-07 16:41 MDT (software/packet; final CI readback on GitHub/Notion before review pause)
 - **Model:** Primary runtime; implementation GPT-6.1 Sol · High; independent QA GPT-6.1 Sol · High. Available model/effort verified against current collaboration runtime metadata.
-- **Branch / PR:** `codex/t16-wake-fetch-sleep` / pending
-- **Status at end:** In progress
+- **Branch / PR:** `codex/t16-wake-fetch-sleep` / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress; awaiting Jeremy production-flash/test approval and physical evidence
 
 ### Result
-Run opened after explicit T15 acceptance/merge/T16-start authorization. Reuse clean managed worktree on new card branch from merged T15 637c2751c740f1a6dfe939a45acece1f09e5b74f. T15 and T12 dependencies reconciled Done. T16 card set In progress before implementation dispatch.
+Implemented T16 from accepted/merged T15 637c275: bounded Wi-Fi/NTP/verified HTTPS, exact-size framebuffer, SHA no-redraw, checked pre-draw invalidation/pending-state recovery, Mountain schedule/retained targets, BOOT ext0/reset and vendor peripheral holds. Source/artifacts068113577d1739da8b7ac13cfc77dec5d3b7d7c6. Independent software QA Pass, three clean builds, source CI green and PR21/frozen packet prepared. T15 remains installed/provisioned; no device upload/access or hosting change during preparation.
 
 ### Verification
-Host preflight verified custom/fallback certificate+hostname trust via certifi (system Python default CA lookup failed; no insecure bypass), HTTP200/exact15000-byte normal/lowbat with all published hashes matching. Pinned Pillow framediff: both raw-vs-PNG 0pixels; variant100glyphpixels inside approved136,281,14,10, zero outside. See docs/t16-live-endpoint.md. Meaningful native schedule/failure tests, finished source/builds, independent QA and required PR CI remain Pending at this stage. Physical scheduled wakes across at least onehour, changed/unchanged/offline and current measurement or documented limitation remain required.
+Baseline25 native scenario/suite invocations and1 PlatformIO Unity testcase Pass; independent32 additional deployed-main/net/timer cases Pass, three clean builds, unchanged setupheader/15000bytes/zero-pixel diff, actual pinned SDK/TLS/source audit, offline frozen CLI/offset/partition/image and exact packet checks. Both required source CI jobs SUCCESS in run37696744465 (canonical7 andCLI6 gates included). Final documentation-head CI must pass before review/release; readback recorded on GitHub/Notion. Host TLS trust/HTTP200/exact15000/allmetadatahashes and both raw-vs-PNG zero-diff Pass; lowbat100glyph pixels inside approved footer only. See docs/t16-qa.md, docs/t16-live-endpoint.md and docs/t16-review.md. Frozen production1320544 bytes SHA17122de56f655b7b37bcc3464f310416ec8b48e189730157e95b9b9a0bc29957; all five images/ELF checksums/source independently checked.
 
 ### Decisions
-Preserve approved frames and all original T16 criteria. Scope includes HTTPS exact 15000-byte fetch, retained panel on failure, NVS hash suppression, Mountain DST/window schedule, BOOT ext0/hold reset, bounded joins/NTP, panel/peripheral sleep shutdown. Battery thresholds remain provisional until T17; no battery is fitted. Implementation and QA are separately delegated; only root writes logs/state/Notion/Git.
+Preserve approved design and all original criteria. Durable framePending denotes unknown physical panel state after interrupted commit; it does not claim glass success. No panel initialization on unchanged/network-failed paths. Battery3.55/0.10V provisional until T17; no pack fitted. Implementation and independent QA delegated; only root writes logs/state/Notion/Git. Concrete packet proposes production flash/one-hour test; debug/persistence comparison builds are distinct and not proposed releases. Prior user Terminal override persists.
 
 ### Problems
-No pack is fitted: ADC0 selects provisional lowbat by the card rule, not detected charge. Live16:11MDT snapshot renderedAt11:49MDT; existing T21 publisher punctuality issue remains separately recorded, no hosting change. Early independent investigation identified target-slot/20s lead, overall DNS/TLS/read deadline, fresh NTP/RTC distinction, BOOT reset priority and pre-draw hash-invalidation/everShown cases; implementer is addressing and testing before full audit.
+Physical TLS/panel/wake/current criteria remain Pending; compilation/fakes do not prove hardware. No-pack USB ADC0 selects provisional lowbat, not battery charge. Host16:11MDT snapshot footer11:49MDT; T21 publisher punctuality remains a separate issue without new deployment. Local Docker unavailable; canonical/CLI regression evidence comes from successful required source CI. Resolved early QA risks: lead/target edges, strict total deadline, fresh NTP, BOOT/reset priority, A/B/A interrupted identity and first-ever pending recovery. No unresolved software blocker.
 
 ### Needs Jeremy
-No action during software preparation; leave current T15 normal USB-connected. T16 flash/release and exact physical steps will be presented with a tested revision and frozen artifacts for approval. Terminal operation override persists; no repeat manual-command handoff.
+Review PR21/exact frozen production17122de5 packet and approve T16 flash plus one-hour physical test. Agent handles Terminal; Jeremy physical controls/private credentials/photos and current measurement or explicit limitation. Actual production wake span>=onehour, matching preview, changed/unchanged/offline retention remain required. No repeat manual Terminal handoff. No approval yet for T16 flash/acceptance/merge/T17.
 
 ### Next
-Complete T16 implementation and independent QA, publish concrete PR/artifact packet with green CI, then stop at T16 review/hardware gate. No T17 advancement.
+Stop at T16 review gate. After explicit production-flash/test approval, collect actual traces/observations/current-or-limitation, independent hardware reconciliation and later acceptance/authorized exact-head green merge. Do not dispatch T17.
 
 ---
 
