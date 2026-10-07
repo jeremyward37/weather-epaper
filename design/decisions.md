@@ -122,3 +122,9 @@ The mapping table and rules are in [`../docs/nws-condition-map.md`](../docs/nws-
 
 - Jeremy approved a 4:47 AM local-time publish in addition to the T12 card's :17/:47 schedule from 5 AM through 9 PM. This supplies the 5:00 AM device wake and brings the job to 35 daily runs, matching the 35 wake slots. The earlier UTC-aligned :20/:50 plan in `docs/scope.md` §9 is superseded.
 - Scheduled runs that start shortly after 10 PM may still publish the final frame. Manual runs outside 5 AM–10 PM skip publication. A failed render never uploads a Pages artifact, preserving the previous deployment.
+
+## Orchestrator handoff — 2026-10-07
+
+Jeremy requested that remaining development use an orchestrator with implementation subagents, independent testing/QA, and pauses for his review. `docs/orchestration.md` defines roles and review gates; `docs/orchestration-state.md` records the current gate and approvals. One card per implementation run remains; the persistent orchestrator may coordinate later runs only after applicable approval. Only the primary agent updates Notion/log/Git. Software checks cannot substitute for physical evidence, and merge/deploy/advancement need explicit authorization for the reviewed revision.
+
+Notion reconciliation: T01–T13 and T22 Done, T14–T21 Not started. Board delivered 2026-10-06, unopened; shipping completion is not hardware acceptance. T23 prepares the handoff. T17 now depends on T16 for integrated power measurements; T18 depends on T17 for calibrated battery behavior; final T20 depends on T19 for measured battery life. T21's known scheduler delays/missing slots require evidence and an explicit implementation/not-needed/deferral decision before T18 sign-off. Approved frames, scope, and rendering checks are unchanged. Corrected older scope prose to match the existing device-local NTP/TZ scheduling and local battery diagnostics without adding telemetry.
