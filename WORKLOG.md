@@ -1,5 +1,61 @@
 # Work log
 
+## Session — T15 resumed hardware persistence and reset checks
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 15:31 MDT / 2026-10-07 15:37 MDT
+- **Model:** Primary runtime; approved device operations and evidence bookkeeping.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress
+
+### Result
+Jeremy explicitly restarted. Same board rediscovered at /dev/cu.usbmodem114101; normal saved Wi-Fi reconnect observed. Root verified and flashed the exact approved bounded harness, captured saved reconnect followed by sleep/USB disappearance/TIMER-wake saved reconnect, then restored exact approved normal and observed saved reconnect. One real timer-sleep persistence cycle Pass; bounded harness removed. Sanitized logs and flash/artifact records saved in firmware/logs/t15-resume-reconnect.txt, t15-timer-persistence.txt, t15-timer-persistence-record.md and t15-normal-restore-record.md. No source rebuild/change.
+
+### Verification
+Read README/current logs/state/T15 card. Exact SOURCE_REVISION/all five image hashes verified in each bundle before writes; esptool explicit offsets/DIO80m16MB automatic reset, all four data hashes verified for harness and restore; NVS preserved. Actual harness logs Timer wake reconnected; persistence observed, with no setup/redraw/FAIL. epaper_qa independently checked unchanged source, frozen hashes, flash ranges and actual logs: sleep persistence one cycle Pass, normal restore/reconnect Pass, no credentials in observed captures; overall Pending. Harness success requires actual TIMER wake + RTC marker + savedReconnect, so portal recovery or USB reset cannot produce it. Ten seconds configured, not independently measured. Raw serial observer has no DTR/RTS ioctl and HUPCL disabled but is not universally reset-free. Earlier physical-cycle panel report plus later resume reconnect do not capture the unplug transition; second directly observed cycle remains pending. Both pre-resume required CI jobs passed on34eca88, run37681660201. git diff --check passed from worktree after an initial mistaken check outside Git; normal SHA checks passed regardless.
+
+### Decisions
+Rediscover device by VID/PID/serial rather than reuse the old path. Preserve historical pause records and frozen artifacts. Agent handles Terminal; physical controls and private credentials remain Jeremy's.
+
+### Problems
+None at resume.
+
+### Needs Jeremy
+Brief BOOT press/release, wait two seconds, then BOOT hold ten seconds/release without RESET; report visible panel refresh/setup. Next private re-provision, directly observed USB cycle, USER/failure/photo checks. Agent handles all Terminal commands and already-approved restore.
+
+### Next
+Finish T15 hardware evidence and restore normal; no T16 or merge until separately authorized.
+
+---
+
+## Session — T15 power-cycle report and user pause
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 14:39 MDT / 2026-10-07 14:40 MDT
+- **Model:** Primary runtime; evidence readback and pause bookkeeping, no implementation change.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress; paused at Jeremy's explicit request
+
+### Result
+Jeremy reported unplugging USB, waiting, reconnecting and waiting; panel stayed the same. The prior bounded observer had expired, so it did not capture this physical cycle. An attempt to capture subsequent saved reconnect failed because /dev/cu.usbmodem14101 was absent. Jeremy then explained that he moved his computer and explicitly requested waiting until he says restart. Work paused; no persistence harness upload or normal restore occurred in this session.
+
+### Verification
+Read the prior observer output: saved reconnect only after its earlier monitor-induced USB reset; no new physical-cycle serial evidence. Subsequent port open returned missing-device error before device access. Panel retention is Jeremy-reported; saved reconnect after this physical cycle remains unverified. No ongoing agent serial capture remains from this session.
+
+### Decisions
+Honor the user pause. Do not retry device discovery, flash, monitor or advance cards until Jeremy explicitly restarts. Existing normal/harness/restore approval persists; no repeated permission request is needed for the same frozen artifacts.
+
+### Problems
+The computer/device connection is unavailable while Jeremy is elsewhere. Do not infer credential persistence from the unchanged e-paper image alone.
+
+### Needs Jeremy
+Say restart when the computer and USB-connected device are available again.
+
+### Next
+Resume T15 at the physical reconnect gate: rediscover the same board, capture saved reconnect, complete BOOT reset/re-provision and approved bounded timer-sleep test, restore normal. Publish this pause record with the next evidence update. T15 acceptance/merge and T16 remain pending.
+
+---
+
 ## Session — T15 phone provisioning confirmation
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
