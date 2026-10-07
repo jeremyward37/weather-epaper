@@ -3,7 +3,7 @@
 ## Session — T23 publication retry and CI
 
 - **Task:** https://app.notion.com/p/3f2d9adbacad8146b8f8f2d5dea31b1e
-- **Started / finished:** 2026-10-07 11:34 MDT / pending
+- **Started / finished:** 2026-10-07 11:34 MDT / 2026-10-07 11:36 MDT
 - **Model:** Codex (active session model/effort not exposed)
 - **Branch / PR:** `codex/t23-orchestration` / https://github.com/jeremyward37/weather-epaper/pull/17
 - **Status at end:** In progress
@@ -12,7 +12,7 @@
 Retried the saved branch using the existing GitHub keyring credential. Push succeeded without changing credentials, remotes, repository settings, or source implementation. Created and attached PR #17; previous publication blocker is resolved.
 
 ### Verification
-`env -u GITHUB_TOKEN -u GH_TOKEN git push -u origin codex/t23-orchestration` succeeded. PR lookup found no existing PR before creation. Required CI pending.
+`env -u GITHUB_TOKEN -u GH_TOKEN git push -u origin codex/t23-orchestration` succeeded. PR lookup found no existing PR before creation. CI `build` passed for revision `f052d2691888f9919f95945e4cf71733bd6db573`: https://github.com/jeremyward37/weather-epaper/actions/runs/37660267570. This required workflow runs pinned rendering/verify/zero-diff checks, Python tools, design and server tests, CLI fixture checks, and setup-header regeneration. `git diff --check` passed. Any subsequent log/state-only revision must also have green required CI before merge.
 
 ### Decisions
 The earlier Internal Server Error appears transient; its exact cause was not returned by GitHub. Preserve the existing Jeremy review/merge/advance gate.
@@ -24,7 +24,7 @@ No new push failure. The previous local Docker limitation is unchanged; CI suppl
 Review PR #17 after required CI is green, then explicitly authorize merge and starting T14 when ready.
 
 ### Next
-Complete CI verification and copy the result to T23 Agent Notes. Do not merge or start T14 in this session.
+Jeremy reviews PR #17, then explicitly authorizes merge and starting T14. The push blocker is resolved and CI passed on the recorded revision; check the latest PR revision before merging. No merge or T14 implementation began.
 
 ---
 

@@ -4,9 +4,9 @@ This is the durable handoff ledger; update it with each run and approval. WORKLO
 
 - **Updated:** 2026-10-07
 - **Active card:** T23 orchestration preparation
-- **Stage:** Handoff PR open; awaiting required CI and Jeremy review
+- **Stage:** Awaiting Jeremy review
 - **Branch:** `codex/t23-orchestration`
-- **PR / revision:** [PR #17](https://github.com/jeremyward37/weather-epaper/pull/17); latest revision and CI must be checked before merge.
+- **PR / revision:** [PR #17](https://github.com/jeremyward37/weather-epaper/pull/17); `build` passed on `f052d2691888f9919f95945e4cf71733bd6db573` ([run](https://github.com/jeremyward37/weather-epaper/actions/runs/37660267570)). Check the latest revision and required CI again before merge.
 - **Independent QA:** Pass; three requested clarifications resolved. TOML parsing, relative links, task-row consistency, whitespace and Notion readback passed.
 - **Pending Jeremy action:** Review PR #17 when required CI is green; explicitly authorize merge and starting T14. No credential repair or hardware action is needed for the resolved push error.
 - **Next eligible task:** T14 after the T23 approval/merge gate. T21 is separately eligible, not automatically dispatched.
