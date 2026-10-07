@@ -1,5 +1,7 @@
 # T16 independent QA — 2026-10-07
 
+**Hardware correction notice:** This original0681135 software audit missed the fake’s incorrect post-hibernate BUSY LOW model. Actual16:55MDT hardware exposed a false failure; the SSD1683 sleep contract is HIGH. Original bundle is superseded for this defect. See [initial hardware record](t16-hardware.md) and [independent correction audit](t16-busy-fix-qa.md). Original physical criteria remain pending; this historical report does not approve the corrected release.
+
 **Software Pass; physical acceptance and release Pending. No unresolved blocking defect found.** Independent role: GPT-6.1 Sol · High. Audited source `068113577d1739da8b7ac13cfc77dec5d3b7d7c6`, base merged T15 `637c2751c740f1a6dfe939a45acece1f09e5b74f`. Exact Git archive and all outputs are in `/private/tmp/weather-epaper-t16-qa/`. Production source, Git, Notion, worklog/state, approved exports, frozen bundles and hardware were not modified. Only scratch adapters/tests were extended.
 
 ## Acceptance verdict

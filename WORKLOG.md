@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T16 approved production flash and physical observation
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
+- **Started / finished:** 2026-10-07 16:51 MDT / 2026-10-07 17:04 MDT (hardware/correction packet; final CI readback on GitHub/Notion before review pause)
+- **Model:** Primary runtime; implementation and independent QA GPT-6.1 Sol · High per current runtime; actual device operations and bookkeeping.
+- **Branch / PR:** `codex/t16-wake-fetch-sleep` / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress
+
+### Result
+Session opened before upload. Jeremy replied “Approve t16” to the concrete frozen production flash and one-hour test request. Agent handles Terminal under the enduring override; Jeremy handles physical controls/private credentials/panel observations/current measurement or limitation. Exact original production upload succeeded. Actual saved Wi-Fi/NTP/verified15000lowbat fetch and visible weather confirmed. False failure after hibernation exposed a BUSY-phase software defect. Minimal correction committed as3fc1e59, three clean builds and independent correction QA Pass; new production4d9e35cf release frozen and concrete packet updated. Acceptance paused; corrected release not uploaded.
+
+### Verification
+Reviewed PR head da21f3b8a55e1e41e995636b7bf401a7e4ff793e: both required checks SUCCESS in run37697987046. Managed checkout clean; firmware/config/tests/workflow unchanged from audited source068113577d1739da8b7ac13cfc77dec5d3b7d7c6. Same board enumerates /dev/cu.usbmodem114101, serial2884859F0EFC, no serial monitor owner. Original approved app17122de5/all five hashes verified, four explicit writes exit0/all verified, no NVS erase. Timestamped cold runtime saved join6522ms/NTP895ms/verified15000lowbat4244ms; display false failure4687ms. Actual17:00 TIMER wake joined/synced, fetched23:00:01UTC, repeats false failure4686ms; observer stopped23:01:04UTC. New source3fc1e59235b4fc3b456c2b6d75aa380965899cc1 changes only main and two runtime test files; native25/Unity1/three clean builds Pass. Independent six BUSY cases and original-code sensitivity Pass, separate production clean build, all three frozen bundles/CLI/offsets and471 pinned library identities Pass. New production1320576 bytes SHA4d9e35cfeaf3b712abc5eb2737b95fcd4c5e3d45bd077f2c8c031df977e8a648. Independent build hash differs; no normalized binary equality claimed, root bundle remains release candidate. Final-head CI must be green before new approval request; exact readback recorded GitHub/Notion.
+
+### Decisions
+Production-only approval; no NVS erase, debug/harness release, acceptance/merge or T17 advancement. Original physical criteria remain required. Preserve host timestamps and actual timer wake causes; observer-induced USB resets are not timer evidence. Check active readiness before panel deep sleep; timeout threshold unchanged. New source/artifact requires new approval under orchestration.md. Jeremy supplied no suitable meter; original reason alternative recorded, not current/battery life. No scope/design/publisher change.
+
+### Problems
+Initial display returned panel-timeout-sha-not-saved after4687ms because BUSY was checked after SSD1683 sleep, which intentionally drives HIGH. Native fake incorrectly forced LOW, masking the defect. See docs/t16-hardware.md; no original one-hour/no-redraw pass claimed.
+
+### Needs Jeremy
+Jeremy confirmed weather visible and no suitable current meter. Whole-panel/index comparison, corrected production one-hour/unchanged/offline and BOOT/USER observations remain. Approve concrete corrected production4d9e35cf flash/one-hour packet after final CI; agent runs Terminal. Current original068 remains installed/provisioned, observer stopped.
+
+### Next
+Stop for corrected-release approval. After approval collect original production one-hour/fidelity/unchanged/offline/BOOT/USER evidence and independent reconciliation, then later acceptance/authorized merge. Do not start T17.
+
+---
+
 ## Session — T16 wake, fetch, display and sleep implementation
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03

@@ -2,19 +2,19 @@
 
 This is the durable handoff ledger; update it with each run and approval. WORKLOG remains the append-only session history; Notion cards hold acceptance/status. Never store secrets.
 
-- **Updated:** 2026-10-07 16:41 MDT
+- **Updated:** 2026-10-07 17:01 MDT
 - **Active card:** T16 wake, sync time, fetch frame, display and deep sleep
-- **Stage:** Awaiting Jeremy review / production flash and one-hour physical-test approval. Software QA passed; physical criteria remain Pending.
+- **Stage:** Corrected BUSY-phase production release prepared; independent software QA Pass. Await final-head CI readback, then Jeremy corrected-artifact flash/one-hour-test approval. Original physical criteria remain pending.
 - **Branch / checkout:** `codex/t16-wake-fetch-sleep` / `/Users/jeremyward/.codex/worktrees/t15-wifi-provisioning/weather-epaper` (attached managed checkout reused on new branch)
 - **Base / PR:** merged T15 `637c2751c740f1a6dfe939a45acece1f09e5b74f`; [PR #21](https://github.com/jeremyward37/weather-epaper/pull/21).
-- **Software/artifact revision:** `068113577d1739da8b7ac13cfc77dec5d3b7d7c6`. Review/QA documentation-only commits do not change firmware/config/tests/workflow or frozen bundles.
-- **Independent QA:** epaper_qa GPT-6.1 Sol · High software Pass: exact source, baseline25+32 independent deployed-code cases, native Unity, three clean builds, zero setup diff, frozen image/CLI/packet checks. Report `docs/t16-qa.md`; original physical criteria Pending.
-- **CI:** Source head0681135 build/firmware both SUCCESS, run37696744465. Require latest documentation-head success before release/merge; exact final readback recorded on GitHub/Notion.
-- **Frozen root / proposed production:** `/private/tmp/weather-epaper-t16-artifacts/068113577d1739da8b7ac13cfc77dec5d3b7d7c6/`; normal app1320544 bytes, SHA17122de56f655b7b37bcc3464f310416ec8b48e189730157e95b9b9a0bc29957. Debug/harness are separately hashed regression artifacts, not proposed production releases. See `docs/t16-review.md`.
-- **Pending Jeremy action:** Review packet; approve exact production T16 flash/one-hour physical test. Agent handles Terminal under enduring override; Jeremy handles physical controls/private credentials/photos/measurement or limitation. No T16 upload yet.
+- **Software/artifact revision:** `3fc1e59235b4fc3b456c2b6d75aa380965899cc1` (corrected BUSY phase; original0681135 approved release remains installed). Review/QA documentation-only commits do not change firmware/config/tests/workflow or frozen bundles.
+- **Independent QA:** epaper_qa GPT-6.1 Sol · High correction Pass: 25 baseline native invocations, six independent active/sleep BUSY cases, old-code sensitivity fails as expected, independent clean production build, all frozen hashes/offsets/CLI checks and 471 pinned library identities. Report `docs/t16-busy-fix-qa.md`; original068 audit `docs/t16-qa.md` is historical with a correction notice. Physical criteria Pending.
+- **CI:** Original reviewed headda21 both SUCCESS run37697987046 before approved upload. Require both corrected final-head CI jobs green before proposing new release/merge; prior CI is historical.
+- **Frozen root / proposed production:** `/private/tmp/weather-epaper-t16-artifacts/3fc1e59235b4fc3b456c2b6d75aa380965899cc1/`; normal app1320576 bytes, SHA4d9e35cfeaf3b712abc5eb2737b95fcd4c5e3d45bd077f2c8c031df977e8a648. Debug/harness are separately hashed regression artifacts, not proposed production releases. See `docs/t16-review.md`.
+- **Pending Jeremy action:** Review corrected release packet and approve new production4d9e35cf flash/one-hour test after final CI. Current limitation supplied: no suitable meter available. Original068 installed; observer stopped. Agent runs approved Terminal operations.
 - **Physical criteria:** actual production wakes across at least one hour, matching preview/changed/unchanged/offline retention, deep-sleep current or documented reason unavailable; not established by compilation/native fakes.
 - **Next eligible task:** No T17 advancement before T16 original criteria/review/authorized merge and explicit start.
-- **Hardware:** Accepted T15 normal installed/provisioned, monitor stopped; continuous USB, no battery until early November. ADC0 selects provisional lowbat, not detected charge/pack presence.
+- **Hardware:** Approved initial T16 normal068/app17122 installed, saved Wi-Fi/NTP/verified HTTPS successful; Jeremy confirms weather visible. Display falsely rejected post-hibernate BUSY HIGH, so SHA not saved. One real17:00 TIMER slot captured; raw diagnostic observer stopped17:01MDT, corrected source3fc1e59 not uploaded. Original one-hour/no-redraw/offline criteria Pending. Continuous USB/no battery; ADC0 selects provisional lowbat, not charge/pack presence.
 - **Reconciliation:** PR20 merged16:07:53 MDT as637c275 after both accepted-head CI jobs SUCCESS. T15/T12 Done, T16 In progress. Host endpoint trusted/exact-size/hash/zero-diff checks pass; observed stale footer/T21 reliability issue remains separate. No hosting changes or later-card work.
 
 ## Approval ledger
@@ -107,3 +107,11 @@ Jeremy: “So long as I should not be seeing the weather yet on it then yes I ac
 ## T16 software review packet — 2026-10-07 16:41 MDT
 
 Source0681135: independent software QA Pass, both source CI jobs SUCCESS in run37696744465; concrete PR21/review packet and frozen normal17122de5 app prepared. Exact latest-head CI readback is required and recorded on GitHub/Notion before presenting approval. No hardware upload/access or new hosting change occurred. Production-only flash and one-hour test is requested, with agent Terminal operations under the existing override. Original physical criteria/current measurement or documented limitation, Jeremy acceptance, authorized merge and T17 advancement remain Pending; T16 In progress. No debug/harness flash approval inferred.
+
+## T16 production flash / one-hour-test approval — 2026-10-07 16:51 MDT
+
+Jeremy: “Approve t16”, replying to the exact production-flash/one-hour-test request. Reviewed PR21 head da21f3b8a55e1e41e995636b7bf401a7e4ff793e, both required CI jobs SUCCESS in run37697987046, re-read before release. Audited source068113577d1739da8b7ac13cfc77dec5d3b7d7c6 and frozen normal app SHA17122de56f655b7b37bcc3464f310416ec8b48e189730157e95b9b9a0bc29957 unchanged. Approval permits agent production upload/serial capture under the enduring Terminal override and Jeremy physical test steps. No NVS erase, debug/harness flash, T16 acceptance/merge or T17 start. Original physical criteria/current-or-reason and independent hardware reconciliation remain pending; card In progress. Session opened before upload.
+
+## T16 corrected software gate — 2026-10-07 17:04 MDT
+
+Initial approved068/app17122 upload and visible weather succeeded, but post-hibernate BUSY HIGH falsely prevented SHA commit. Same defect repeated at the real17:00 TIMER slot. Primary SSD1683 documentation confirms sleep HIGH; native fake previously forced LOW and masked it. Minimal source3fc1e59235b4fc3b456c2b6d75aa380965899cc1 fixes active readiness before hibernate; real timeout protection unchanged. New frozen production1320576 bytes SHA4d9e35cfeaf3b712abc5eb2737b95fcd4c5e3d45bd077f2c8c031df977e8a648, independent correction QA Pass and three clean local builds. Final documentation-head required CI readback will be recorded on GitHub/Notion before the approval request. This new bundle is not authorized by original approval. No corrected upload/merge/T17. Actual initial trace retained; observer stopped17:01. Jeremy's no-suitable-meter reason recorded; no measured current or one-hour/no-redraw/offline pass.

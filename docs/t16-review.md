@@ -2,7 +2,9 @@
 
 [T16 card](https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03) · [PR #21](https://github.com/jeremyward37/weather-epaper/pull/21) · branch `codex/t16-wake-fetch-sleep`, base merged T15 `637c275`.
 
-Software/artifact source: **`068113577d1739da8b7ac13cfc77dec5d3b7d7c6`**. Status **In progress; independent software QA passed; awaiting Jeremy’s T16 flash/test approval**. Documentation-only review commits do not replace the frozen source/artifacts. T15 remains installed/provisioned; no T16 upload, device access, hosting change or T17 work during this preparation.
+Software/artifact source: **`3fc1e59235b4fc3b456c2b6d75aa380965899cc1`**. Status **In progress; independent correction QA passed; new flash approval required after green final-head CI**. Documentation-only review commits do not replace these frozen artifacts.
+
+The original approved0681135/app17122de5 release was flashed successfully at16:55MDT. Saved Wi-Fi, fresh NTP, verified HTTPS and a visible weather transition succeeded, but the firmware incorrectly rejected BUSY HIGH after panel hibernation and withheld the SHA. The controller deliberately drives HIGH in deep sleep. This corrected release checks active refresh/power-off completion before hibernation and retains timeout protection; regression tests now model the actual sleep behavior. See [actual hardware evidence](t16-hardware.md) and [independent correction QA](t16-busy-fix-qa.md). Original flash approval does **not** authorize this new artifact. The original release remains installed, diagnostic observer stopped; no hosting change or T17 work.
 
 ## Delivered behavior
 
@@ -10,7 +12,7 @@ Saved Wi-Fi reconnects with a 20-second cap; a fresh NTP sync has ten seconds an
 
 Production targets Mountain `:00`/`:30`, **05:00 through 22:00 inclusive**, joining about 20 seconds early and waiting for the target before fetching. BOOT wakes immediately; a held five-second reset retains T15 provisioning behavior. USER remains unused. Wi-Fi is off and peripheral outputs are held at the vendor sleep levels before timer/ext0 deep sleep. [Firmware README](../firmware/README.md) describes configuration and limits; [hardware record](../firmware/HARDWARE.md) names pinned APIs and power assumptions.
 
-Battery thresholds **3.55 V / 0.10 V** are provisional until T17. Empty-pack USB ADC zero selects the approved low-battery weather variant, including its footer glyph; it does not identify charge or pack presence. No approved frame or rendering rule changed. The setup screen remains expected on installed T15 until T16 is approved and flashed.
+Battery thresholds **3.55 V / 0.10 V** are provisional until T17. Empty-pack USB ADC zero selects the approved low-battery weather variant, including its footer glyph; it does not identify charge or pack presence. No approved frame or rendering rule changed. The original approved T16 flash now shows weather; corrected SHA suppression and physical fidelity remain to be tested.
 
 ## Verification and remaining criteria
 
@@ -18,33 +20,33 @@ Battery thresholds **3.55 V / 0.10 V** are provisional until T17. Empty-pack USB
 |---|---|---|
 | Native schedule and failure checks | 25 deployed provisioning/main/net and schedule/parser scenario/suite invocations; PlatformIO native Unity testcase | Pass; independent deployed-code checks also pass |
 | Clean production/debug/persistence builds | Pinned Core6.1.18/pioarduino54.03.21/Arduino3.2.1; three clean SUCCESS builds | Pass |
-| Independent software QA | Separate GPT-6.1 Sol · High exact-source audit: [QA report](t16-qa.md), 32 additional deployed-code cases, clean three builds and offline bundle/packet checks | Software Pass; physical criteria Pending |
-| Required CI on review head | Both source-head jobs SUCCESS in [run37696744465](https://github.com/jeremyward37/weather-epaper/actions/runs/37696744465); final documentation-head readback recorded on GitHub/Notion before the review pause | Source Pass; final head must be green before release/merge |
-| Approved bytes and published preview | No canonical/setup changes; host HTTPS200, both15000-byte bins, published hashes match; both raw/PNG zero-pixel comparisons | Host/software Pass; device TLS/panel Pending |
+| Independent software QA | [Original audit](t16-qa.md) plus [correction audit](t16-busy-fix-qa.md): realistic sleeping HIGH, active failures/timeouts, original-code sensitivity, clean build and frozen artifact checks | Correction software Pass; physical criteria Pending |
+| Required CI on corrected review head | Correction/final-head build and firmware checks must both pass; exact-head readback recorded on GitHub/Notion before review | Pending until final readback; prior068 CI is historical |
+| Approved bytes and published preview | No canonical/setup changes; host HTTPS200, both15000-byte bins, published hashes match; both raw/PNG zero-pixel comparisons | Original device TLS/fetch observed; corrected TLS/panel and full fidelity Pending |
 | Correct real wakes across **at least one hour** | Actual production timer traces/host timestamps and Jeremy observations required | Pending |
 | Frame matches index; changed/unchanged/offline panel behavior | Actual flashed hash, sanitized trace and whole-panel observations/photo required | Pending |
-| Deep-sleep current or documented reason measurement unavailable | Actual measurement arrangement or Jeremy's stated limitation | Pending; USB power alone is not battery-loop current |
+| Deep-sleep current or documented reason measurement unavailable | Jeremy: “No suitable meter available.” Continuous USB/no pack; no measured current claimed | Pass documented-reason alternative; no current measured |
 | Jeremy acceptance/authorized merge | Separate later gate after physical evidence and exact-head green CI | Pending |
 
 [Live endpoint report](t16-live-endpoint.md) records the 16:11 MDT host observation: valid bytes and trust, but published footer11:49 AM. The existing T21 publisher punctuality issue remains a separate card; T16 cannot promise fresh data when static hosting has not published it. No stale badge or hosting change was introduced.
 
 ## Frozen build artifacts
 
-Root: `/private/tmp/weather-epaper-t16-artifacts/068113577d1739da8b7ac13cfc77dec5d3b7d7c6/`. Every environment directory contains read-only `firmware.bin`, `bootloader.bin`, `partitions.bin`, `boot_app0.bin`, `firmware.elf`, `SOURCE_REVISION`, `BUILD_VERSION`, `SHA256SUMS`. Root independently copied and hashed the clean local builds. A later rebuild is a different artifact; Linux CI hashes may differ.
+Root: `/private/tmp/weather-epaper-t16-artifacts/3fc1e59235b4fc3b456c2b6d75aa380965899cc1/`. Every environment directory contains read-only `firmware.bin`, `bootloader.bin`, `partitions.bin`, `boot_app0.bin`, `firmware.elf`, `SOURCE_REVISION`, `BUILD_VERSION`, `SHA256SUMS`. Root independently copied and hashed the clean local builds. A later rebuild is a different artifact; Linux CI hashes may differ.
 
 | Environment | App bytes | App SHA-256 | Proposed hardware use |
 |---|---:|---|---|
-| `nm-epd-420-bw` | 1,320,544 | `17122de56f655b7b37bcc3464f310416ec8b48e189730157e95b9b9a0bc29957` | Production flash and one-hour test |
-| `wake-debug` | 1,320,528 | `831e1ebe292c0faec4a0d10d55a5a2a8f052ec2c928fdb3618a5b26d375af893` | Optional separately approved120s diagnostics; cannot replace production hour |
-| `provisioning-persistence-test` | 1,156,688 | `b5f4472fb0476316bbd83a800f3a8908bf9e1337b2a31729f875a5f684923268` | Built regression harness; not proposed for this release |
+| `nm-epd-420-bw` | 1,320,576 | `4d9e35cfeaf3b712abc5eb2737b95fcd4c5e3d45bd077f2c8c031df977e8a648` | Production flash and one-hour test |
+| `wake-debug` | 1,320,560 | `1d36af665b771f43e69a35f339b3ff2a052667643404c6bd97202a43635c7125` | Optional separately approved120s diagnostics; cannot replace production hour |
+| `provisioning-persistence-test` | 1,156,720 | `374320ec2949ddebada049bfcc3eb7cb76d609c668b8ad7dfd5676c9a311cca7` | Built regression harness; not proposed for this release |
 
-Production/debug RAM64,804 bytes; production app-flash1,320,026/debug1,320,010 of3,145,728. Persistence RAM64,044/app-flash1,156,186. Flash DIO80m/16MB, CPU80MHz, OPI PSRAM8MB. Independent offline CLI/offset/partition/image checks pass, including exact frozen hashes, image segment/source comparison and packet parsing. No device access is part of those checks.
+Production/debug RAM64,804 bytes; production app-flash1,320,054/debug1,320,038 of3,145,728. Persistence RAM64,044/app-flash1,156,218. Flash DIO80m/16MB, CPU80MHz, OPI PSRAM8MB. Independent offline CLI/offset/partition/image checks pass, including exact frozen hashes, reviewed source/library identity checks and packet parsing. No device access is part of those checks.
 
 ## Needs Jeremy
 
-**Decision requested:** approve this frozen **production T16 flash and one-hour physical test**. This approval will not merge PR21, accept the physical criteria, release the debug/harness variants or start T17.
+**Decision requested:** approve this frozen **corrected production T16 flash and one-hour physical test**. This approval will not merge PR21, accept the physical criteria, release the debug/harness variants or start T17.
 
-The enduring request that the agent run Terminal commands overrides the manual Terminal handoff in AGENTS.md rule13. **The agent runs upload, hash verification, port discovery and serial capture.** Jeremy handles physical buttons/power, private credentials, panel observations/photos and measurement limitations. Keep the battery connector empty and USB connected during software review. No Terminal command needs to be typed by Jeremy.
+The enduring request that the agent run Terminal commands overrides the manual Terminal handoff in AGENTS.md rule13. **The agent runs upload, hash verification, port discovery and serial capture.** Jeremy handles physical buttons/power, private credentials, panel observations/photos and measurement limitations. Keep the battery connector empty and USB connected during software review. The initial build can refresh again at a scheduled wake because the false error withheld SHA; that is the defect being fixed, not a passed no-redraw check. No Terminal command needs to be typed by Jeremy.
 
 Once approved:
 
@@ -53,9 +55,9 @@ Once approved:
 3. Agent collects actual timer reasons/target epochs and wall-clock times across **at least one hour**, covering consecutive production slots. USB CDC may disappear in sleep; agent rediscovers it. Jeremy confirms unchanged frames do not flicker and changed frames refresh. Two quick debug cycles are insufficient. A first setup→weather refresh establishes a changed transition; an unchanged wake requires both `identical-no-redraw` and Jeremy's panel observation.
 4. After weather is displayed, Jeremy temporarily makes the saved Wi-Fi unavailable for a scheduled wake, then restores it. Expect failed join within20 seconds, no setup/hotspot/refresh, same panel and scheduled sleep; confirm recovery. Agent records sanitized logs. Coordinate timing before disrupting home Wi-Fi; do not erase credentials or change hosting just to simulate failure.
 5. Confirm brief BOOT from sleep causes an immediate attempt and USER has no effect. A five-second BOOT hold deliberately resets to setup; bounded operations may finish first. Jeremy re-provisions privately and confirms the next genuine short press still works. Agent captures evidence. These checks are included in the proposed test scope; no repeat permission during the authorized test is needed.
-6. Provide a measured sleep current with the actual supply/meter arrangement, or state why it cannot be measured. Record continuous USB/no pack explicitly. Do not interpret USB draw or ADC0 as battery-loop current. No battery-life or final threshold claim follows.
+6. Jeremy already supplied the permitted limitation: no suitable meter available. No repeat measurement question is needed. If a suitable meter becomes available later, record the actual supply/meter arrangement. Record continuous USB/no pack explicitly. Do not interpret USB draw or ADC0 as battery-loop current. No battery-life or final threshold claim follows.
 
-On Busy Timeout, panel-timeout, wrong/cropped/inverted frame, repeated reset, unexpected setup/secret log, or unverified TLS/fetch, stop acceptance and investigate with the actual trace. Hardware observations stay Pending until collected and independently reconciled.
+On a genuine active Busy Timeout or panel-timeout, wrong/cropped/inverted frame, repeated reset, unexpected setup/secret log, or unverified TLS/fetch, stop acceptance and investigate with the actual trace. Hardware observations stay Pending until collected and independently reconciled.
 
 ## Exact agent upload reference and rollback
 
@@ -63,8 +65,8 @@ The port below is the last observed application port, **not a promise of current
 
 ```sh
 (
-  cd /private/tmp/weather-epaper-t16-artifacts/068113577d1739da8b7ac13cfc77dec5d3b7d7c6/nm-epd-420-bw &&
-  test "$(cat SOURCE_REVISION)" = 068113577d1739da8b7ac13cfc77dec5d3b7d7c6 &&
+  cd /private/tmp/weather-epaper-t16-artifacts/3fc1e59235b4fc3b456c2b6d75aa380965899cc1/nm-epd-420-bw &&
+  test "$(cat SOURCE_REVISION)" = 3fc1e59235b4fc3b456c2b6d75aa380965899cc1 &&
   shasum -a 256 -c SHA256SUMS &&
   /private/tmp/weather-epaper-t14-venv/bin/python \
     /private/tmp/weather-epaper-t14-pio/packages/tool-esptoolpy/esptool.py \
