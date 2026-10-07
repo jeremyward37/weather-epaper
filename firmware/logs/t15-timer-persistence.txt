@@ -1,0 +1,12 @@
+[OBSERVER] Raw serial attached; no DTR/RTS ioctl; HUPCL disabled
+[T15] Wi-Fi provisioning; USER unused; BOOT hold 5s resets
+[T15] Saved Wi-Fi connected; panel retained
+[T15 TEST] Connected; one 10s sleep in 30s, release BOOT
+[T15 TEST] Entering one 10s timer sleep; USB CDC may disappear
+[OBSERVER] USB serial disconnected; waiting for same board
+[OBSERVER] Raw serial attached; no DTR/RTS ioctl; HUPCL disabled
+[T15] Wi-Fi provisioning; USER unused; BOOT hold 5s resets
+[T15] Saved Wi-Fi connected; panel retained
+[T15 TEST] Timer wake reconnected; persistence observed
+[OBSERVER] Capture stopped
+[OBSERVER] Bounded capture ended

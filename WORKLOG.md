@@ -1,5 +1,285 @@
 # Work log
 
+## Session — T15 final evidence review gate
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 15:52 MDT / 2026-10-07 15:58 MDT
+- **Model:** Primary runtime; independent epaper_qa GPT-6.1 Sol · High actual-evidence reconciliation.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress; awaiting final evidence-head CI and Jeremy acceptance/authorized merge
+
+### Result
+Independent hardware audit passes all original T15 functional criteria: four checks with serial, power-cycle/timer-sleep persistence and long BOOT clear, no credentials in reviewed source/observed logs. Jeremy confirms USER and repeated physical-cycle panel retention. Normal restored/provisioned; stopped raw observer normally. Supplied IMG_2842.JPG matches accepted T14 photo byte-for-byte and is recorded as reused visual reference, not fresh T15 exposure. Original card has no separate fresh-photo criterion. Updated packet, hardware reconciliation, current firmware docs and state; no source or approved frame change.
+
+### Verification
+Actual serial/flash records and independent audit in docs/t15-hardware-qa.md. Photo SHAfe30c95d... matches firmware/photos/t14-setup.jpg. One TIMER-only harness success cycle; second USB disconnect/reattach/saved reconnect directly captured. No credential values in captures. Both prior-head CI jobs passed on10a0682/run37691530555; final evidence-head CI remains required before merge. git diff --check passed before publication. Independent final packet audit confirmed original criteria Pass and production source/tests/config/assets/workflow unchanged; corrected its two documentation findings (stale live limits and fallback port).
+
+### Decisions
+Distinguish original acceptance criteria from recommended physical wrong-submission/unavailable-network coverage: software-tested, physically unrun, limitations preserved. Reused photo plus current panel reports and exact unchanged frame bytes do not become a fresh exposure. Present original-criteria Pass with honest limits; retain In progress until explicit acceptance/authorized merge. T16 remains separate.
+
+### Problems
+No original-criteria blocker. No new fresh photo supplied; prior accepted visual reference is reused. No battery measurements.
+
+### Needs Jeremy
+Review concrete PR #20/evidence/limits and explicitly accept T15/authorize merge if satisfied; separately authorize T16 start if desired. No repeated flash or private Wi-Fi entry required.
+
+### Next
+Read final evidence-head CI, then stop at review gate. Merge only with explicit authorization and green exact-head CI. No T16 work before authorized advancement.
+
+---
+
+## Session — T15 portal return and re-provision
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 15:48 MDT / 2026-10-07 15:51 MDT
+- **Model:** Primary runtime; actual hardware evidence capture, no implementation change.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress
+
+### Result
+Jeremy rejoined the returned portal and reentered correct home settings before the planned failed-submission check. Actual logs now confirm Setup AP IP192.168.4.1, Trying submitted Wi-Fi, and Provisioning complete; setup frame retained. Portal return after the runtime BOOT clear and correct re-provision succeed. Saved full sanitized sequence as firmware/logs/t15-reset-reprovision.txt. No reason to repeat correct setup. While the requested USER/power-cycle steps were pending, observer captured USB disconnect, same-board reattach and Saved Wi-Fi connected; panel retained, without setup redraw/AP. Jeremy confirms brief USER then unplug/wait/replug/wait completed and screen stayed unchanged through both. USER inactivity and directly observed second USB-cycle saved reconnect/no redraw Pass.
+
+### Verification
+Actual restored-normal runtime sequence contains one short hook, one credential-reset/setup display, AP callback and successful new phone save. No home identifiers/passwords in observed capture. Approved source b8ae0c4/app736c18b0 unchanged, no new upload. Failed-submission/retry was not exercised; do not claim it passed. USER/panel report plus actual observer disconnect/reattach/saved reconnect complete the second physical cycle. No new setup-display/AP line after reconnect. Both pre-update CI jobs passed on10a0682, run37691530555.
+
+### Decisions
+Accept Jeremy's correct submission as the intended re-provision evidence. Do not erase working settings merely because he entered them sooner than requested. Preserve failed-submission/saved-network-unavailability checks as unobserved software-tested cases for the review packet.
+
+### Problems
+None established. Portal return/AP IP are now observed, resolving the previously absent callback evidence.
+
+### Needs Jeremy
+Send a fresh whole-panel setup photograph. Original functional checks now have actual evidence; independent hardware criterion reconciliation and explicit acceptance/authorized merge remain. No additional credential entry required at this point.
+
+### Next
+Receive/check photo, reconcile independent hardware QA and unrun recommended physical failure-path checks, then present the concrete acceptance/merge gate. T15 In progress, no merge or T16 advancement yet.
+
+---
+
+## Session — T15 physical BOOT observation
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 15:42 MDT / 2026-10-07 15:44 MDT
+- **Model:** Primary runtime; physical evidence capture, no implementation change.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress
+
+### Result
+Jeremy performed brief BOOT press/release then ten-second runtime hold/release without RESET and confirmed the panel refreshed to Wi-Fi setup. Actual normal runtime capture logs one Immediate refresh requested, one Credential reset requested and one Setup frame displayed. Driver reports its two full-update phases; no repeated credential-reset/setup entry in the observed tail. Capturing private portal re-entry/re-provision next.
+
+### Verification
+Read actual current serial and Jeremy's panel report. Short BOOT hook and long-hold reset/display observed on restored approved normal source b8ae0c4/app736c18b0. No new upload. AP IP callback absent so far after runtime reset; phone hotspot/portal reachability is requested, not yet claimed. Ten-second hold duration is Jeremy-performed, not measured from logs.
+
+### Decisions
+Verify actual hotspot/portal and failed submission retry before correct private re-provision. Keep raw observer active. No repeat flash approval needed; frame/source unchanged.
+
+### Problems
+None established; missing AP callback line means reachability must be observed rather than inferred from setup display.
+
+### Needs Jeremy
+Rejoin WeatherStation-Setup/firstlight on a phone, open http://192.168.4.1 and report reachability without entering credentials yet. Physical USER/power/photo checks remain.
+
+### Next
+Complete portal failure/retry, correct re-provision, directly captured second physical USB cycle and USER/photo observations. T15 stays In progress pending criteria and acceptance/authorized merge; no T16 work.
+
+---
+
+## Session — T15 resumed hardware persistence and reset checks
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 15:31 MDT / 2026-10-07 15:37 MDT
+- **Model:** Primary runtime; approved device operations and evidence bookkeeping.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress
+
+### Result
+Jeremy explicitly restarted. Same board rediscovered at /dev/cu.usbmodem114101; normal saved Wi-Fi reconnect observed. Root verified and flashed the exact approved bounded harness, captured saved reconnect followed by sleep/USB disappearance/TIMER-wake saved reconnect, then restored exact approved normal and observed saved reconnect. One real timer-sleep persistence cycle Pass; bounded harness removed. Sanitized logs and flash/artifact records saved in firmware/logs/t15-resume-reconnect.txt, t15-timer-persistence.txt, t15-timer-persistence-record.md and t15-normal-restore-record.md. No source rebuild/change.
+
+### Verification
+Read README/current logs/state/T15 card. Exact SOURCE_REVISION/all five image hashes verified in each bundle before writes; esptool explicit offsets/DIO80m16MB automatic reset, all four data hashes verified for harness and restore; NVS preserved. Actual harness logs Timer wake reconnected; persistence observed, with no setup/redraw/FAIL. epaper_qa independently checked unchanged source, frozen hashes, flash ranges and actual logs: sleep persistence one cycle Pass, normal restore/reconnect Pass, no credentials in observed captures; overall Pending. Harness success requires actual TIMER wake + RTC marker + savedReconnect, so portal recovery or USB reset cannot produce it. Ten seconds configured, not independently measured. Raw serial observer has no DTR/RTS ioctl and HUPCL disabled but is not universally reset-free. Earlier physical-cycle panel report plus later resume reconnect do not capture the unplug transition; second directly observed cycle remains pending. Both pre-resume required CI jobs passed on34eca88, run37681660201. git diff --check passed from worktree after an initial mistaken check outside Git; normal SHA checks passed regardless.
+
+### Decisions
+Rediscover device by VID/PID/serial rather than reuse the old path. Preserve historical pause records and frozen artifacts. Agent handles Terminal; physical controls and private credentials remain Jeremy's.
+
+### Problems
+None at resume.
+
+### Needs Jeremy
+Brief BOOT press/release, wait two seconds, then BOOT hold ten seconds/release without RESET; report visible panel refresh/setup. Next private re-provision, directly observed USB cycle, USER/failure/photo checks. Agent handles all Terminal commands and already-approved restore.
+
+### Next
+Finish T15 hardware evidence and restore normal; no T16 or merge until separately authorized.
+
+---
+
+## Session — T15 power-cycle report and user pause
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 14:39 MDT / 2026-10-07 14:40 MDT
+- **Model:** Primary runtime; evidence readback and pause bookkeeping, no implementation change.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress; paused at Jeremy's explicit request
+
+### Result
+Jeremy reported unplugging USB, waiting, reconnecting and waiting; panel stayed the same. The prior bounded observer had expired, so it did not capture this physical cycle. An attempt to capture subsequent saved reconnect failed because /dev/cu.usbmodem14101 was absent. Jeremy then explained that he moved his computer and explicitly requested waiting until he says restart. Work paused; no persistence harness upload or normal restore occurred in this session.
+
+### Verification
+Read the prior observer output: saved reconnect only after its earlier monitor-induced USB reset; no new physical-cycle serial evidence. Subsequent port open returned missing-device error before device access. Panel retention is Jeremy-reported; saved reconnect after this physical cycle remains unverified. No ongoing agent serial capture remains from this session.
+
+### Decisions
+Honor the user pause. Do not retry device discovery, flash, monitor or advance cards until Jeremy explicitly restarts. Existing normal/harness/restore approval persists; no repeated permission request is needed for the same frozen artifacts.
+
+### Problems
+The computer/device connection is unavailable while Jeremy is elsewhere. Do not infer credential persistence from the unchanged e-paper image alone.
+
+### Needs Jeremy
+Say restart when the computer and USB-connected device are available again.
+
+### Next
+Resume T15 at the physical reconnect gate: rediscover the same board, capture saved reconnect, complete BOOT reset/re-provision and approved bounded timer-sleep test, restore normal. Publish this pause record with the next evidence update. T15 acceptance/merge and T16 remain pending.
+
+---
+
+## Session — T15 phone provisioning confirmation
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 14:19 MDT / 2026-10-07 14:23 MDT
+- **Model:** Primary runtime; hardware evidence capture, no implementation change.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress
+
+### Result
+Jeremy reported submitting Wi-Fi privately, with no obvious portal success/failure feedback. Agent serial capture confirms [T15] Trying submitted Wi-Fi followed by [T15] Provisioning complete; setup frame retained. Saved sanitized full phone-provisioning capture as firmware/logs/t15-phone-provisioning.txt. Replacing the agent monitor produced its documented USB reset and [T15] Saved Wi-Fi connected; panel retained, demonstrating saved reconnect after that reset. This does not yet claim Jeremy's physical power-cycle observation.
+
+### Verification
+Read actual ongoing serial capture and confirmed generic success with no home identifiers/passwords in the saved log. Both build and firmware jobs passed on documentation head 36a513c in CI run 37680646611. Stopped only the agent's identified monitor process and started a bounded observer with DTR/RTS inactive, same-device matching and reconnect after USB loss. Source b8ae0c4 and approved app hash are unchanged; no upload in this session so far.
+
+### Decisions
+The retained setup image is expected until T16 fetches the first weather frame. Use serial connection result as success evidence. Agent handles Terminal operations under the recorded override; Jeremy supplies unplug/replug and panel observations. The observer's serial attachment may itself cause a USB reset and is labeled as such.
+
+### Problems
+Jeremy did not notice clear portal result feedback; serial resolves this submission as success. Portal UI/design and frozen firmware remain unchanged.
+
+### Needs Jeremy
+Unplug USB from the device, wait five seconds, reconnect with BOOT released, then after twenty seconds report whether the screen stayed unchanged. First physical power-cycle request is pending.
+
+### Next
+Complete repeated physical reconnect, runtime BOOT reset/re-provision, approved timer-sleep harness and normal restore. Keep T15 In progress until criteria/acceptance/authorized merge; no T16 advancement.
+
+---
+
+## Session — T15 agent Terminal upload and startup observation
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 14:03 MDT / 2026-10-07 14:12 MDT
+- **Model:** Primary runtime; approved artifact upload and evidence bookkeeping, no implementation change.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress; awaiting private phone setup and physical persistence/reset evidence
+
+### Result
+Jeremy's request “Can't you run terminal commands? Why do I need to?” supersedes the initial manual-command handoff. Agent completed the already-approved frozen normal T15 flash with automatic BOOT entry, explicit offsets and preserved NVS. Normal app SHA-256 736c18b0ae031f60d32c1980192d0bc36a9de83fa0afa4f646ba0494a3556b3a, source b8ae0c4 unchanged. Startup reached setup frame and AP IP 192.168.4.1. Saved flash observation and full bounded startup capture under firmware/logs; ongoing provisioning capture is temporary until checked for credentials. Earlier no-agent-hardware statements describe the earlier handoff, not this later authorized action.
+
+### Verification
+SOURCE_REVISION and shasum -a 256 -c SHA256SUMS passed all five files. Explicit-offset esptool write-flash with --before default-reset returned exit 0; all four written-image hashes verified. Bounded pyserial capture with DTR/RTS inactive logged setup display/AP IP, with no T14 GPIO/ADC warnings. Opening serial itself generated USB_UART_CHIP_RESET; do not label this a spontaneous loop. Actual phone/save/power-cycle/BOOT/timer-sleep criteria remain Pending. Evidence: firmware/logs/t15-normal-flash-record.md and t15-first-startup.txt.
+
+### Decisions
+Agent runs approved uploads and serial monitoring, including persistence harness and normal restore; Jeremy supplies private phone credential entry and physical buttons/power/photos. No firmware rebuild, no broad erase, no repeated approval request. Preserve the same frozen bundles and earlier history.
+
+### Problems
+None in normal upload/startup. A sandboxed ps check was unavailable; upload connected successfully and no process termination was needed. No battery pack.
+
+### Needs Jeremy
+On a phone join WeatherStation-Setup with firstlight, open http://192.168.4.1 and save home Wi-Fi privately. Report the outcome without credentials. Later physical power-cycle/button observations will be guided one step at a time; no Terminal commands required.
+
+### Next
+Complete T15 provisioning/reconnect/reset and approved bounded timer-sleep persistence, restore normal, record sanitized serial/photos, then obtain T15 acceptance/merge authorization. Do not start T16.
+
+---
+
+## Session — T15 approved flash handoff
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 14:01 MDT / 2026-10-07 14:02 MDT
+- **Model:** Primary runtime; approval/evidence bookkeeping only, no implementation change.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress; awaiting Jeremy flash and hardware evidence
+
+### Result
+Jeremy explicitly said “approve T15 flash and persistence test”. Approval covers PR #20 reviewed head 250ec59bdb3a7351a5012867098c4b1ded9b1ee2 and unchanged audited source b8ae0c4c1680d6fd3857b6d413248e298599d8ee: normal frozen app SHA-256 736c18b0ae031f60d32c1980192d0bc36a9de83fa0afa4f646ba0494a3556b3a and separate bounded persistence harness 302af824bfe29974268d555605b6acb756945d4f16f13f93471d203d05a4fbd2. Recorded the approval and prepared staged normal-flash instructions; harness and normal restore follow observed provisioning. No agent hardware action.
+
+### Verification
+GitHub confirms reviewed head OPEN and both required CI jobs SUCCESS in run 37677877843. Rechecked SOURCE_REVISION and all five file hashes in each frozen bundle. Read-only enumeration finds ESP USB JTAG/serial unit at /dev/cu.usbmodem14101, VID:PID 303A:1001, serial28:84:85:9F:0E:FC. No upload, reset, monitor or rebuild performed by an agent; port must be rediscovered after physical transitions if it changes.
+
+### Decisions
+Use the exact frozen normal artifact first. Jeremy performs BOOT/RESET, explicit-offset hash-checked upload, private phone setup and observed persistence/reset tests. Approval persists for the separate harness and restoring normal; do not ask again for these same artifacts.
+
+### Problems
+None. Hardware behavior is still unobserved for T15; no battery pack.
+
+### Needs Jeremy
+Stop the old monitor, enter ROM using labeled BOOT/RESET, run the supplied normal-bundle command, then release BOOT and normal RESET. Return flash output; continue with new T15 serial/hotspot evidence and later the approved harness.
+
+### Next
+Await actual T15 phone/reconnect/reset/deep-sleep observations and sanitized logs/photo. Acceptance, authorized merge and T16 advancement remain pending.
+
+---
+
+## Session — T15 Wi-Fi provisioning
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 13:17 MDT / 2026-10-07 13:52 MDT
+- **Model:** Implementation GPT-6.1 Sol · Medium; independent QA GPT-6.1 Sol · High, reverified available in current collaboration tool schema. Primary runtime identity/effort not exposed.
+- **Branch / PR:** `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20
+- **Status at end:** In progress; awaiting Jeremy review/flash and hardware evidence
+
+### Result
+Prepared T15 from accepted/merged T14 08be1ac in a managed worktree. Pinned WiFiManager 2.0.17, Wi-Fi-only portal, native NVS credentials, Preferences provisioning/frame/reset metadata, bounded reconnect and timer-latched BOOT reset/refresh hook. Setup redraw requires checked prior frame-hash invalidation. Separate bounded ten-second sleep harness supports physical persistence review. Final firmware/config/test/workflow source b8ae0c4c1680d6fd3857b6d413248e298599d8ee; approved frames/header/photo/log assets unchanged. No agent hardware operation.
+
+### Verification
+Ten deployed native scenarios and fourteen independent ESP timer/NVS failure scenarios passed. Independent clean normal/harness builds passed; regenerated embedded header unchanged, 15,000 bytes and zero differing pixels. Credential logging/upstream compile flags, parser-only esptool with serial denied, offline flash ranges/partition fit/image headers passed. Both source CI jobs passed in run 37676538752; final review-record head CI is required and tracked on PR #20/Notion before release or merge. Frozen read-only bundles under /private/tmp/weather-epaper-t15-artifacts/b8ae0c4c1680d6fd3857b6d413248e298599d8ee: normal app 1,132,240 bytes SHA-256 736c18b0ae031f60d32c1980192d0bc36a9de83fa0afa4f646ba0494a3556b3a; harness 1,140,000 bytes SHA-256 302af824bfe29974268d555605b6acb756945d4f16f13f93471d203d05a4fbd2. Root checked all copied bundle hashes and shell syntax without executing upload.
+
+### Decisions
+Preserve approved hotspot/password/address and exact setup bytes. Native credentials are authoritative; interrupted reset intent blocks old-config recovery. Capture five-second holds independently while portal processing blocks; apply events and storage/display work on the main thread. Verify submitted native config before completing setup. Checked frame invalidation prevents retaining an old normal-frame hash under the setup image. No fetch/scheduled sleep integration. All actual radio/NVS/reset criteria remain Pending until Jeremy tests.
+
+### Problems
+Independent QA findings were fixed before the final source: missed hold during form save, false persistence success after portal recovery, stale-config success after failed save, Linux temp-path portability and unchecked frame-hash removal. No unresolved software blocker. Local Docker remains unavailable; required CI supplies canonical renderer/server regression evidence. The first branch push used an injected token without workflow scope; retry with existing keyring authorization succeeded, without changing credentials or Git configuration. No battery; USB continues. Original primary checkout/unrelated .gitignore edit and frozen T14 rollback bundle are preserved.
+
+### Needs Jeremy
+Review PR #20 and docs/t15-review.md, then explicitly approve the normal T15 flash and separate persistence test. Jeremy performs ROM entry/verified upload, phone setup/private credential entry, power-cycle reconnect, BOOT/USER checks, failure/retry and actual timer-sleep reconnect; restore normal firmware afterward and return sanitized serial plus a whole-panel setup photo. No home credentials in chat. T15 acceptance/merge remain pending.
+
+### Next
+Pause at T15 review/hardware gate; no T16 dispatch. A handoff note on T16 records starting BOOT sampling before serial/wake delays when ext0 is integrated and reconciling its retained-frame network-failure policy. T16 requires later acceptance/merge and explicit advancement. Battery calibration/life remain later cards.
+
+---
+
+## Session — T14 accepted merge and T15 advancement
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 13:14 MDT / 2026-10-07 13:17 MDT
+- **Model:** Primary Codex runtime; approval/merge bookkeeping only.
+- **Branch / PR:** Accepted `codex/t14-bringup` / https://github.com/jeremyward37/weather-epaper/pull/19; completion carried into T15 branch from merged main.
+- **Status at end:** Done
+
+### Result
+Jeremy explicitly said “Accept T14, merge PR #19, and start T15.” Merged the exact accepted revision 6b39baa9c2851735d2e6b2f3497d816725c8adc2 using a head-match guard. PR #19 merged at 13:16 MDT as 08be1ac4024d1c79c25814f0881469804ab096a8. Notion T14 Done; T15 In progress. All technical/physical criteria, independent QA, acceptance and merge gates passed.
+
+### Verification
+Both required CI jobs on the exact accepted revision succeeded in run 37671983034; GitHub confirmed MERGED and the squash commit. Actual display, no-pack ADC, button and runtime memory evidence are preserved in firmware/photos and firmware/logs. Frozen flashed app hash remains 197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d.
+
+### Decisions
+The same human message authorizes T15 implementation start. It does not authorize its later flash/acceptance/merge or T16 advancement. Keep T14 firmware snapshot intact; no hardware action by agents.
+
+### Problems
+None. Battery measurement remains later-card work.
+
+### Needs Jeremy
+None for completed T14. Leave USB connected if desired; T15 hardware instructions will follow a concrete review packet.
+
+### Next
+Authorized T15 only, with its own branch, worklog and independent QA.
+
+---
+
 ## Session — T14 button evidence and acceptance handoff
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b

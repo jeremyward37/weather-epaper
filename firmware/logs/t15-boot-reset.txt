@@ -1,0 +1,8 @@
+[OBSERVER] Raw serial attached; no DTR/RTS ioctl; HUPCL disabled
+[T15] Wi-Fi provisioning; USER unused; BOOT hold 5s resets
+[T15] Saved Wi-Fi connected; panel retained
+[T15] Immediate refresh requested (T16 fetch hook)
+[T15] Credential reset requested
+_Update_Full : 2201001
+_Update_Full : 2202001
+[T15] Setup frame displayed; panel hibernated

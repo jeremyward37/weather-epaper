@@ -4,7 +4,7 @@ Updated 2026-10-07. Jeremy requested implementation subagents, independent testi
 
 ## Current handoff
 
-Reconciled 2026-10-07: T01–T13, T22 and T23 are Done; the T23 handoff PR #17 is merged. T14 is In progress and T15–T21 remain Not started. Jeremy has unboxed the board and plans continuous USB power until the battery arrives in early November. T14 has a PlatformIO spike under review; no physical display/button/wire-format gate has passed. Resume its current gate from orchestration-state.md before advancing.
+Reconciled 2026-10-07: T01–T14, T22 and T23 are Done; PR #17 and T14 PR #19 are merged. Jeremy accepted T14 and explicitly authorized T15 start. T15 is In progress; T16–T21 remain Not started. Actual T14 display, memory, no-pack ADC and button evidence passed. Jeremy plans continuous USB power until the battery arrives in early November. Resume T15 from orchestration-state.md; its own flash, hardware evidence, acceptance and merge gates remain pending.
 
 ## Start or resume
 

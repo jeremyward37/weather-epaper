@@ -2,17 +2,17 @@
 
 This is the durable handoff ledger; update it with each run and approval. WORKLOG remains the append-only session history; Notion cards hold acceptance/status. Never store secrets.
 
-- **Updated:** 2026-10-07 13:05 MDT
-- **Active card:** T14 USB-powered board bring-up
-- **Stage:** All original T14 technical criteria and independent evidence QA Pass; awaiting Jeremy acceptance and merge authorization
-- **Branch / checkout:** `codex/t14-bringup` / `/private/tmp/weather-epaper-t14`
-- **Base / PR:** merged main `6887c8413abe53e705b5fc1ec6cacae30771229a`; [T14 PR #19](https://github.com/jeremyward37/weather-epaper/pull/19), reviewed implementation `4ac387dbbbb3672b11672222f360a83804c8d615`; subsequent review docs do not change firmware/config/workflow
-- **Independent QA:** Pass for clean build/frame/driver, corrected upload parsing, actual photo/memory/no-pack ADC/buttons and startup-warning assessment; separate `epaper_qa` GPT-6.1 Sol · High. Final-head CI required before merge. See `t14-qa.md`.
-- **Intended checks:** PlatformIO clean build, embedded setup header 15,000-byte/zero-pixel comparison, existing CI plus firmware build and artifact hashes.
-- **Pending Jeremy action:** Review completed PR #19 evidence and explicitly accept T14/authorize merge. Authorize T15 advancement if desired. All required photo/serial/button evidence is now supplied; no repeat flash/test requested. Ctrl-C may stop monitoring with USB left connected. Acceptance, merge and T15 advancement remain unauthorized.
-- **Next eligible task:** T15 only after T14's hardware/review/merge gates; T21 separately eligible, not dispatched.
-- **Hardware:** Jeremy flashed the reviewed T14 app, supplied matching setup photo and actual startup/ADC/button output. No battery; expected early November 2026. Jeremy intends continuous USB power until then. Technical hardware checks Pass; explicit acceptance pending, battery calibration/life untested.
-- **Reconciliation:** GitHub PR #17 merged at 2026-10-07 11:38:30 MDT (`6887c84`), required CI passed on final head `7e36c61`; Notion T23 Done. PR #18 (`bee7e19`) is open acceptance bookkeeping with passing CI, not a new T23 gate.
+- **Updated:** 2026-10-07 15:54 MDT
+- **Active card:** T15 Wi-Fi provisioning
+- **Stage:** Original T15 functional criteria and independent QA Pass; normal restored/provisioned, monitor stopped. Awaiting final evidence-head CI and explicit acceptance/authorized merge.
+- **Branch / checkout:** `codex/t15-wifi-provisioning` / `/Users/jeremyward/.codex/worktrees/t15-wifi-provisioning/weather-epaper`
+- **Base / PR:** merged T14 `08be1ac4024d1c79c25814f0881469804ab096a8`; [T15 PR #20](https://github.com/jeremyward37/weather-epaper/pull/20), final firmware/config/test/workflow source `b8ae0c4c1680d6fd3857b6d413248e298599d8ee`. Later review records leave that source unchanged.
+- **Independent QA:** Software and original physical criteria Pass; separate epaper_qa GPT-6.1 Sol · High. See t15-qa.md and t15-hardware-qa.md. Recommended physical failure paths unrun; supplied photo reused accepted T14 reference, not fresh T15.
+- **Intended checks:** completed software checks in `t15-qa.md`; source CI build/firmware Pass in run 37676538752. Require final PR-head checks green before release/merge; latest result tracked in GitHub/Notion.
+- **Pending Jeremy action:** Review T15 packet and limits, then explicitly accept/authorize PR #20 merge if satisfied. T16 start requires explicit authorization; no more routine flash/phone steps for original criteria.
+- **Next eligible task:** T16 only after T15's own hardware/review/merge gates and explicit advancement; T21 separately eligible, not dispatched.
+- **Hardware:** T14 accepted; T15 original phone/BOOT/USER/power-cycle/timer-persistence evidence observed. Exact normal installed, raw observer stopped. Reused photo provenance and unrun recommended physical cases recorded. No battery, expected early November; continuous USB; battery calibration/life untested.
+- **Reconciliation:** PR #19 merged at 2026-10-07 13:16 MDT (`08be1ac`), required CI passed on accepted head `6b39baa`; Notion T14 Done and T15 In progress. PR #18 remains earlier acceptance bookkeeping; it is not a new delivery gate.
 
 ## Approval ledger
 
@@ -57,3 +57,42 @@ Source `4ac387d`: local and independent clean build successful; embedded frame 1
 - **Approved action:** Jeremy may connect in BOOT/download mode and flash this T14 artifact. No new permission question is required for that action. Agents still do not operate hardware or run upload commands under AGENTS.md rule 13.
 - **CI:** Both build and firmware passed on final reviewed revision in run 37665386687; any new software change requires QA and new revision approval.
 - **Remaining gates:** physical setup photo, actual no-pack ADC/button/startup readings, wire confirmation, Jeremy acceptance, authorized merge and separate T15 advancement. None passed by this approval alone.
+
+## T14 acceptance, merge and T15 start — 2026-10-07 13:14–13:17 MDT
+
+- **Human source:** Jeremy in this chat: “Accept T14, merge PR #19, and start T15.”
+- **Accepted revision:** PR #19 head `6b39baa9c2851735d2e6b2f3497d816725c8adc2`, firmware implementation `4ac387dbbbb3672b11672222f360a83804c8d615`, frozen app SHA-256 `197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d`.
+- **Completed action:** both required jobs passed in run 37671983034; authorized squash merge completed 13:16 MDT as `08be1ac4024d1c79c25814f0881469804ab096a8`. Notion T14 set Done.
+- **Authorized advancement:** start T15 Wi-Fi provisioning from the merged T14 code, with GPT-6.1 Sol · Medium implementation and separate GPT-6.1 Sol · High QA (availability checked in current runtime). Notion T15 set In progress, new managed worktree/branch and separate WORKLOG entry opened.
+- **Remaining restrictions:** this does not authorize a new T15 flash, acceptance, merge, scheduled deployment change, or T16 advancement. Hardware remains Jeremy's under AGENTS.md rule 13.
+
+## T15 software review gate — 2026-10-07 13:47 MDT
+
+Final source `b8ae0c4`: independent software QA Pass and both source CI jobs Pass (run 37676538752). Frozen read-only bundles: `/private/tmp/weather-epaper-t15-artifacts/b8ae0c4c1680d6fd3857b6d413248e298599d8ee/`, normal app SHA-256 `736c18b0ae031f60d32c1980192d0bc36a9de83fa0afa4f646ba0494a3556b3a`, bounded persistence-harness app `302af824bfe29974268d555605b6acb756945d4f16f13f93471d203d05a4fbd2`. Whole bundles/checksums and exact commands are in `t15-review.md`; earlier T15 build hashes are superseded. Final review-record CI remains required before release/merge and is recorded on GitHub/Notion. Jeremy has not yet approved these new flashes, performed physical T15 checks, accepted T15, or authorized its merge/T16 advancement. Card remains In progress; stop at this gate.
+
+## T15 normal flash and persistence-test approval — recorded 2026-10-07 14:01 MDT
+
+- **Human source:** Jeremy in this chat: “approve T15 flash and persistence test”.
+- **Reviewed revision:** PR #20 head `250ec59bdb3a7351a5012867098c4b1ded9b1ee2`; audited firmware/config/test/workflow source `b8ae0c4c1680d6fd3857b6d413248e298599d8ee`, unchanged.
+- **Approved artifacts:** normal app SHA-256 `736c18b0ae031f60d32c1980192d0bc36a9de83fa0afa4f646ba0494a3556b3a`; bounded persistence harness `302af824bfe29974268d555605b6acb756945d4f16f13f93471d203d05a4fbd2`. Both frozen bundles' source and all five file hashes rechecked and match.
+- **CI readback:** both required jobs SUCCESS on the exact reviewed head in run 37677877843. Approval bookkeeping does not rebuild or alter the artifacts.
+- **Approved action:** Jeremy may flash the normal bundle, run provisioning/reset/power-cycle tests, flash the separate bounded persistence harness, observe timer-sleep reconnect and restore normal firmware. Agents prepare/record/guide; no agent upload, reset or port operation under rule 13.
+- **Remaining gates:** actual physical/serial/photo evidence, Jeremy's T15 acceptance and authorized merge, then separate T16 advancement. The flash approval alone does not pass these gates. No new permission question for the two approved artifacts.
+
+## T15 Terminal-command override and normal flash — recorded 2026-10-07 14:12 MDT
+
+Jeremy asked “Can't you run terminal commands? Why do I need to?” after approving T15 flash and persistence. This overrides rule 13's manual Terminal handoff for the approved uploads and serial monitoring, including harness and normal restore. Physical phone/button/power/photo operations remain Jeremy's. No repeat artifact approval required.
+
+The agent verified the normal frozen source/all file hashes and ran explicit-offset esptool with automatic `--before default-reset`; exit 0, all four written-image hashes verified. Normal app/source/hash remain those approved above. Startup reached setup frame and AP IP 192.168.4.1. Evidence: firmware/logs/t15-normal-flash-record.md and t15-first-startup.txt. Serial monitor opening itself produced a USB reset; do not count it as spontaneous reboot. Phone/save, power cycle, BOOT reset and timer-sleep criteria remain pending. T15 In progress; no acceptance, merge or T16 advancement.
+
+## Explicit user pause — 2026-10-07 14:40 MDT
+
+Jeremy: “You'll have to wait. I had to take my computer elsewhere. I'll let you know when to restart.” Honor this pause until an explicit restart. Bounded observer ended before the reported power cycle; unchanged panel reported, new serial reconnect not captured. Subsequent port open failed before device access because the port was absent. No harness upload performed. Approved artifact hashes remain unchanged and approvals persist. No ongoing serial capture. Local pause records await publication with resumed evidence.
+
+## Explicit restart — 2026-10-07 15:31 MDT
+
+Jeremy said restart. Earlier pause revoked; approved Terminal upload/monitor/harness/normal restore scope persists. Same board is at /dev/cu.usbmodem114101. Resume T15 only; no new acceptance, merge or T16 authorization.
+
+## T15 resumed sleep-test evidence — 2026-10-07
+
+Actual harness upload verified all four writes. Runtime logged saved reconnect, sleep entry, USB disappearance, raw reattachment, saved reconnect and Timer wake reconnected; persistence observed. Independent epaper_qa audit: one real timer-wake persistence cycle Pass; success cannot follow a USB reset or portal re-provision in unchanged source. Ten seconds configured, not independently timed. Raw observer omits DTR/RTS ioctl and disables HUPCL but host tty behavior prevents a universal reset-free claim. Exact approved normal restored successfully, saved reconnect observed; harness removed. Evidence in firmware/logs/t15-timer-persistence* and t15-normal-restore-record.md. BOOT/second physical-cycle/failure/USER/photo checks and acceptance/merge still pending.
