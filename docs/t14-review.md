@@ -5,7 +5,7 @@ Status: **Done; accepted by Jeremy and PR #19 merged**. Jeremy explicitly said �
 
 ## Reviewed software and evidence
 
-Implementation source: `4ac387dbbbb3672b11672222f360a83804c8d615`, based on merged main `6887c8413abe53e705b5fc1ec6cacae30771229a`. Subsequent PR edits record QA, corrected progress snapshots and this review packet; firmware/config/workflow sources are unchanged. Check the latest PR head and its checks before authorizing merge. Source-revision CI [run 37664544568](https://github.com/jeremyward37/weather-epaper/actions/runs/37664544568) passed both **build** and **firmware**. The final documentation revision must also pass both jobs.
+Implementation source: `4ac387dbbbb3672b11672222f360a83804c8d615`, based on merged main `6887c8413abe53e705b5fc1ec6cacae30771229a`. Subsequent PR edits record QA, corrected progress snapshots and this review packet; firmware/config/workflow sources are unchanged. The final accepted head and both required checks are recorded above. Source-revision CI [run 37664544568](https://github.com/jeremyward37/weather-epaper/actions/runs/37664544568) passed both **build** and **firmware**. The final accepted documentation revision also passed both jobs.
 
 The spike transfers the approved 400×300 setup framebuffer directly, full-refreshes and hibernates the panel, then prints ADC and button levels every two seconds while the ESP32 stays awake. It disables unused peripherals and radio power. The setup text describes a future hotspot; this spike has no Wi-Fi. Continuous USB is suitable for this bring-up. No pack is present, so its ADC readings cannot establish battery voltage or charge level.
 
@@ -14,8 +14,8 @@ Independent QA: separate `epaper_qa` (GPT-6.1 Sol · High), software and actual 
 | Criterion / gate | Evidence | Result |
 |---|---|---|
 | Embedded setup matches export | 15,000 bytes; independent framediff 0 pixels; clean header regeneration | Pass |
-| Clean firmware build and CI job | Independent clean PlatformIO build; firmware CI success | Pass on source revision; recheck final PR head |
-| Existing renderer/server regression gates | CI build: pinned build/verify, 7 zero-diff frames, 6 byte-identical CLI fixtures and tool/design/server tests | Pass on source revision; recheck final PR head |
+| Clean firmware build and CI job | Independent clean PlatformIO build; firmware CI success | Pass on source and final accepted head |
+| Existing renderer/server regression gates | CI build: pinned build/verify, 7 zero-diff frames, 6 byte-identical CLI fixtures and tool/design/server tests | Pass on source and final accepted head |
 | HARDWARE.md | Pins, GYE042A87 driver, ADC, power/charger sources, explicit pending observations | Pass |
 | Setup photo and physical wire format | Jeremy's actual photo; independent visual QA Pass; findings recorded in scope/decisions | Pass; accepted by Jeremy |
 | Serial ADC and both buttons | Actual USB-only/no-pack raw=0, ADC_mV=0, sense_mV=0; both HIGH→LOW→HIGH in `firmware/logs/t14-buttons.txt` | Pass |
@@ -78,7 +78,7 @@ Jeremy approved the frozen T14 flash and completed the corrected upload, setup p
 5. Return several no-pack serial lines with both buttons released. Hold **USER** three seconds, release three seconds, then hold **BOOT** three seconds and release. Both should show `1 → 0 → 1`. T14 only reports buttons; they do not provision Wi-Fi yet. Retain actual ADC readings plus the explicit context **USB-only, battery connector empty**. They may be zero or nonzero; no-pack values are not battery state of charge.
 6. Return startup Flash/PSRAM lines if visible: expected `Flash=16777216 PSRAM=8388608`, and any `Busy Timeout!`, reset loop or display defect. If startup logs were missed, periodic diagnostics continue; recovery steps are in [firmware README](../firmware/README.md). Record the source revision/app hash actually flashed.
 
-After evidence arrives, the orchestrator evaluates it and records the physical wire format. T14 remains In progress until every criterion passes, Jeremy explicitly accepts the result, and merge is authorized with green CI. T15 requires separate advancement authorization.
+Completed gate: the orchestrator and independent QA evaluated the physical evidence and recorded the wire format. Every T14 criterion passed, Jeremy explicitly accepted the result and authorized merge with green CI, and separately authorized T15 start.
 
 ## Stop / rollback and limits
 

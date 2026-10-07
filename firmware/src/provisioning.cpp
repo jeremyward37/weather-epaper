@@ -53,6 +53,15 @@ bool storeConnected() {
   }
   return true;
 }
+bool invalidateFrame() {
+  if (!storageReady) return false;
+  if (preferences.isKey("lastFrameSha")) {
+    preferences.remove("lastFrameSha");
+    // Check persisted absence, rather than trust an unchecked removal result.
+    if (preferences.isKey("lastFrameSha")) return false;
+  }
+  return true;
+}
 void sampleDuringConnection() {
   if (sampleButton() == ButtonEvent::Reset) resetRequested = true;
   // Short press during setup/reconnect is covered by that connection attempt.
@@ -99,7 +108,7 @@ void clearCredentials() {
       Serial.println("[T15] Reset intent save failed");
     if (preferences.putBool("provisioned", false) != 1)
       Serial.println("[T15] Metadata reset failed");
-    preferences.remove("lastFrameSha");
+    if (!invalidateFrame()) Serial.println("[T15] Frame metadata reset failed");
   }
   WiFi.persistent(true);
   WiFi.enableSTA(true);
@@ -127,7 +136,16 @@ bool reconnectSaved() {
   Serial.println("[T15] Saved Wi-Fi unavailable; entering setup"); return false;
 }
 void runPortalBlocking() {
-  if (storageReady) preferences.remove("lastFrameSha");
+  bool reportedStorageFailure = false;
+  while (!invalidateFrame()) {
+    if (!reportedStorageFailure) {
+      Serial.println("[T15] Frame metadata invalidation failed; retrying before setup");
+      reportedStorageFailure = true;
+    }
+    sampleDuringConnection();
+    if (resetRequested) clearCredentials();
+    delay(50);  // Retry with button sampling; never draw with a stale hash.
+  }
   if (setupHook) setupHook();
   WiFiManager manager;
   manager.setDebugOutput(false);

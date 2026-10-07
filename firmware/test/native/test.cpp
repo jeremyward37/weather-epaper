@@ -54,6 +54,14 @@ int main(int argc,char**argv){
      if(clockMs>=3005)connected=true;};
    runPortalBlocking();assert(clockMs>=3005);assert(begins==1);
    assert(!metadata.count("resetPending"));
+ } else if(scenario=="frame-invalidation"){
+   saved=true;metadata["lastFrameSha"]="accepted-sha";removeFails=true;
+   held=[](uint32_t n){return n<5500;};
+   onDelay=[] {if(clockMs<6000){assert(draws==0);assert(metadata.count("lastFrameSha"));}
+     if(clockMs>=6000)removeFails=false;};
+   onProcess=[] {if(clockMs==6000)intent=true;if(clockMs>=6005)connected=true;};
+   runPortalBlocking();assert(clockMs>=6005);assert(draws==1);
+   assert(metadata["lastFrameSha"].empty());assert(!metadata.count("resetPending"));
  } else if(scenario=="metadata-failure"){
    saved=true;connected=true;prefsFail=true;assert(!reconnectSaved());assert(draws==0);
  } else return 2;

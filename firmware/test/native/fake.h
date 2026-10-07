@@ -10,13 +10,15 @@
 #include <cassert>
 inline uint32_t clockMs=0;
 inline std::function<bool(uint32_t)> held=[](uint32_t){return false;};
+inline bool removeFails=false;
+inline std::function<void()> onDelay=[]{};
 inline bool staleNative=false, nativeSaveFails=false;
 inline bool saved=false, connected=false, eraseFails=false, prefsFail=false, intent=false;
 inline int begins=0, draws=0, refreshes=0, processes=0, apStarts=0, storageCalls=0;
 inline std::map<std::string,std::string> metadata;
 inline std::function<void()> onProcess=[]{};
 inline uint32_t millis(){return clockMs;}
-inline void delay(unsigned n){clockMs+=n;if(clockMs>150000)throw std::runtime_error("unbounded test");}
+inline void delay(unsigned n){clockMs+=n;onDelay();if(clockMs>150000)throw std::runtime_error("unbounded test");}
 constexpr int LOW=0, WIFI_STA=1, WL_CONNECTED=3, WIFI_IF_STA=0, ESP_OK=0, WIFI_STORAGE_FLASH=1;
 inline int digitalRead(int){return held(clockMs)?0:1;}
 struct Console{void println(const char*){} template<class...T>void printf(const char*,T...){} };inline Console Serial;
@@ -37,7 +39,7 @@ struct Preferences {
  bool getBool(const char*k,bool d){return metadata.count(k)?metadata[k]=="1":d;}
  bool isKey(const char*k){return metadata.count(k);}
  size_t putString(const char*k,const char*v){if(!prefsFail)metadata[k]=v;return strlen(v);}
- bool remove(const char*k){if(prefsFail)return false;return metadata.erase(k);}
+ bool remove(const char*k){if(prefsFail||removeFails)return false;return metadata.erase(k);}
 };
 struct String {
  std::string value;size_t length()const{return value.length();}
