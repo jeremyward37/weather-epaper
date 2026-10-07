@@ -4,7 +4,7 @@ Updated 2026-10-07. Jeremy requested implementation subagents, independent testi
 
 ## Current handoff
 
-Notion reviewed 2026-10-07: T01–T13 and T22 are Done; T14–T21 are Not started. The board arrived 2026-10-06 and is unopened. Delivery removes the shipping blocker; it does not establish a working board or an approved wire format. T23 prepares this handoff only. Start T14 after Jeremy approves and merges the T23 PR.
+Reconciled 2026-10-07: T01–T13, T22 and T23 are Done; the T23 handoff PR #17 is merged. T14 is In progress and T15–T21 remain Not started. Jeremy has unboxed the board and plans continuous USB power until the battery arrives in early November. T14 has a PlatformIO spike under review; no physical display/button/wire-format gate has passed. Resume its current gate from orchestration-state.md before advancing.
 
 ## Start or resume
 
@@ -70,7 +70,7 @@ Default firmware path: T14 → T15 → T16 → T17 → T18 → T19 → T20. Run 
 
 ## Evidence standards
 
-- Canonical container: `./tools/render.sh` invokes `./build.sh`, must print PASS and seven zero-diff rows. CLI fixtures: `./tools/fixture-check.sh`, six byte-identical comparisons. Preserve canonical exports. Run firmware/native commands actually supported by the implemented PlatformIO project and record exact commands; currently that project does not exist.
+- Canonical container: `./tools/render.sh` invokes `./build.sh`, must print PASS and seven zero-diff rows. CLI fixtures: `./tools/fixture-check.sh`, six byte-identical comparisons. Preserve canonical exports. Run firmware/native commands actually supported by the implemented PlatformIO project and record exact commands; T14 supplies the PlatformIO spike, while later cards extend it.
 - Compare raw to its corresponding PNG with `tools/framediff.py`. Normal/low-battery comparison uses `--region 136,281,14,10`; exit 1 is expected for the glyph but outside-region differences must be zero. Seven canonical exports and six CLI fixture checks are different gates.
 - Record firmware SHA-256, Git revision, build environment, Jeremy's flashed artifact, sanitized serial excerpts, and photo paths/card attachments. Hash/binary gates verify software; panel photos verify orientation/crop and physical operation.
 - T21 distinguishes missing runs from late runs and publish completion from run start. Include the approved 04:47 prepublish, local timezone/DST, and each device wake. A good p95 among runs that happened cannot conceal missing slots.

@@ -1,0 +1,3 @@
+# pioarduino 54.03.21 calls esp-idf-size with --ng; 2.x removed that flag.
+platformio==6.1.18
+esp-idf-size==1.6.1

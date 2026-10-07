@@ -1,0 +1,21 @@
+Selected verbatim serial excerpt from Jeremy's Terminal Appshot, 2026-10-07 12:49 MDT.
+Context: frozen T14 app 197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d; USB-only, no battery pack. This is an excerpt, not a complete captured serial log.
+
+[    22][E][esp32-hal-adc.c:172] __analogChannelConfig(): Pin is not configured as analog channel
+[T14] NM-EPD-420-BW USB bring-up; no Wi-Fi or ESP deep sleep
+[T14] Flash=16777216 PSRAM=8388608 bytes; frame=15000 bytes, 400x300 row-major MSB-first 1=white
+[T14] USB-only ADC readings do not identify a battery or state of charge
+[    32][E][esp32-hal-gpio.c:176] __digitalWrite(): IO 46 is not set as GPIO. Execute digitalMode(46, OUTPUT) first.
+[    43][E][esp32-hal-gpio.c:176] __digitalWrite(): IO 5 is not set as GPIO. Execute digitalMode(5, OUTPUT) first.
+[    75][E][esp32-hal-gpio.c:176] __digitalWrite(): IO 4 is not set as GPIO. Execute digitalMode(4, OUTPUT) first.
+_Update_Full : 2200002
+_Update_Full : 2201002
+[T14] Frame transfer/refresh returned; panel hibernated. Inspect photo for fidelity.
+[T14] ms=4869 BATT_ADC_raw=0 ADC_mV=0 sense_mV=0 USER=1 BOOT=1 (LOW=pressed; pack presence unknown)
+[T14] ms=7002 BATT_ADC_raw=0 ADC_mV=0 sense_mV=0 USER=1 BOOT=1 (LOW=pressed; pack presence unknown)
+[T14] ms=9005 BATT_ADC_raw=0 ADC_mV=0 sense_mV=0 USER=1 BOOT=1 (LOW=pressed; pack presence unknown)
+[T14] ms=11008 BATT_ADC_raw=0 ADC_mV=0 sense_mV=0 USER=1 BOOT=1 (LOW=pressed; pack presence unknown)
+[T14] ms=13011 BATT_ADC_raw=0 ADC_mV=0 sense_mV=0 USER=1 BOOT=1 (LOW=pressed; pack presence unknown)
+[T14] ms=15014 BATT_ADC_raw=0 ADC_mV=0 sense_mV=0 USER=1 BOOT=1 (LOW=pressed; pack presence unknown)
+[T14] ms=17017 BATT_ADC_raw=0 ADC_mV=0 sense_mV=0 USER=1 BOOT=1 (LOW=pressed; pack presence unknown)
+[T14] ms=19020 BATT_ADC_raw=0 ADC_mV=0 sense_mV=0 USER=1 BOOT=1 (LOW=pressed; pack presence unknown)

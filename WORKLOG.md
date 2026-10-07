@@ -1,5 +1,233 @@
 # Work log
 
+## Session — T14 button evidence and acceptance handoff
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 13:01 MDT / 2026-10-07 13:06 MDT
+- **Model:** Primary Codex runtime; separate QA final evidence audit.
+- **Branch / PR:** `codex/t14-bringup` / https://github.com/jeremyward37/weather-epaper/pull/19
+- **Status at end:** In progress
+
+### Result
+Jeremy supplied actual USER and BOOT transitions. USER was HIGH at 643956 ms, LOW at 645959/647962, HIGH at 649965; BOOT was HIGH at 649965, LOW at 651968, HIGH at 653971. Stable diagnostics continued through 661983 ms, with no-pack ADC values zero. Saved verbatim excerpt in firmware/logs/t14-buttons.txt. All original T14 technical acceptance criteria now have evidence; explicit Jeremy acceptance and authorized merge remain pending.
+
+### Verification
+Photo and independent visual QA passed; frozen app and clean build/zero-pixel evidence are unchanged. Separate QA independently parsed all eight button-excerpt lines, confirmed both HIGH→LOW→HIGH sequences and strictly increasing timestamps, reverified all five frozen hashes and confirmed production source/config/workflow/header/exports unchanged since 4ac387d. Its final technical addendum is in docs/t14-qa.md. Revision 7e222d4 CI passed build and firmware in run 37670973964. Publish this final evidence record and require both checks on its resulting head before the review handoff; the exact final head/check readback is reported to Jeremy and the card without modifying the already-checked repository again.
+
+### Decisions
+No further flash is needed. Keep T14 In progress until Jeremy acceptance and authorized merge; T15 requires separate explicit advancement authorization.
+
+### Problems
+No remaining physical defect identified. Battery calibration/life remain later-card work without a pack. Current-head CI is required before acceptance/merge; no additional firmware build or flash is needed for evidence-only edits. Prior photo publication succeeded using per-command HTTP/1.1/postBuffer after chunked push disconnected; no persistent Git config changed.
+
+### Needs Jeremy
+Review the final T14 packet and explicitly approve acceptance/merge; authorize starting T15 if desired. Ctrl-C may stop the monitor while USB remains connected.
+
+### Next
+Wait at T14 review gate. No merge or next-card execution without authorization.
+
+---
+
+## Session — T14 first runtime evidence
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 12:50 MDT / 2026-10-07 12:55 MDT
+- **Model:** Primary Codex runtime; implementation and independent QA resumed for startup-warning assessment only.
+- **Branch / PR:** `codex/t14-bringup` / https://github.com/jeremyward37/weather-epaper/pull/19
+- **Status at end:** In progress
+
+### Result
+Jeremy supplied runtime Terminal output after normal reset. T14 booted and printed Flash=16777216, PSRAM=8388608, frame=15000, refresh-return/panel-hibernation message and increasing diagnostic timestamps from 4869 through 19020 ms. Released buttons USER=1 BOOT=1; USB-only/no-pack readings raw=0 ADC_mV=0 sense_mV=0. Repetition is the intended approximately two-second diagnostic loop, not evidence of repeated resets.
+
+### Verification
+Startup also logs ADC channel-not-configured and GPIO 46/5/4 not-set-as-GPIO errors. Implementation and separate QA traced them to ignored preliminary calls followed by correct initialization; default ADC attenuation is already 11 dB and GxEPD2 repeats output writes after pinMode. They are nonblocking for this frozen revision. Selected verbatim serial excerpt saved in firmware/logs/t14-runtime-initial.txt. Jeremy supplied IMG_2842.JPG, copied unchanged to firmware/photos/t14-setup.jpg (SHA-256 fe30c95d6e9d05e4e06aab4f796bfb203ee00ee2a15512f7571212e024ebe00b). Orchestrator and separate QA visually compared actual photo and canonical PNG: Pass, upright/unmirrored black-on-white complete frame, no visible crop/shift/missing columns. Camera perspective prevents a pixel-level photo claim. Actual evidence recorded in HARDWARE, scope and decisions; firmware/config/exports unchanged.
+
+### Decisions
+Do not mistake stable periodic diagnostics or zero no-pack readings for a reset loop or battery state of charge. Investigate warnings before accepting the hardware result.
+
+### Problems
+Button transitions and Jeremy's explicit acceptance remain pending. Battery voltage/calibration/life are untested without a pack. Startup-warning cleanup is optional and would need a newly reviewed build; no reflash is necessary for the current observed photo/diagnostics.
+
+### Needs Jeremy
+Keep the serial monitor open. Hold USER three seconds, release three seconds; then hold BOOT three seconds and release. Return serial showing each 1→0→1 transition. Do not reset during this button check. After evidence, explicit review/merge and advancement gates remain.
+
+### Next
+Finish T14 evidence and warning assessment only; no merge or T15 advancement.
+
+---
+
+## Session — T14 successful flash and serial handoff
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 12:45 MDT / 2026-10-07 12:46 MDT
+- **Model:** Primary Codex runtime; evidence recording only, no implementation changes.
+- **Branch / PR:** `codex/t14-bringup` / https://github.com/jeremyward37/weather-epaper/pull/19
+- **Status at end:** In progress
+
+### Result
+Jeremy's Terminal Appshot shows the corrected command passing all five hash checks, connecting to ESP32-S3 QFN56 revision v0.2 on /dev/cu.usbmodem14101, writing the 472,272-byte app at 0x10000 and reporting “Hash of data verified.” It returned to the shell after “Hard resetting via RTS pin.” This is successful uploader evidence; physical display/runtime acceptance is not yet established. No agent upload occurred.
+
+### Verification
+Device-reported embedded PSRAM 8 MB, 40 MHz crystal, USB Serial/JTAG. Application source `4ac387d` and frozen hash `197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d`. Read-only post-flash enumeration still sees /dev/cu.usbmodem14101. Screenshot includes the app verification; individual boot-component write lines are not visible, so no separate claim of their observed hashes is made.
+
+### Decisions
+Open the application serial monitor next; retain actual startup/ADC/button evidence and a setup photo before physical acceptance.
+
+### Problems
+Jeremy reports the screen is unchanged after successful upload. Application startup has not been established; the uploader's USB reset may not have started the app. No setup photo or application serial lines yet. Uploader identification of PSRAM is distinct from runtime PSRAM initialization.
+
+### Needs Jeremy
+With BOOT released, press and release RESET once and wait about ten seconds for normal startup. Run the standalone PlatformIO monitor command at baud 115200 and observed port; return serial output and panel state/photo. Button checks follow once runtime diagnostics are present. If no diagnostics appear after ten seconds, return that observation.
+
+### Next
+Complete T14 runtime/display checks only. No merge or T15 advancement.
+
+---
+
+## Session — T14 uploader argument correction
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 12:41 MDT / 2026-10-07 12:44 MDT
+- **Model:** Primary Codex runtime; resumed implementation and independent QA roles for narrow upload-command correction.
+- **Branch / PR:** `codex/t14-bringup` / https://github.com/jeremyward37/weather-epaper/pull/19
+- **Status at end:** In progress
+
+### Result
+Jeremy ran the supplied nobuild/upload/monitor command. Installed esptool 5.0.0-dev1 rejected malformed address/file pairs before connecting or writing; no successful flash is claimed. Diagnosing the vendor nobuild environment and preparing explicit frozen-binary offsets. Firmware rebuild and hardware actions remain excluded from agent work.
+
+### Verification
+All five frozen bundle hashes verify. Installed esptool image-info validates the S3 bootloader, DIO/80 MHz/16 MB image and footer hashes. Implementation and separate QA validated the explicit command with Click parser contexts without callbacks/serial; QA's offline merge-bin verified all four source byte ranges unchanged at their framework/partition-derived offsets with no overlap. No hardware command or rebuild was executed. Documentation commands replace the withdrawn nobuild upload and use the same approved binaries.
+
+### Decisions
+Preserve the approved frozen app and boot components; correct uploader handoff without rebuilding.
+
+### Problems
+Prior command review did not exercise the actual uploader argument construction. Jeremy's failed output is the observed evidence.
+
+### Needs Jeremy
+Run the corrected hash-gated explicit esptool command from the frozen bundle with current port /dev/cu.usbmodem14101, then return terminal output and panel photo. The command uses the existing BOOT entry; serial monitoring follows after successful upload and app USB enumeration.
+
+### Next
+T14 retry and physical evidence only. No merge or next card.
+
+---
+
+## Session — T14 flash command handoff
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 12:40 MDT / 2026-10-07 12:40 MDT
+- **Model:** Primary Codex runtime (identity/effort not exposed); no source changes or new QA delegation.
+- **Branch / PR:** `codex/t14-bringup` / https://github.com/jeremyward37/weather-epaper/pull/19
+- **Status at end:** In progress
+
+### Result
+Jeremy confirmed “reset done” after the BOOT-held RESET procedure. Read-only enumeration still sees `/dev/cu.usbmodem14101` (303A:1001). Prepared the exact approved nobuild/upload/monitor command with that port for Jeremy to run; no agent flash occurred.
+
+### Verification
+Frozen app SHA-256 rechecked matching `197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d`. Firmware unchanged since independently reviewed implementation `4ac387d`; approval-ledger revision `16bc3e7` CI passed both jobs in run 37666916058. USB enumeration does not independently prove boot mode.
+
+### Decisions
+Use the existing reviewed build without rebuilding. Jeremy performs upload in Terminal; handle actual uploader/monitor output before claiming success.
+
+### Problems
+Flash completion and setup/photo/serial/button acceptance remain unverified.
+
+### Needs Jeremy
+Run the provided command from /private/tmp/weather-epaper-t14 with PLATFORMIO_CORE_DIR=/private/tmp/weather-epaper-t14-pio, both ports /dev/cu.usbmodem14101 and nobuild/upload/monitor targets. Return terminal output and a photo after refresh; on error return output before retry.
+
+### Next
+Evaluate actual T14 flash evidence. No merge or next card.
+
+---
+
+## Session — T14 first USB connection
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 12:30 MDT / 2026-10-07 12:31 MDT
+- **Model:** Primary Codex runtime (identity/effort not exposed); no implementation change or new QA delegation.
+- **Branch / PR:** `codex/t14-bringup` / https://github.com/jeremyward37/weather-epaper/pull/19
+- **Status at end:** In progress
+
+### Result
+Jeremy reports the device connected and supplied IMG_2841.JPG, showing Meshtastic's welcome screen rather than the prior splash. This establishes that the original app drew a new screen, but retained e-paper pixels cannot determine the current boot mode. Read-only enumeration sees /dev/cu.usbmodem14101, USB JTAG/serial debug unit, VID:PID 303A:1001. No agent upload or hardware reset was performed.
+
+### Verification
+Frozen app hash remains `197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d`. Both CI jobs passed for approval-bookkeeping revision 16bc3e7 in https://github.com/jeremyward37/weather-epaper/actions/runs/37666916058. Firmware sources are unchanged.
+
+### Decisions
+Use Jeremy's labeled BOOT+RESET sequence while USB stays connected to establish download mode before selecting the upload port again. Enumeration alone does not prove download mode.
+
+### Problems
+No flashed setup frame or ADC/button evidence yet; this Meshtastic photo does not satisfy T14 acceptance.
+
+### Needs Jeremy
+Keep USB connected, hold BOOT, press and release RESET while still holding BOOT, wait about two seconds, then release BOOT. Return “reset done” for read-only port re-enumeration and the frozen upload command.
+
+### Next
+Continue approved T14 flash and physical verification only; acceptance, merge and T15 remain pending.
+
+---
+
+## Session — T14 approved flash and BOOT instructions
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 12:25 MDT / 2026-10-07 12:25 MDT
+- **Model:** Primary Codex runtime (identity/effort not exposed); no implementation change or new QA delegation.
+- **Branch / PR:** `codex/t14-bringup` / https://github.com/jeremyward37/weather-epaper/pull/19
+- **Status at end:** In progress
+
+### Result
+Recorded Jeremy's explicit T14 flash approval and prepared stepwise BOOT/download-mode guidance using the labeled BOOT and Reset controls in his photos. The approved source, firmware and build environment are unchanged.
+
+### Verification
+Current checkout is reviewed revision `b677f3d`; current app SHA-256 rechecked as `197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d`. Espressif's current ESP32-S3 boot-mode documentation confirms GPIO0 LOW at reset enters the ROM downloader; this board's BOOT is GPIO0. No device connection, upload or measurement was performed by the agent.
+
+### Decisions
+Jeremy's approval authorizes his T14 flash of the reviewed artifact. Merge, physical acceptance and T15 advancement remain separate gates. A retained Meshtastic image is not evidence that boot-mode entry failed, because e-paper retains pixels without active firmware drawing.
+
+### Problems
+None; USB enumeration and physical evidence are pending.
+
+### Needs Jeremy
+With device USB disconnected: connect cable to Mac, hold the labeled BOOT button, connect USB to device, hold briefly then release. If already powered, hold BOOT while pressing/releasing Reset, then release BOOT. Return connection confirmation so the USB port can be identified; do not press User for download mode. Perform the reviewed upload command only after port identification, then photo/serial/button checks.
+
+### Next
+Continue T14's approved flash and physical verification; no merge or next-card execution.
+
+---
+
+
+## Session — T14 USB-powered board bring-up
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812ca47ddfc930e4a38b
+- **Started / finished:** 2026-10-07 11:57 MDT / 2026-10-07 12:12 MDT
+- **Model:** Primary Codex runtime (identity/effort not exposed); implementation and independent QA GPT-6.1 Sol · High, verified available in this client's tool schema.
+- **Branch / PR:** `codex/t14-bringup` / https://github.com/jeremyward37/weather-epaper/pull/19
+- **Status at end:** In progress
+
+### Result
+Prepared T14 in `/private/tmp/weather-epaper-t14`, from merged main `6887c84`: pinned PlatformIO/Arduino/GxEPD2 spike, direct setup-frame transfer, ADC/button serial diagnostics, hardware/recovery documentation and firmware CI artifacts. Independent QA passed available software checks. PR #19 remains draft while Jeremy review/flash/photo/serial/physical acceptance and authorized merge are pending. Detailed packet: `docs/t14-review.md`; audit: `docs/t14-qa.md`. T10 and T23 are Done; PR #17 is merged and PR #18 is separate acceptance bookkeeping.
+
+### Verification
+`node server/bin/pack-setup.js` (bundled Node) regenerated the embedded header with a clean diff. Extracted 15,000 bytes and bundled Python `tools/framediff.py` against `state-setup.png` reported zero differing pixels. PlatformIO 6.1.18 clean + build with pioarduino 54.03.21/GxEPD2 1.6.8 succeeded; RAM 37,336 bytes, application flash 471,870 bytes. The parent build app hash `729f687c...` was superseded by QA's clean rebuild. Frozen final local app SHA-256 `197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d`; bundle `/private/tmp/weather-epaper-t14-artifacts/4ac387dbbbb3672b11672222f360a83804c8d615/` preserves all flash components and a manifest. Workflow YAML parsed and `git diff --check` passed. Independent QA `epaper_qa` passed, including its own clean build and zero-pixel asset check; final review-record/artifact/command recheck also passed without rebuilding. Source revision `4ac387d` CI build and firmware passed: https://github.com/jeremyward37/weather-epaper/actions/runs/37664544568. Final documentation-only revision requires the same green checks before release; latest PR evidence is also recorded on the card. No hardware operation has occurred.
+
+### Decisions
+- Jeremy has a USB cable and will leave the device connected until the battery arrives in early November 2026. T14 accepts documented no-pack ADC readings. Battery calibration/life acceptance waits for the pack.
+- Preserve the unrelated `.gitignore` edit and old main checkout by using an isolated branch/worktree.
+- Use scoped implementation and QA subagents as required by accepted AGENTS.md; only the orchestrator changes Git, Notion, log and state.
+
+### Problems
+No hardware evidence yet. Local `./tools/render.sh` exited 2 because Docker daemon is stopped; pinned renderer/fixture regression verification will run in CI. Vendor pioarduino installer writes a tool cache under `~/.platformio/tools` despite isolated `PLATFORMIO_CORE_DIR`; documented and left intact. Initial build succeeded but its size helper 2.3.2 rejected vendor `--ng`; pinning esp-idf-size 1.6.1 resolved the warning in the clean rebuild. The durable main ledger predates PR #17's merge; reconciliation records the observed merge without merging PR #18.
+
+### Needs Jeremy
+Review PR #19 and explicitly approve the frozen T14 app for flashing; then perform the USB/download-mode/upload/serial/photo steps in `docs/t14-review.md`. Return the whole-panel photo, actual no-pack ADC readings, both USER/BOOT HIGH→LOW→HIGH transitions and startup Flash/PSRAM/timeout findings. Physical confirmation, explicit acceptance and authorized merge remain pending. No battery required for T14.
+
+### Next
+Finish only T14's software preparation; stop at review/hardware gate. T15 must wait for T14 physical evidence, acceptance and authorized merge.
+
+---
+
+
 ## Session — T23 publication retry and CI
 
 - **Task:** https://app.notion.com/p/3f2d9adbacad8146b8f8f2d5dea31b1e
