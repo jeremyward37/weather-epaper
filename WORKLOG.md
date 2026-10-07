@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T23 accepted merge record
+
+- **Task:** https://app.notion.com/p/3f2d9adbacad8146b8f8f2d5dea31b1e
+- **Started / finished:** 2026-10-07 11:39 MDT / 2026-10-07 11:39 MDT
+- **Model:** Codex (active session model/effort not exposed)
+- **Branch / PR:** `codex/t23-merge-record`; accepted delivery https://github.com/jeremyward37/weather-epaper/pull/17
+- **Status at end:** Done
+
+### Result
+Jeremy confirmed "Reviewed and merged". Recorded T23 acceptance/merge in the durable approval ledger and closed its Notion card. T14 is the next eligible card; no firmware execution started.
+
+### Verification
+`gh pr view 17 --json state,mergedAt,mergeCommit,url,headRefOid` confirmed MERGED at 2026-10-07 11:38:30 MDT, merge `6887c8413abe53e705b5fc1ec6cacae30771229a`, reviewed head `7e36c61c2999fd77594a0de486e73f81396bfb16`. That head's required build passed in CI run 37660438549. All T23 acceptance boxes were checked before closure. `git fetch origin` obtained the merge. Metadata-only log/state change; implementation and approved frames untouched.
+
+### Decisions
+T23's review gate is closed by the human confirmation and verified merge. Its bookkeeping record does not reopen the accepted delivery gate; future cards retain their own review/hardware gates.
+
+### Problems
+None.
+
+### Needs Jeremy
+Request starting T14 when ready. T14 prepares the build and exact physical test instructions first.
+
+### Next
+T14 on its own branch/run after the execution request. Do not merge or start another card in this bookkeeping run.
+
+---
+
 ## Session — T23 publication retry and CI
 
 - **Task:** https://app.notion.com/p/3f2d9adbacad8146b8f8f2d5dea31b1e
