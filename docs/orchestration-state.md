@@ -2,14 +2,14 @@
 
 This is the durable handoff ledger; update it with each run and approval. WORKLOG remains the append-only session history; Notion cards hold acceptance/status. Never store secrets.
 
-- **Updated:** 2026-10-07 11:57 MDT
+- **Updated:** 2026-10-07 12:12 MDT
 - **Active card:** T14 USB-powered board bring-up
-- **Stage:** Independent QA
+- **Stage:** Awaiting Jeremy review and hardware evidence
 - **Branch / checkout:** `codex/t14-bringup` / `/private/tmp/weather-epaper-t14`
-- **Base / PR:** merged main `6887c8413abe53e705b5fc1ec6cacae30771229a`; T14 PR pending
-- **Independent QA:** Pending; separate GPT-6.1 Sol · High child after implementation finishes.
+- **Base / PR:** merged main `6887c8413abe53e705b5fc1ec6cacae30771229a`; [T14 PR #19](https://github.com/jeremyward37/weather-epaper/pull/19), reviewed implementation `4ac387dbbbb3672b11672222f360a83804c8d615`; subsequent review docs do not change firmware/config/workflow
+- **Independent QA:** Pass for available software checks; separate `epaper_qa` GPT-6.1 Sol · High clean build/frame/driver/instructions review. Physical gates pending. See `t14-qa.md`.
 - **Intended checks:** PlatformIO clean build, embedded setup header 15,000-byte/zero-pixel comparison, existing CI plus firmware build and artifact hashes.
-- **Pending Jeremy action:** Keep USB data cable ready; reviewed build and exact physical instructions will follow. No flash authorized yet.
+- **Pending Jeremy action:** Review packet `t14-review.md`; approve flash of app SHA-256 `197954ed939d99b47ab43c8115749adb3fe8078ff43f5075bb58c5717018589d`, then photo/serial/button evidence. No flash/merge/advance authorized yet.
 - **Next eligible task:** T15 only after T14's hardware/review/merge gates; T21 separately eligible, not dispatched.
 - **Hardware:** Unboxed; supplied photos show USB-C, Reset/User/Boot and battery switch; Meshtastic screen. No battery; expected early November 2026. Jeremy intends continuous USB power until then. Weather firmware panel/serial acceptance is pending.
 - **Reconciliation:** GitHub PR #17 merged at 2026-10-07 11:38:30 MDT (`6887c84`), required CI passed on final head `7e36c61`; Notion T23 Done. PR #18 (`bee7e19`) is open acceptance bookkeeping with passing CI, not a new T23 gate.
@@ -44,3 +44,7 @@ Resume this card first: inspect PR #17's latest head and required checks, resolv
 ## T14 preparation authorization — 2026-10-07
 
 Jeremy's human messages in this chat request orchestration of the remaining project, provide unboxed-device photos and USB readiness, and specify continuous USB power until the battery arrives in early November. Preparing T14's software, independent QA and review packet is within that request. It does not authorize flashing, merging, deployment changes, hardware acceptance, or advancing beyond T14. Physical and release gates remain pending.
+
+## T14 software gate evidence — 2026-10-07 12:12 MDT
+
+Source `4ac387d`: local and independent clean build successful; embedded frame 15,000 bytes and zero differing pixels; independent QA software Pass. CI build and firmware passed on [run 37664544568](https://github.com/jeremyward37/weather-epaper/actions/runs/37664544568). Require both jobs green on the latest PR revision after review-record publication. Physical criteria and Jeremy acceptance/flash/merge/advance gates remain pending. Frozen local artifact and exact steps are in `t14-review.md`; card receives latest CI readback.
