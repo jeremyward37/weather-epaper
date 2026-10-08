@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T16 evening photo and capture reconciliation
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
+- **Started / finished:** 2026-10-07 21:04 MDT / 2026-10-07 21:09 MDT
+- **Model:** Primary runtime; independent evidence QA subagent using inherited runtime settings.
+- **Branch / PR:** codex/t16-wake-fetch-sleep / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress
+
+### Result
+Jeremy returned with IMG_2846.JPG. The photo shows a later weather frame: 70 degrees, FIRST LIGHT7:05AM, hourly9PM/12AM/3AM/6AM, footer10/7 8:42PM. This establishes a later visible update, without identifying its wake cause. The saved observer trace includes a second real TIMER cycle for18:00 but no18:30 record; session54253 is unavailable and no matching observer process is running. Full-hour evidence remains incomplete.
+
+### Verification
+Read saved runtime trace; second TIMER at23:59:24.159UTC, accepted15000lowbat at00:00:01.555UTC, identical-no-redraw and sleep target18:30. Original photo SHA37d97937f8e93b3f4c2fb947a2ed93ccf4281c11cb9c22e214ccb834d435de2b. Saved trace SHA3e795a95dc1609521b2692b865c10e2da3ed83103669d9662d47ff198a54c913. Prior documentation head586f58af4e11757f7eadf8e23315a46164f64683 has both build and firmware SUCCESS in run37703737928. Production source3fc1e59/app4d9e35cf remain unchanged. Independent docs/t16-evening-qa.md Pass the narrow second fetch/no-redraw case and keep fullhour Pending. Second TIMER woke36s early versus20s configured; fetch started approximately18:00:00.067MDT. No cause assigned; preserve timing for next reconciliation. Saved partial trace copied byte-for-byte to firmware/logs/t16-corrected-evening-runtime.txt; no home credentials appear in it. git diff --check Pass; documentation/logs only, no implementation tests rerun.
+
+### Decisions
+Preserve the partial trace and photo identity. Do not infer scheduled wake causes or a full-hour pass from a later timestamped photograph. No photo publication, source changes, flash, merge or next-card start.
+
+### Problems
+Previous bounded observer did not leave a completion record; the last saved line is00:00:01.699UTC (18:00:01MDT). Termination cause is unknown. Earlier active-capture handoff is superseded by this reconciliation.
+
+### Needs Jeremy
+Jeremy confirms it remained connected; whether the Mac slept is unknown. No action tonight. Wi-Fi-loss test remains deferred because it would disrupt others. Arrange a daytime capture five minutes before a chosen slot through five minutes after the third consecutive slot (70minutes), then remaining button checks; no repeat flash approval is needed.
+
+### Next
+Collect a complete production observation window and deferred offline/recovery/remaining button evidence, then reconcile independently before T16 acceptance/authorized merge. T24 LO/HI remains queued.
+
+---
+
 ## Session — T16 panel photo fidelity evidence
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
