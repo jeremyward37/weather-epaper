@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T24 daily forecast LO/HI display correction
+
+- **Task:** https://app.notion.com/p/3f2d9adbacad81af943af1a0f1cb24fb
+- **Started / finished:** 2026-10-07 21:10 MDT / software review prepared 21:23 MDT; final CI readback on PR/card
+- **Model:** Implementation GPT-6.1 Sol · Medium; independent QA GPT-6.1 Sol · High, verified available in current runtime.
+- **Branch / PR:** codex/t24-daily-low-high / separate T24 PR; final URL/revision/checks recorded on GitHub and Notion
+- **Status at end:** In progress; software QA Pass, awaiting final-head CI and Jeremy acceptance/authorized merge/publication
+
+### Result
+Changed all three daily pairs in normal and low-battery frames to L°/H°, preserving NWS semantic fields/date/day/night pairing. Updated specification, decisions, review contract, strict verification, regression tests and regenerated reference frames/previews together. Seven before/after links and exact acceptance/release steps are in docs/t24-review.md; reproducible masks/hashes in docs/t24-rebaseline.md; independent evidence in docs/t24-qa.md. Accepted main637c275 is the base; no unaccepted T16 firmware included. T24 technical dependency is completed T11/stage7; T18 remains stage10 and requires T24.
+
+### Verification
+Pinned ./build.sh PASS twice; seven repeated canonical builds byte-identical; six actual CLI comparisons zero pixels and byte-identical. Design4/4, server359/359, framediff6/6 tests Pass. Independent QA repeats all checks and adds recorded-NWS semantic pairing, shuffled periods, missing-night fail-closed and input immutability tests. Old/new changes931/1046/611/956/611/0/611; zero pixels outside the three daily text masks. Setup PNG and3x preview, all96icons byte-identical to accepted base. Thresholded native winter/widths/low-battery and widths3x visually fit. Production firmware/server normalization/fixtures/assets/workflow unchanged; git diff --check Pass. Final committed-head tools/render.sh and required CI readback must be recorded on PR/card before presenting review.
+
+### Decisions
+Jeremy's start-now instruction supersedes after-T16 sequencing for this independent renderer task. Low/high is a presentation change; never sort or swap NWS fields. Keep source, contract, checks and generated references together. No firmware flash is needed for subsequent authorized server-frame publication.
+
+### Problems
+Docker daemon initially stopped; started OrbStack and used the pinned image. QA found scope §5's summary still said high/low; corrected it to low/high and QA readback passed. No unresolved implementation defect. T16 timed/offline/button checks and measurement limitations remain separate and untouched.
+
+### Needs Jeremy
+Review regenerated before/after frames and the green-CI PR, then explicitly accept the T24 re-baseline and authorize merge/publication. Project AGENTS.md requires that concrete review pause. No new device, Wi-Fi entry or flash step needed for T24.
+
+### Next
+Obtain final-head CI and present review. Keep T24 In progress until acceptance and authorized merge are recorded; do not deploy early. Preserve pending T16 PR21 ledger and installed corrected artifact; reconcile T16's branch with accepted T24 later without reverting LO/HI.
+
+---
+
 ## Session — T15 final evidence review gate
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b

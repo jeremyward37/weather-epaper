@@ -6,8 +6,10 @@ Use this as a **pass/fail review protocol** for the weather display implementati
 
 1. Read `spec.md`, `icon-map.md`, and `decisions.md` before changing server rendering or firmware code. Read `../docs/design-brief.md` for background, then apply the explicit user overrides listed in `spec.md`.
 2. Confirm the implementation uses **four future three-hour marks** (12/3/6/9 AM/PM), **three days beginning tomorrow**, and the selected E3 divider pattern. Reject a six-hour or five-day implementation, even though those appear in older artifacts.
-3. Confirm each hourly row is ordered **time → temperature → condition icon → chance**. The icon column begins at x=119, following Jeremy's last spacing correction. Daily rows are **day → condition icon → high/low**, with chance beneath high/low when positive.
+3. Confirm each hourly row is ordered **time → temperature → condition icon → chance**. The icon column begins at x=119, following Jeremy's last spacing correction. Daily rows are **day → condition icon → low/high**, with chance beneath low/high when positive.
 4. Treat all seven exports as the approved design (checkpoint 3 closed 2026-09-25). There is no alert state and no stale badge; reject an implementation that adds either.
+
+T24 changes only the three daily pairs to low/high, authorized by Jeremy on 2026-10-07; its new exports remain pending concrete re-baseline acceptance. Preserve high from daytime and low from the following night.
 
 ## 2. Rebuild the references and run the mechanical gate
 
@@ -42,7 +44,7 @@ Use the five normal fixtures in order:
 | `normal-summer.png` | Calm hierarchy; zero-chance slots remain intentional blanks; hourly spacing looks even. |
 | `normal-winter.png` | Negative temperatures, 100% in every row, snow/mix detail, daily second line. |
 | `normal-spring.png` | Midnight wrap, day/night icons, 5% value, thunder/rain condition matches chance. |
-| `normal-widths.png` | `108°`, `100°`, `-12°/-24°`, four 100% slots, and longest timestamp fit. |
+| `normal-widths.png` | `108°`, `100°`, `-24°/-12°`, four 100% slots, and longest timestamp fit. |
 | `normal-night.png` | Night icon family, low-battery glyph, footer centering. |
 
 Then inspect `state-setup.png` and `state-low-battery.png`.
@@ -54,7 +56,7 @@ Check **visible black-pixel centers**, not SVG/image box centers or text baselin
 - Current condition icon and current temperature share visible center `y=55`; neither looks lower. The temperature remains the largest element for `-12°`, `97°`, and `108°`.
 - Sun icon and time share center `y=64`; the `FIRST LIGHT`/`LAST LIGHT` label is centered near `y=38`, and the time is right-anchored at x=370. The title, icon, and time use 14/30/22 px respectively.
 - Hourly row centers are `121, 161, 201, 241`. Every time, temperature, icon, and positive percentage in a row shares its center within 1 px in the device output. Fixed left anchors are `8, 70, 119, 164`; minimum black-pixel gap is 5 px in the supplied fixtures. Do not push the icon back to x=124.
-- Daily main-row centers are `126, 178, 230`. Day, icon, and high/low share each main center; the percentage is a deliberate secondary line 20 px below. An absent chance leaves the row's columns in exactly the same places.
+- Daily main-row centers are `126, 178, 230`. Day, icon, and low/high share each main center; the percentage is a deliberate secondary line 20 px below. An absent chance leaves the row's columns in exactly the same places.
 - Refresh icon, timestamp, optional low-battery glyph, and right-side logo share the footer center near `y=285.5`. The right edge of the 20 px logo box is x=395. The logo must retain its original arch/diamond proportions and clear space.
 - Only a dotted line at y=94 and a dotted vertical line at x=209 divide the normal data areas. The footer rule is solid at y=272. There are no period-by-period separators.
 
@@ -64,7 +66,7 @@ Pay special attention to the 5 px minimum hourly gap in the worst-case fixture. 
 
 - At 4:58 PM, the four marks are **6 PM, 9 PM, 12 AM, 3 AM**. At exactly 3:00 PM, the first is **6 PM**. Each mark shows the NWS hourly forecast for that exact hour. Test the midnight and month/year rollovers in local time, including daylight-saving transitions. Derive daily labels from local dates, not UTC dates.
 - Day/night icon variants switch at civil dawn and civil dusk, the same times shown in the sun-event area.
-- Show a whole-number Fahrenheit temperature and `°` in every current/hourly/high/low slot. Use one consistent `H°/L°` separator with no spaces. Format labels `H AM/PM`, sun time `H:MM AM/PM`, and footer `m/d h:mm AM/PM`.
+- Show a whole-number Fahrenheit temperature and `°` in every current/hourly/low/high slot. Use one consistent `L°/H°` separator with no spaces. Format labels `H AM/PM`, sun time `H:MM AM/PM`, and footer `m/d h:mm AM/PM`.
 - Show only the next **civil** dawn/dusk, explicitly labeled `FIRST LIGHT` or `LAST LIGHT`. Do not substitute sunrise/sunset times.
 - Show a precipitation percentage only when it is above zero. Do not draw a separate precipitation-type glyph. A positive chance must use a condition icon with matching rain, snow, mix, or thunder features; use `icon-map.md` to check the mapping. Check day/night variants against the time of each hourly mark.
 - Do not add a section heading, location, wind, humidity, AQI, date header, alert strip, or another unapproved data field.

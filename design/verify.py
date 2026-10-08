@@ -116,6 +116,12 @@ def check_png(path):
     return image
 
 
+def check_daily_order(svg, fixture, label):
+    labels = re.findall(r'<text x="303"[^>]*font-size="20"[^>]*>([^<]*)</text>', svg)
+    expected = [f"{day['low']}°/{day['high']}°" for day in fixture['daily']]
+    assert labels == expected, f'{label}: daily low/high labels {labels} vs {expected}'
+
+
 def main():
     assert sys.argv[1:] in ([], ['--all']), f'Unknown verify arguments: {sys.argv[1:]}'
     expected_icons, actual_icons = check_icon_assets('--all' in sys.argv)
@@ -137,6 +143,7 @@ def main():
             assert forbidden not in svg, f'{identifier}: obsolete field {forbidden}'
         fixture = json.loads((ROOT / 'fixtures' / f'normal-{identifier}.json').read_text())
         assert len(fixture['threeHourly']) == 4 and len(fixture['daily']) == 3
+        check_daily_order(svg, fixture, identifier)
 
     for identifier in STATE_IDS:
         image = check_png(ROOT / 'exports/states' / f'state-{identifier}.png')
@@ -144,6 +151,8 @@ def main():
             min_gap = min(min_gap, check_rows(image, identifier))
         if identifier == 'low-battery':
             assert ink_box(image, (136, 275, 150, 298)), f'{identifier}: low-battery glyph missing'
+            check_daily_order((ROOT / '.build/svg/state-low-battery.svg').read_text(),
+                              json.loads((ROOT / 'fixtures/normal-night.json').read_text()), identifier)
 
 
     print(f'PASS: 5 normal and 2 state exports, {len(refs.paths)} review images, {expected_icons} firmware bitmaps ({actual_icons} assets in this build), 1-bit assets, 4 px margins, pixel-center alignment, and >= {min_gap} px hourly gaps.')

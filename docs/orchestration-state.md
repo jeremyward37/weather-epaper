@@ -1,18 +1,19 @@
 # Orchestration state
 
-This is the durable handoff ledger; update it with each run and approval. WORKLOG remains the append-only session history; Notion cards hold acceptance/status. Never store secrets.
+Durable current handoff; WORKLOG and historical entries below remain append-only evidence.
 
-- **Updated:** 2026-10-07 15:54 MDT
-- **Active card:** T15 Wi-Fi provisioning
-- **Stage:** Original T15 functional criteria and independent QA Pass; normal restored/provisioned, monitor stopped. Awaiting final evidence-head CI and explicit acceptance/authorized merge.
-- **Branch / checkout:** `codex/t15-wifi-provisioning` / `/Users/jeremyward/.codex/worktrees/t15-wifi-provisioning/weather-epaper`
-- **Base / PR:** merged T14 `08be1ac4024d1c79c25814f0881469804ab096a8`; [T15 PR #20](https://github.com/jeremyward37/weather-epaper/pull/20), final firmware/config/test/workflow source `b8ae0c4c1680d6fd3857b6d413248e298599d8ee`. Later review records leave that source unchanged.
-- **Independent QA:** Software and original physical criteria Pass; separate epaper_qa GPT-6.1 Sol · High. See t15-qa.md and t15-hardware-qa.md. Recommended physical failure paths unrun; supplied photo reused accepted T14 reference, not fresh T15.
-- **Intended checks:** completed software checks in `t15-qa.md`; source CI build/firmware Pass in run 37676538752. Require final PR-head checks green before release/merge; latest result tracked in GitHub/Notion.
-- **Pending Jeremy action:** Review T15 packet and limits, then explicitly accept/authorize PR #20 merge if satisfied. T16 start requires explicit authorization; no more routine flash/phone steps for original criteria.
-- **Next eligible task:** T16 only after T15's own hardware/review/merge gates and explicit advancement; T21 separately eligible, not dispatched.
-- **Hardware:** T14 accepted; T15 original phone/BOOT/USER/power-cycle/timer-persistence evidence observed. Exact normal installed, raw observer stopped. Reused photo provenance and unrun recommended physical cases recorded. No battery, expected early November; continuous USB; battery calibration/life untested.
-- **Reconciliation:** PR #19 merged at 2026-10-07 13:16 MDT (`08be1ac`), required CI passed on accepted head `6b39baa`; Notion T14 Done and T15 In progress. PR #18 remains earlier acceptance bookkeeping; it is not a new delivery gate.
+- **Updated:** 2026-10-07 21:23 MDT
+- **Active card:** T24 daily forecast LO/HI display correction
+- **Stage:** Software and independent QA Pass; awaiting exact-head CI then Jeremy review. Isolated from accepted main637c275. Notion In progress; no merge/deployment approval.
+- **Branch / checkout:** codex/t24-daily-low-high / /Users/jeremyward/.codex/worktrees/t24-daily-low-high/weather-epaper
+- **Base:** accepted main637c2751c740f1a6dfe939a45acece1f09e5b74f
+- **Models:** GPT-6.1 Sol Medium implementation / High independent QA; verified in current runtime.
+- **Scope:** three daily pairs H°/L° → L°/H°; NWS high/low meanings unchanged. Approved source/spec/checks/generated re-baseline only in the daily temperature text regions, setup byte-identical.
+- **Dependency:** completed T11 renderer; stage7. Jeremy explicitly moved T24 ahead of pending T16 hardware via “let's do T24 now if we can”. T18 remains stage10 with T24 required.
+- **Verification:** pinned ./build.sh PASS, seven canonical comparisons, six CLI fixture rows, signed/equal/wide pair fit, authorized pixel-region differences, independent QA and green review-head CI.
+- **Deferred T16:** In progress in https://github.com/jeremyward37/weather-epaper/pull/21 at93acc72. Corrected production3fc1e59/app4d9e35cf remains installed. Two actual17:30/18:00 TIMER cycles and initial photo/BOOT no-redraw Pass; full-hour/offline/remaining button criteria and acceptance/merge pending. Prior observer is stopped/unknown cause; no current capture. Evening photo shows later8:42PM frame. Preserve its existing managed checkout and release artifacts.
+- **Review evidence:** docs/t24-review.md (seven before/after links), docs/t24-rebaseline.md (masks/hashes), docs/t24-qa.md (independent Pass). Final PR/head/CI recorded on GitHub and Notion.
+- **Release gate:** present concrete T24 before/after review after final-head CI; no merge or new deployment/flash authorized. The existing T12 publisher continues accepted configuration.
 
 ## Approval ledger
 
@@ -96,3 +97,7 @@ Jeremy said restart. Earlier pause revoked; approved Terminal upload/monitor/har
 ## T15 resumed sleep-test evidence — 2026-10-07
 
 Actual harness upload verified all four writes. Runtime logged saved reconnect, sleep entry, USB disappearance, raw reattachment, saved reconnect and Timer wake reconnected; persistence observed. Independent epaper_qa audit: one real timer-wake persistence cycle Pass; success cannot follow a USB reset or portal re-provision in unchanged source. Ten seconds configured, not independently timed. Raw observer omits DTR/RTS ioctl and disables HUPCL but host tty behavior prevents a universal reset-free claim. Exact approved normal restored successfully, saved reconnect observed; harness removed. Evidence in firmware/logs/t15-timer-persistence* and t15-normal-restore-record.md. BOOT/second physical-cycle/failure/USER/photo checks and acceptance/merge still pending.
+
+## T24 start-now authorization — 2026-10-07 21:10 MDT
+
+Jeremy: “let's do T24 now if we can”. This supersedes after-T16 sequencing for this independent renderer correction. T24 implementation starts from accepted main, with its own branch/log/QA/review. T16 stays pending and untouched. T24 dependency corrected to completed T11, stage7; T18 still stage10. No acceptance, merge or new deployment authorized.

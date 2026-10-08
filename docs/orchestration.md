@@ -4,7 +4,7 @@ Updated 2026-10-07. Jeremy requested implementation subagents, independent testi
 
 ## Current handoff
 
-Reconciled 2026-10-07: T01–T14, T22 and T23 are Done; PR #17 and T14 PR #19 are merged. Jeremy accepted T14 and explicitly authorized T15 start. T15 is In progress; T16–T21 remain Not started. Actual T14 display, memory, no-pack ADC and button evidence passed. Jeremy plans continuous USB power until the battery arrives in early November. Resume T15 from orchestration-state.md; its own flash, hardware evidence, acceptance and merge gates remain pending.
+Reconciled 2026-10-07: T01–T15, T22 and T23 Done; accepted main637c275 includes T15. T16 remains In progress in [PR21](https://github.com/jeremyward37/weather-epaper/pull/21), corrected frozen production installed, original full-hour/offline/remaining physical criteria pending. Jeremy requested “let's do T24 now if we can”; this explicitly supersedes prior after-T16 sequencing for the independent LO/HI server renderer correction. T24 is In progress in its own branch from accepted main; completed T11 is its technical dependency, stage7. Keep T16 checkout/artifacts/device unchanged. Only T24 runs now, with bounded implementation and separate independent QA before Jeremy review/acceptance/authorized merge. T17–T21 remain Not started; T18 still requires T24. No new deployment/flash or merge is authorized.
 
 ## Start or resume
 
