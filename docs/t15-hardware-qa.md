@@ -19,3 +19,7 @@ Additional runtime observations: one short BOOT refresh hook; one reset/setup af
 - Jeremy re-supplied IMG_2842.JPG. SHA-256 fe30c95d6e9d05e4e06aab4f796bfb203ee00ee2a15512f7571212e024ebe00b matches the accepted T14 photo at firmware/photos/t14-setup.jpg exactly. It is reused visual reference, not a fresh T15 exposure. Approved setup bytes unchanged; Jeremy confirms T15 redraw returned that layout and later cycles retained it. The original T15 card requires no separate fresh-photo criterion; no new-photo claim is made.
 
 Original functional criteria and independent software/hardware audits Pass. Overall release remains In progress until final evidence-head CI, Jeremy's explicit acceptance and authorized merge. No T16 advancement authorization. Review packet t15-review.md records exact artifacts and limits.
+
+## Accepted release gate — 2026-10-07 16:07 MDT
+
+Jeremy accepted T15 and authorized PR #20 merge/T16 start. Accepted head6e0c57f36abd041468066961de6ed02d627867b6 passed both required CI jobs in run37693025721; squash merge637c2751c740f1a6dfe939a45acece1f09e5b74f confirmed at16:07:53 MDT. T15 Done; limitations above unchanged. T16 start is now authorized with its own hardware/review/release gates.

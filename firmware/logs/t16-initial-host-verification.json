@@ -1,0 +1,68 @@
+{
+  "observedUtc": "2026-10-07T22:55:30.655946+00:00",
+  "epoch": 1791413730,
+  "base": "https://weather.builtbyjer.com/",
+  "tls": "certifi certificate+hostname verified",
+  "files": {
+    "meta.json": {
+      "status": 200,
+      "bytes": 680,
+      "contentType": "application/json; charset=utf-8",
+      "sha256": "6fe82efd3ca632a7ef3a2951ee8effa5bd16e9e4752106d1905ec73a5d9dcbe9"
+    },
+    "frame-lowbat.bin": {
+      "status": 200,
+      "bytes": 15000,
+      "contentType": "application/octet-stream",
+      "sha256": "02665c87c79444684e3b5089490152c2c245e7328ed4283721f2acc36ffaee41"
+    },
+    "frame-lowbat.png": {
+      "status": 200,
+      "bytes": 3018,
+      "contentType": "image/png",
+      "sha256": "f7e9264deac467a2a11ba823aa56f5fda8f6c1eada6bdbf00a19504dacbe73e3"
+    },
+    "frame.bin": {
+      "status": 200,
+      "bytes": 15000,
+      "contentType": "application/octet-stream",
+      "sha256": "491ea07966699134da831955d5a4bdcd109719490ff780a05cddaa62151459a7"
+    },
+    "frame.png": {
+      "status": 200,
+      "bytes": 2996,
+      "contentType": "image/png",
+      "sha256": "c08a87ac5bd6dad2fe92618f923b1ff02091638625ec267e250babf2be6f00bd"
+    },
+    "index.html": {
+      "status": 200,
+      "bytes": 1331,
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "3b9c058be18b858350bd1e6397b79e04603201c7e8b03931296dc7ec495b60b9"
+    }
+  },
+  "metadata": {
+    "renderedAt": "2026-10-07T17:49:48.796Z",
+    "dataUpdateTime": "2026-10-07T06:31:24+00:00",
+    "footerTimestamp": "10/7 11:49 AM",
+    "sha256": {
+      "frame.bin": "491ea07966699134da831955d5a4bdcd109719490ff780a05cddaa62151459a7",
+      "frame-lowbat.bin": "02665c87c79444684e3b5089490152c2c245e7328ed4283721f2acc36ffaee41",
+      "frame.png": "c08a87ac5bd6dad2fe92618f923b1ff02091638625ec267e250babf2be6f00bd",
+      "frame-lowbat.png": "f7e9264deac467a2a11ba823aa56f5fda8f6c1eada6bdbf00a19504dacbe73e3",
+      "index.html": "3b9c058be18b858350bd1e6397b79e04603201c7e8b03931296dc7ec495b60b9"
+    },
+    "polarity": {
+      "whiteIsOne": true,
+      "msbFirst": true
+    },
+    "schemaVersion": 1
+  },
+  "matchingHashes": {
+    "frame-lowbat.bin": true,
+    "frame-lowbat.png": true,
+    "frame.bin": true,
+    "frame.png": true,
+    "index.html": true
+  }
+}

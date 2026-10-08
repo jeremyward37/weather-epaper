@@ -1,0 +1,23 @@
+2026-10-07T22:55:16.121+00:00 [OBSERVER] Starting bounded raw capture; no DTR/RTS ioctl, HUPCL disabled; attachment may affect host USB; TIMER reason required
+2026-10-07T22:55:16.125+00:00 [OBSERVER] Attached /dev/cu.usbmodem114101 same serial2884859F0EFC; no DTR/RTS ioctl; HUPCL disabled
+2026-10-07T22:55:16.296+00:00 [T16] ms=60 step=wake duration_ms=1 outcome=cold-immediate
+2026-10-07T22:55:16.393+00:00 [T16] ms=157 step=adc duration_ms=97 raw_avg=0 volts=0.000 provisional=true
+2026-10-07T22:55:22.914+00:00 [T15] Saved Wi-Fi connected; panel retained
+2026-10-07T22:55:22.920+00:00 [T16] ms=6679 step=wifi duration_ms=6522 outcome=connected
+2026-10-07T22:55:23.814+00:00 [T16] ms=7578 step=ntp duration_ms=895 outcome=synced
+2026-10-07T22:55:28.060+00:00 [T16] ms=11823 step=fetch duration_ms=4244 outcome=accepted-15000-lowbat
+2026-10-07T22:55:32.754+00:00 [T16] ms=16513 step=display duration_ms=4687 outcome=panel-timeout-sha-not-saved
+2026-10-07T22:55:32.809+00:00 [T16] ms=16571 step=sleep seconds=248 target_epoch=1791414000 debug_interval=0 BOOT=ext0 USER=unused
+2026-10-07T22:55:33.050+00:00 [OBSERVER] USB serial disconnected; waiting for same board
+2026-10-07T22:59:39.238+00:00 [OBSERVER] Attached /dev/cu.usbmodem114101 same serial2884859F0EFC; no DTR/RTS ioctl; HUPCL disabled
+2026-10-07T22:59:39.239+00:00 [T16] ms=506 step=wake duration_ms=446 outcome=timer
+2026-10-07T22:59:39.334+00:00 [T16] ms=604 step=adc duration_ms=97 raw_avg=0 volts=0.000 provisional=true
+2026-10-07T22:59:40.689+00:00 [T15] Saved Wi-Fi connected; panel retained
+2026-10-07T22:59:40.690+00:00 [T16] ms=1959 step=wifi duration_ms=1355 outcome=connected
+2026-10-07T22:59:43.601+00:00 [T16] ms=4872 step=ntp duration_ms=2911 outcome=synced
+2026-10-07T23:00:01.343+00:00 [T16] ms=22614 step=fetch duration_ms=1255 outcome=accepted-15000-lowbat
+2026-10-07T23:00:06.032+00:00 [T16] ms=27304 step=display duration_ms=4686 outcome=panel-timeout-sha-not-saved
+2026-10-07T23:00:06.091+00:00 [T16] ms=27362 step=sleep seconds=1774 target_epoch=1791415800 debug_interval=0 BOOT=ext0 USER=unused
+2026-10-07T23:00:06.200+00:00 [OBSERVER] USB serial disconnected; waiting for same board
+2026-10-07T23:01:04.914+00:00 [OBSERVER] Capture stopped by operator
+2026-10-07T23:01:04.914+00:00 [OBSERVER] Bounded capture ended

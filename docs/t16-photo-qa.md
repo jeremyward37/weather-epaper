@@ -1,0 +1,11 @@
+# T16 actual weather-panel visual QA
+
+Independent read-only visual inspection, 2026-10-07. **Pass for this photographed frame's visual fidelity.** No image editing, hardware/serial access, source/Git/Notion mutation, or photographed-pixel equality claim.
+
+Actual user photo: `/Users/jeremyward/Downloads/IMG_2844.JPG`, SHA256 `e3cfabfc8e0e4effc0586613a0b07ada4098442657f18758e8df68b6685cd7f0`. Compared directly using view_image with saved corresponding400×300 published low-battery preview `/private/tmp/weather-epaper-t16-corrected-hardware-live/frame-lowbat.png`, SHA256 `df9ad98c06dd2a030654b00fb34e7ddab69cda5cb1f1c025f038a0a84755ba6f`; corresponding raw SHA256 `4c99fa46b9692bb30fc00f1686deda7b27e65f845ebb0aae3547e3be899d3d33`. All three identities independently rechecked.
+
+Photo and preview visibly agree: sun/current81°; LAST LIGHT7:29PM; hourly6PM81°,9PM67°,12AM62°/1%,3AM59° with matching icons; Thu82°/54°/1%,Fri82°/58°/1%,Sat78°/51°/43% with matching icons. Footer refresh glyph,10/7 5:05PM, low-battery glyph and right logo match. Divider lines, rows and text placement agree. Complete panel/content visible, upright and unmirrored; correct dark-on-light polarity; no visible crop, missing columns, shifted region or inversion. Visible text and symbols are legible. Daily HI/LO order matches this approved current baseline; Jeremy's queued T24 LO/HI correction is separate and not silently applied here.
+
+Camera perspective, lighting/glare and focus limit inspection. The tool displayed the4032×3024 photo resized to1824×1368; no fine single-pixel/contrast/metrology conclusion follows. Prior raw↔PNG zero-pixel checks establish software preview identity separately; this photo supports matching visible glass content and placement, not byte equality or proof of all future frames.
+
+This passes only the supplied whole-panel/reference visual observation. Production one-hour coverage, scheduled Wi-Fi-loss/recovery, USER/long-clear and final hardware reconciliation/acceptance remain Pending; the combined physical card checkbox must stay unchecked until the remaining original required evidence passes. Existing BOOT no-flicker and first TIMER trace results remain their own observations. No new TIMER/hour or offline pass is inferred from the photo.

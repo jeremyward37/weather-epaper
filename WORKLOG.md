@@ -1,5 +1,229 @@
 # Work log
 
+## Session — T16 evening photo and capture reconciliation
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
+- **Started / finished:** 2026-10-07 21:04 MDT / 2026-10-07 21:09 MDT
+- **Model:** Primary runtime; independent evidence QA subagent using inherited runtime settings.
+- **Branch / PR:** codex/t16-wake-fetch-sleep / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress
+
+### Result
+Jeremy returned with IMG_2846.JPG. The photo shows a later weather frame: 70 degrees, FIRST LIGHT7:05AM, hourly9PM/12AM/3AM/6AM, footer10/7 8:42PM. This establishes a later visible update, without identifying its wake cause. The saved observer trace includes a second real TIMER cycle for18:00 but no18:30 record; session54253 is unavailable and no matching observer process is running. Full-hour evidence remains incomplete.
+
+### Verification
+Read saved runtime trace; second TIMER at23:59:24.159UTC, accepted15000lowbat at00:00:01.555UTC, identical-no-redraw and sleep target18:30. Original photo SHA37d97937f8e93b3f4c2fb947a2ed93ccf4281c11cb9c22e214ccb834d435de2b. Saved trace SHA3e795a95dc1609521b2692b865c10e2da3ed83103669d9662d47ff198a54c913. Prior documentation head586f58af4e11757f7eadf8e23315a46164f64683 has both build and firmware SUCCESS in run37703737928. Production source3fc1e59/app4d9e35cf remain unchanged. Independent docs/t16-evening-qa.md Pass the narrow second fetch/no-redraw case and keep fullhour Pending. Second TIMER woke36s early versus20s configured; fetch started approximately18:00:00.067MDT. No cause assigned; preserve timing for next reconciliation. Saved partial trace copied byte-for-byte to firmware/logs/t16-corrected-evening-runtime.txt; no home credentials appear in it. git diff --check Pass; documentation/logs only, no implementation tests rerun.
+
+### Decisions
+Preserve the partial trace and photo identity. Do not infer scheduled wake causes or a full-hour pass from a later timestamped photograph. No photo publication, source changes, flash, merge or next-card start.
+
+### Problems
+Previous bounded observer did not leave a completion record; the last saved line is00:00:01.699UTC (18:00:01MDT). Termination cause is unknown. Earlier active-capture handoff is superseded by this reconciliation.
+
+### Needs Jeremy
+Jeremy confirms it remained connected; whether the Mac slept is unknown. No action tonight. Wi-Fi-loss test remains deferred because it would disrupt others. Arrange a daytime capture five minutes before a chosen slot through five minutes after the third consecutive slot (70minutes), then remaining button checks; no repeat flash approval is needed.
+
+### Next
+Collect a complete production observation window and deferred offline/recovery/remaining button evidence, then reconcile independently before T16 acceptance/authorized merge. T24 LO/HI remains queued.
+
+---
+
+## Session — T16 panel photo fidelity evidence
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
+- **Started / finished:** 2026-10-07 17:39 MDT / 2026-10-07 17:41 MDT
+- **Model:** Primary runtime; independent visual QA GPT-6.1 Sol · High.
+- **Branch / PR:** `codex/t16-wake-fetch-sleep` / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress
+
+### Result
+Jeremy supplied IMG_2844.JPG for the requested whole-panel comparison. Root and independent visual QA both Pass the photographed frame comparison with the saved corresponding low-battery PNG (footer10/7 5:05PM). Added docs/t16-photo-qa.md and detailed comparison/limits to the actual hardware record; original image stays local. Current HI/LO matches the existing baseline; user-requested LO/HI is deferred to T24.
+
+### Verification
+Original photo SHAe3cfabfc8e0e4effc0586613a0b07ada4098442657f18758e8df68b6685cd7f0. Saved reference PNGSHAdf9ad98c06dd2a030654b00fb34e7ddab69cda5cb1f1c025f038a0a84755ba6f. Root and independent visual QA confirm correct full-frame orientation/polarity, content, positions and legible footer, no visible crop or shift. All visible weather values/icons and footer5:05 match. Saved lowbat versus normal raw comparison yields100 differing pixels confined to136,281,14,10 footer glyph; intentional difference/exit1, not a failure. Prior bin/PNG comparisons are0 pixels; photograph perspective/blur precludes a photographed pixel-equality claim. ecb8061 required build/firmware SUCCESS in run37702949889, read back17:39MDT. Live capture still shows one corrected TIMER slot; not a full-hour pass.
+
+### Decisions
+Record photo identity and comparison; preserve original image in Downloads and do not publish its surrounding desk/background. Keep the original combined physical checkbox open until full-hour and deferred offline evidence are collected.
+
+### Problems
+None observed in root visual comparison; no exact photographed pixel measurement performed.
+
+### Needs Jeremy
+Keep USB connected/buttons released through18:35MDT. Offline/recovery and remaining button checks still pending; no repeat flash approval needed.
+
+### Next
+Continue bounded timer capture session54253 through at least18:30; automatic end18:56:49. Full-hour/offline/remaining buttons and final independent reconciliation/acceptance remain pending. No merge or next-card start.
+
+---
+
+## Session — T16 corrected flash after physical BOOT entry
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
+- **Started / finished:** 2026-10-07 17:25 MDT / 2026-10-07 17:31 MDT (startup/first-slot record; bounded capture continues)
+- **Model:** Primary runtime; independent T16 QA GPT-6.1 Sol · High.
+- **Branch / PR:** `codex/t16-wake-fetch-sleep` / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress
+
+### Result
+Jeremy replied “done” to physical BOOT/RESET instructions. Verified approved corrected production upload succeeded; saved Wi-Fi/NTP/verified HTTPS/display/SHA save and sleep observed. Jeremy confirmed weather visible after normal RESET, then no flashing on brief BOOT. Actual BOOT/immediate and first17:30 TIMER both show identical-no-redraw. Evidence and independent partial hardware QA recorded; bounded90-minute production observer remains active.
+
+### Verification
+Reviewed head847c8b1a494e3a6cc8cf0300f7977625d3a6db70 had build/firmware SUCCESS in run37701828781. Approved source3fc1e59/all five bundle hashes and app1320576 bytes SHA4d9e35cfeaf3b712abc5eb2737b95fcd4c5e3d45bd077f2c8c031df977e8a648 checked before four explicit no-reset writes; exit0/all four verified. Same board serial2884859F0EFC; NVS ranges untouched and saved join observed. Actual cold display4694ms changed-refreshed-hibernated-sha-saved; actual BOOT/immediate1ms identical-no-redraw plus human no-flicker; first TIMER at23:29:41UTC/fetch23:30:01UTC, identical-no-redraw, sleep to18:00. Host all6files/matching5hashes, both15000 bins and tools/framediff.py both0pixels. Independent upload/startup and BOOT addendum Pass; full-hour/fidelity/offline/USER/longclear still pending. First attempted framediff used the serial venv without Pillow; reran successfully using existing image venv. Whitespace check Pass. Independent narrow documentation/evidence recheck Pass after current-state corrections; source/assets remain unchanged.
+
+### Decisions
+Keep T16's original physical criteria pending until actual observation and independent reconciliation. T24 remains deferred.
+
+### Problems
+Manual ROM upload hard-reset initially gave no application log. Normal RESET with BOOT released produced application startup. No false panel failure in corrected trace. Wi-Fi-loss check would disrupt others; Jeremy requests test later, criterion remains pending.
+
+### Needs Jeremy
+Leave USB connected through18:35MDT without further button presses to collect17:30/18:00/18:30 production slots. Whole-panel photo/index fidelity still needed. Wi-Fi-loss/recovery, USER/longclear and final acceptance remain later physical checks; no Terminal work needed.
+
+### Next
+Continue bounded raw observer session54253 (live /private/tmp/weather-epaper-t16-corrected-production-runtime.txt) through at least18:30; automatic end approximately18:56:49MDT. Reconcile actual hour evidence and remaining physical checks independently. No merge, acceptance or next-card start.
+
+---
+
+## Session — T16 corrected production flash and observation
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
+- **Started / finished:** 2026-10-07 17:18 MDT / 2026-10-07 17:21 MDT (awaiting physical BOOT entry)
+- **Model:** Primary runtime; existing T16 independent QA GPT-6.1 Sol · High.
+- **Branch / PR:** `codex/t16-wake-fetch-sleep` / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress
+
+### Result
+Jeremy said “approve corrected T16 flash,” referring to the pending source3fc1e59 / production4d9e35cf corrected packet. Existing agent Terminal override persists. Approved production upload and observation are being prepared; no debug/harness, erase, acceptance, merge or next-card start. The asleep board's USB port was absent; Jeremy was given the exact BOOT/RESET sequence. All five frozen bundle hashes passed verification; latest PR21 CI is checked before release.
+
+### Verification
+Reviewed PR21 headfad90fb0c4767696eca8f87ce2921674e7ea9705: build and firmware SUCCESS in run37701282248. All five frozen checksums/source and production app1320576 bytes SHA4d9e35cfeaf3b712abc5eb2737b95fcd4c5e3d45bd077f2c8c031df977e8a648 verified. Only firmware README/HARDWARE and historical logs differ from audited source; source/config/tests/workflow unchanged. Same-board port discovery returned no Espressif device on repeated checks; no port opened or upload executed. Corrected command prepared with four explicit offsets, no-reset after manual ROM entry, separate evidence logs and bounded90-minute raw capture (not started). Whitespace check Pass. Actual corrected runtime and full original physical criteria remain Pending.
+
+### Decisions
+Preserve saved Wi-Fi NVS and use only frozen production bundle. T24 is deferred and no display-order change belongs to this run. No suitable meter remains the documented measurement limitation.
+
+### Problems
+Board USB is currently absent during normal sleep. Await Jeremy's physical BOOT/RESET entry while completing independent host checks.
+
+### Needs Jeremy
+Enter BOOT mode when requested. Observe panel, later scheduled/offline/button behavior; private credentials stay private. Flash approval is already supplied.
+
+### Next
+Wait for Jeremy physical BOOT/RESET reply, recheck latest documentation-head CI and same-board enumeration, then run the already approved upload and observation without asking artifact permission again. No observer is running. Record runtime and independently reconcile required evidence; do not merge or start another card.
+
+---
+
+## Session — T16 orchestration: capture deferred daily temperature correction
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03 (follow-up T24: https://app.notion.com/p/3f2d9adbacad81af943af1a0f1cb24fb)
+- **Started / finished:** 2026-10-07 17:11 MDT / 2026-10-07 17:15 MDT
+- **Model:** Primary orchestration runtime; future T24 recommendation GPT-6.1 Sol · Medium implementation / High independent QA, verified against the current runtime's available model list.
+- **Branch / PR:** `codex/t16-wake-fetch-sleep` / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress (T16); Not started (T24)
+
+### Result
+Jeremy requested the three daily temperature pairs read LO/HI instead of HI/LO and authorized a separate later task. Created Notion T24 with precise scope, acceptance criteria, model recommendations and no due date. T24 depends on T16 (stage 9); T18 now includes T24 as a prerequisite (stage 10 unchanged). Project, T16 and T18 notes link the follow-up. Added the task to the development plan and recorded the pending design decision. This is coordination bookkeeping; no T24 implementation run began.
+
+### Verification
+Fetched Dev Tasks schema and searched for duplicates before creation. Read back T24's Not started status, task order 24, stage 9, T16 dependency, project relation and unset due date. Verified T18 prerequisites and project linkage after updates. Documentation diff and whitespace check only; renderer, fixtures, canonical exports and firmware remain untouched. CI for the bookkeeping revision must be green before release/merge; latest check readback belongs on GitHub/Notion.
+
+### Decisions
+Jeremy's request authorizes only `H°/L°` → `L°/H°` in daily rows, including low-battery weather. NWS high/daytime and low/following-night semantics remain unchanged. Implementation will update the design contract and generated references together and verify all seven frames plus six CLI fixtures. T24 is queued after T16 acceptance/merge, before T18 final sign-off.
+
+### Problems
+None. Current exports still use the previous order until T24 is implemented and reviewed.
+
+### Needs Jeremy
+T16 corrected-production flash and one-hour test approval remains pending under the existing review packet. This design follow-up does not approve a flash, merge or advancement.
+
+### Next
+Resume T16 at its recorded release gate. Run T24 later as its own approved implementation session; do not begin it during T16.
+
+---
+
+## Session — T16 approved production flash and physical observation
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
+- **Started / finished:** 2026-10-07 16:51 MDT / 2026-10-07 17:04 MDT (hardware/correction packet; final CI readback on GitHub/Notion before review pause)
+- **Model:** Primary runtime; implementation and independent QA GPT-6.1 Sol · High per current runtime; actual device operations and bookkeeping.
+- **Branch / PR:** `codex/t16-wake-fetch-sleep` / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress
+
+### Result
+Session opened before upload. Jeremy replied “Approve t16” to the concrete frozen production flash and one-hour test request. Agent handles Terminal under the enduring override; Jeremy handles physical controls/private credentials/panel observations/current measurement or limitation. Exact original production upload succeeded. Actual saved Wi-Fi/NTP/verified15000lowbat fetch and visible weather confirmed. False failure after hibernation exposed a BUSY-phase software defect. Minimal correction committed as3fc1e59, three clean builds and independent correction QA Pass; new production4d9e35cf release frozen and concrete packet updated. Acceptance paused; corrected release not uploaded.
+
+### Verification
+Reviewed PR head da21f3b8a55e1e41e995636b7bf401a7e4ff793e: both required checks SUCCESS in run37697987046. Managed checkout clean; firmware/config/tests/workflow unchanged from audited source068113577d1739da8b7ac13cfc77dec5d3b7d7c6. Same board enumerates /dev/cu.usbmodem114101, serial2884859F0EFC, no serial monitor owner. Original approved app17122de5/all five hashes verified, four explicit writes exit0/all verified, no NVS erase. Timestamped cold runtime saved join6522ms/NTP895ms/verified15000lowbat4244ms; display false failure4687ms. Actual17:00 TIMER wake joined/synced, fetched23:00:01UTC, repeats false failure4686ms; observer stopped23:01:04UTC. New source3fc1e59235b4fc3b456c2b6d75aa380965899cc1 changes only main and two runtime test files; native25/Unity1/three clean builds Pass. Independent six BUSY cases and original-code sensitivity Pass, separate production clean build, all three frozen bundles/CLI/offsets and471 pinned library identities Pass. New production1320576 bytes SHA4d9e35cfeaf3b712abc5eb2737b95fcd4c5e3d45bd077f2c8c031df977e8a648. Independent build hash differs; no normalized binary equality claimed, root bundle remains release candidate. Final-head CI must be green before new approval request; exact readback recorded GitHub/Notion.
+
+### Decisions
+Production-only approval; no NVS erase, debug/harness release, acceptance/merge or T17 advancement. Original physical criteria remain required. Preserve host timestamps and actual timer wake causes; observer-induced USB resets are not timer evidence. Check active readiness before panel deep sleep; timeout threshold unchanged. New source/artifact requires new approval under orchestration.md. Jeremy supplied no suitable meter; original reason alternative recorded, not current/battery life. No scope/design/publisher change.
+
+### Problems
+Initial display returned panel-timeout-sha-not-saved after4687ms because BUSY was checked after SSD1683 sleep, which intentionally drives HIGH. Native fake incorrectly forced LOW, masking the defect. See docs/t16-hardware.md; no original one-hour/no-redraw pass claimed.
+
+### Needs Jeremy
+Jeremy confirmed weather visible and no suitable current meter. Whole-panel/index comparison, corrected production one-hour/unchanged/offline and BOOT/USER observations remain. Approve concrete corrected production4d9e35cf flash/one-hour packet after final CI; agent runs Terminal. Current original068 remains installed/provisioned, observer stopped.
+
+### Next
+Stop for corrected-release approval. After approval collect original production one-hour/fidelity/unchanged/offline/BOOT/USER evidence and independent reconciliation, then later acceptance/authorized merge. Do not start T17.
+
+---
+
+## Session — T16 wake, fetch, display and sleep implementation
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
+- **Started / finished:** 2026-10-07 16:09 MDT / 2026-10-07 16:41 MDT (software/packet; final CI readback on GitHub/Notion before review pause)
+- **Model:** Primary runtime; implementation GPT-6.1 Sol · High; independent QA GPT-6.1 Sol · High. Available model/effort verified against current collaboration runtime metadata.
+- **Branch / PR:** `codex/t16-wake-fetch-sleep` / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress; awaiting Jeremy production-flash/test approval and physical evidence
+
+### Result
+Implemented T16 from accepted/merged T15 637c275: bounded Wi-Fi/NTP/verified HTTPS, exact-size framebuffer, SHA no-redraw, checked pre-draw invalidation/pending-state recovery, Mountain schedule/retained targets, BOOT ext0/reset and vendor peripheral holds. Source/artifacts068113577d1739da8b7ac13cfc77dec5d3b7d7c6. Independent software QA Pass, three clean builds, source CI green and PR21/frozen packet prepared. T15 remains installed/provisioned; no device upload/access or hosting change during preparation.
+
+### Verification
+Baseline25 native scenario/suite invocations and1 PlatformIO Unity testcase Pass; independent32 additional deployed-main/net/timer cases Pass, three clean builds, unchanged setupheader/15000bytes/zero-pixel diff, actual pinned SDK/TLS/source audit, offline frozen CLI/offset/partition/image and exact packet checks. Both required source CI jobs SUCCESS in run37696744465 (canonical7 andCLI6 gates included). Final documentation-head CI must pass before review/release; readback recorded on GitHub/Notion. Host TLS trust/HTTP200/exact15000/allmetadatahashes and both raw-vs-PNG zero-diff Pass; lowbat100glyph pixels inside approved footer only. See docs/t16-qa.md, docs/t16-live-endpoint.md and docs/t16-review.md. Frozen production1320544 bytes SHA17122de56f655b7b37bcc3464f310416ec8b48e189730157e95b9b9a0bc29957; all five images/ELF checksums/source independently checked.
+
+### Decisions
+Preserve approved design and all original criteria. Durable framePending denotes unknown physical panel state after interrupted commit; it does not claim glass success. No panel initialization on unchanged/network-failed paths. Battery3.55/0.10V provisional until T17; no pack fitted. Implementation and independent QA delegated; only root writes logs/state/Notion/Git. Concrete packet proposes production flash/one-hour test; debug/persistence comparison builds are distinct and not proposed releases. Prior user Terminal override persists.
+
+### Problems
+Physical TLS/panel/wake/current criteria remain Pending; compilation/fakes do not prove hardware. No-pack USB ADC0 selects provisional lowbat, not battery charge. Host16:11MDT snapshot footer11:49MDT; T21 publisher punctuality remains a separate issue without new deployment. Local Docker unavailable; canonical/CLI regression evidence comes from successful required source CI. Resolved early QA risks: lead/target edges, strict total deadline, fresh NTP, BOOT/reset priority, A/B/A interrupted identity and first-ever pending recovery. No unresolved software blocker.
+
+### Needs Jeremy
+Review PR21/exact frozen production17122de5 packet and approve T16 flash plus one-hour physical test. Agent handles Terminal; Jeremy physical controls/private credentials/photos and current measurement or explicit limitation. Actual production wake span>=onehour, matching preview, changed/unchanged/offline retention remain required. No repeat manual Terminal handoff. No approval yet for T16 flash/acceptance/merge/T17.
+
+### Next
+Stop at T16 review gate. After explicit production-flash/test approval, collect actual traces/observations/current-or-limitation, independent hardware reconciliation and later acceptance/authorized exact-head green merge. Do not dispatch T17.
+
+---
+
+## Session — T15 acceptance and authorized merge
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
+- **Started / finished:** 2026-10-07 16:07 MDT / 2026-10-07 16:09 MDT
+- **Model:** Primary runtime; acceptance bookkeeping only.
+- **Branch / PR:** Accepted `codex/t15-wifi-provisioning` / https://github.com/jeremyward37/weather-epaper/pull/20; bookkeeping carried in next authorized card branch.
+- **Status at end:** Done
+
+### Result
+Jeremy explicitly accepted T15, authorized PR #20 merge and T16 start after confirming weather is not expected at T15. PR #20 merged as 637c2751c740f1a6dfe939a45acece1f09e5b74f at 16:07:53 MDT. T15 set Done; normal approved firmware remains provisioned/installed, observer stopped.
+
+### Verification
+Re-read actual PR head6e0c57f36abd041468066961de6ed02d627867b6 and both SUCCESS checks (run37693025721), merged with exact-head guard, read back state MERGED and merge SHA. Independent QA/all original hardware criteria Pass in accepted packet; recommended physical failure cases unrun remain disclosed. T12 card Done.
+
+### Decisions
+User: “So long as I should not be seeing the weather yet on it then yes I accept T15, merge PR #20 and start T16 please.” Setup retention is expected; T16 supplies weather fetch/display. Authorization starts T16 but does not authorize a new T16 flash/release/merge or T17.
+
+### Problems
+None.
+
+### Needs Jeremy
+None for accepted T15.
+
+### Next
+Run authorized T16 with separate branch/log/independent QA and hardware/review gate.
+
+---
+
 ## Session — T15 final evidence review gate
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad812f82cedeb47e813b0b
