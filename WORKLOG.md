@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T24 acceptance, merge and publication
+
+- **Task:** https://app.notion.com/p/3f2d9adbacad81af943af1a0f1cb24fb
+- **Started / finished:** 2026-10-07 21:43 MDT / 21:46 MDT
+- **Model:** Primary orchestration runtime; prior independent GPT-6.1 Sol High QA bound to accepted revision.
+- **Branch / PR:** codex/t24-release-record (acceptance evidence only) / implementation https://github.com/jeremyward37/weather-epaper/pull/22
+- **Status at end:** Done; Jeremy acceptance, merge, publication and live verification complete
+
+### Result
+Jeremy: “accept please merge and publish”. This unambiguously accepts the concrete T24 LO/HI references and authorizes PR22 merge plus publication. Approved review head1457a2586635f2bad81d568a8cbfa4e372a7884f is unchanged, mergeable, with both required build/firmware CI SUCCESS in run37722545839. Authorized squash merge completed21:43:20MDT as28ca02a9e41ffc540438a09dee4abedf5d683a22; authorized existing publisher succeeded. Public bundle verified; no flash needed.
+
+### Verification
+Pre-action exact-head CI/GitHub readback successful; managed checkout clean. Prior independent QA/binding and seven comparisons Pass. Existing publish workflow37724074874 render/deploy SUCCESS at merged main28ca02a9e41ffc540438a09dee4abedf5d683a22. All six public HTTPS files equal the deployed artifact byte-for-byte; metadata hashes match, both raw payloads15000bytes equal their mode1 400x300PNG pixels; metadata stable. Rendered2026-10-08T03:44:06.001Z, footer10/7 9:44PM. Root visually inspected normal/low-battery daily54°/82°,58°/82°,51°/78°, consistent with LO/HI. Full release hashes in docs/t24-release.md; independent release audit recorded on Notion.
+
+### Decisions
+Approval applies to accepted T24 correction and its existing publisher; no firmware flash or new task authorized. Preserve T16's separate pending hardware/merge gates.
+
+### Problems
+None established.
+
+### Needs Jeremy
+None for the authorized merge/publication. Physical confirmation on a later successful device fetch is optional evidence, not a server publication claim.
+
+### Next
+Publish this documentation-only acceptance record under the existing T24 completion authorization, update card/project to Done, and retain T16 pending original hardware/merge gates. No new task or test window started.
+
+---
+
 ## Session — T24 daily forecast LO/HI display correction
 
 - **Task:** https://app.notion.com/p/3f2d9adbacad81af943af1a0f1cb24fb
