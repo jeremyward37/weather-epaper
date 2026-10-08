@@ -4,7 +4,7 @@ Updated 2026-10-07. Jeremy requested implementation subagents, independent testi
 
 ## Current handoff
 
-Reconciled 2026-10-07: T01–T15, T22 and T23 Done; accepted main637c275 includes T15. T16 remains In progress in [PR21](https://github.com/jeremyward37/weather-epaper/pull/21), corrected frozen production installed, original full-hour/offline/remaining physical criteria pending. Jeremy requested “let's do T24 now if we can”; this explicitly supersedes prior after-T16 sequencing for the independent LO/HI server renderer correction. T24 is In progress in its own branch from accepted main; completed T11 is its technical dependency, stage7. Keep T16 checkout/artifacts/device unchanged. Only T24 runs now, with bounded implementation and separate independent QA before Jeremy review/acceptance/authorized merge. T17–T21 remain Not started; T18 still requires T24. No new deployment/flash or merge is authorized.
+Reconciled 2026-10-07: T01–T15, T22, T23 and T24 Done. Jeremy accepted T24, authorized PR22 merge/publication; merged28ca02a and publish37724074874 succeeded with independent release QA and all six public files matching the deployed artifact. Daily LO/HI is the accepted current baseline. T16 remains In progress in [PR21](https://github.com/jeremyward37/weather-epaper/pull/21), corrected frozen production installed, original full-hour/offline/remaining physical criteria and acceptance/merge pending. Keep its checkout/artifacts/device unchanged; reconcile its branch with accepted T24 later without reverting LO/HI. T17–T21 remain Not started; T18's T24 prerequisite is satisfied. No observer/window currently running; no T16 acceptance/merge, new flash or next-card start authorized by T24 completion.
 
 ## Start or resume
 

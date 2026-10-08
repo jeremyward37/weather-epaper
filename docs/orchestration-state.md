@@ -2,18 +2,15 @@
 
 Durable current handoff; WORKLOG and historical entries below remain append-only evidence.
 
-- **Updated:** 2026-10-07 21:23 MDT
-- **Active card:** T24 daily forecast LO/HI display correction
-- **Stage:** Software and independent QA Pass; awaiting exact-head CI then Jeremy review. Isolated from accepted main637c275. Notion In progress; no merge/deployment approval.
-- **Branch / checkout:** codex/t24-daily-low-high / /Users/jeremyward/.codex/worktrees/t24-daily-low-high/weather-epaper
-- **Base:** accepted main637c2751c740f1a6dfe939a45acece1f09e5b74f
-- **Models:** GPT-6.1 Sol Medium implementation / High independent QA; verified in current runtime.
-- **Scope:** three daily pairs H°/L° → L°/H°; NWS high/low meanings unchanged. Approved source/spec/checks/generated re-baseline only in the daily temperature text regions, setup byte-identical.
-- **Dependency:** completed T11 renderer; stage7. Jeremy explicitly moved T24 ahead of pending T16 hardware via “let's do T24 now if we can”. T18 remains stage10 with T24 required.
-- **Verification:** pinned ./build.sh PASS, seven canonical comparisons, six CLI fixture rows, signed/equal/wide pair fit, authorized pixel-region differences, independent QA and green review-head CI.
-- **Deferred T16:** In progress in https://github.com/jeremyward37/weather-epaper/pull/21 at93acc72. Corrected production3fc1e59/app4d9e35cf remains installed. Two actual17:30/18:00 TIMER cycles and initial photo/BOOT no-redraw Pass; full-hour/offline/remaining button criteria and acceptance/merge pending. Prior observer is stopped/unknown cause; no current capture. Evening photo shows later8:42PM frame. Preserve its existing managed checkout and release artifacts.
-- **Review evidence:** docs/t24-review.md (seven before/after links), docs/t24-rebaseline.md (masks/hashes), docs/t24-qa.md (independent Pass). Final PR/head/CI recorded on GitHub and Notion.
-- **Release gate:** present concrete T24 before/after review after final-head CI; no merge or new deployment/flash authorized. The existing T12 publisher continues accepted configuration.
+- **Updated:** 2026-10-07 21:46 MDT
+- **Completed card:** T24 daily forecast LO/HI, accepted/merged/published; all original criteria passed.
+- **Implementation PR / revision:** PR22 accepted head1457a2586635f2bad81d568a8cbfa4e372a7884f, both required jobs SUCCESS in CI37722545839; merged main28ca02a9e41ffc540438a09dee4abedf5d683a22.
+- **Publication:** existing workflow37724074874 from merged28ca02a9; render/deploy SUCCESS. All six canonical HTTPS files matched deployed artifact; both raw frames15000bytes, metadata hashes/wire format verified. Footer10/7 9:44PM; normal and low-battery daily54°/82°,58°/82°,51°/78°.
+- **Evidence:** docs/t24-review.md, docs/t24-rebaseline.md, docs/t24-qa.md, docs/t24-release.md; Notion has current release/acceptance readback.
+- **Record branch / checkout:** codex/t24-release-record / /Users/jeremyward/.codex/worktrees/t24-daily-low-high/weather-epaper; acceptance documentation only, no renderer/firmware/workflow change.
+- **Dependency:** T24 Done satisfies its T18 prerequisite. No new card started.
+- **Pending T16:** In progress in PR21 at93acc72; corrected source3fc1e59/app4d9e35cf installed. Initial photo/BOOT unchanged and two actual17:30/18:00 TIMER cycles Pass; full-hour/offline/remaining button criteria, acceptance/merge pending. Observer stopped, termination/Mac sleep unknown. Preserve existing T16 checkout/artifacts; no device operation in T24.
+- **Next:** resume T16's pending hardware gate when Jeremy is ready; reconcile that branch with accepted T24 without reverting LO/HI. No capture/window currently running; no T17 start or T16 acceptance/merge authorized by T24 approval.
 
 ## Approval ledger
 
@@ -101,3 +98,11 @@ Actual harness upload verified all four writes. Runtime logged saved reconnect, 
 ## T24 start-now authorization — 2026-10-07 21:10 MDT
 
 Jeremy: “let's do T24 now if we can”. This supersedes after-T16 sequencing for this independent renderer correction. T24 implementation starts from accepted main, with its own branch/log/QA/review. T16 stays pending and untouched. T24 dependency corrected to completed T11, stage7; T18 still stage10. No acceptance, merge or new deployment authorized.
+
+## T24 acceptance and release authorization — 2026-10-07 21:43 MDT
+
+Jeremy in this chat: “accept please merge and publish”. Accepted references and PR22 review head1457a2586635f2bad81d568a8cbfa4e372a7884f, with both required CI jobs SUCCESS in run37722545839 and independent exact-commit QA Pass. Authorized actions: accept LO/HI re-baseline, squash merge PR22, publish the corrected server frames through the existing workflow. No new firmware flash, T16 acceptance/merge, or subsequent task start. Final merge/deployment/live verification records follow; no repeat permission needed for these actions.
+
+## T24 authorized completion — 2026-10-07 21:46 MDT
+
+PR22 merged as28ca02a9e41ffc540438a09dee4abedf5d683a22 after both accepted-head CI jobs passed. Publication37724074874 render/deploy SUCCESS from that exact revision. All six live files equal deployed artifact, five manifest hashes match, both15000byte raw payloads equal400x300mode1PNG pixels, stable metadata. Footer10/7 9:44PM; both weather variants show54°/82°,58°/82°,51°/78°. Detailed release hashes in docs/t24-release.md. No device wake/physical refresh claimed. T24 complete; no firmware flash, T16 acceptance/merge or next-card start. Required acceptance record is documentation-only under Jeremy's existing T24 completion authorization; approved implementation unchanged.
