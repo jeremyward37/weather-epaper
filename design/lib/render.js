@@ -343,7 +343,7 @@ async function normalE(d,logoSize=20,mode='three'){
     const slot=d.daily[i], cy=126+i*52;
     s+=await centeredText(slot.day,218,cy,18);
     s+=await centeredIcon(slot.icon,260,cy,36);
-    s+=await centeredText(`${slot.high}°/${slot.low}°`,303,cy,20);
+    s+=await centeredText(`${slot.low}°/${slot.high}°`,303,cy,20);
     if(slot.precip) s+=await centeredText(slot.precip+'%',303,cy+20,16);
   }
   s+=await normalFooter(d,logoSize);

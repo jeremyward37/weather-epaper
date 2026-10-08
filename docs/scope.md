@@ -61,7 +61,7 @@ Consequences:
 
 ## 5. What the screen shows
 
-Defined pixel-exactly in `design/spec.md`. In brief: current temperature and condition icon (dominant), the next civil dawn or dusk labeled `FIRST LIGHT` / `LAST LIGHT`, the next four future 3-hour marks (12/3/6/9 AM/PM) with temperature, icon, and chance, three days starting tomorrow with icon, high/low, and chance, and a footer with refresh icon, last-update timestamp, optional low-battery glyph, and the Sovereign Aperture logo at right.
+Defined pixel-exactly in `design/spec.md`. In brief: current temperature and condition icon (dominant), the next civil dawn or dusk labeled `FIRST LIGHT` / `LAST LIGHT`, the next four future 3-hour marks (12/3/6/9 AM/PM) with temperature, icon, and chance, three days starting tomorrow with icon, low/high (`L°/H°`, T24), and chance, and a footer with refresh icon, last-update timestamp, optional low-battery glyph, and the Sovereign Aperture logo at right.
 
 Not shown, by decision: section headings, location text, separate precipitation-type glyphs, wind, humidity, UV, AQI, pressure, moon phase, indoor temperature, date header, graphs.
 
