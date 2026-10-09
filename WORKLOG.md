@@ -1,5 +1,40 @@
 # Work log
 
+## Session — T21 Scheduled publishing reliability investigation
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7
+- **Started / finished:** 2026-10-09 16:52 MDT / 2026-10-09 16:59 MDT (preparation; activation pending)
+- **Model:** Primary GPT-6 runtime, setting unavailable; delegated implementation and independent QA inherited primary runtime. Current future recommendation GPT-6.1 Sol · High verified against official model documentation and host availability.
+- **Branch / PR:** `codex/t21-publish-reliability` / PR creation pending at this record
+- **Status at end:** In progress
+
+### Result
+Added `tools/cron-drift.py`, seven meaningful synthetic tests, complete sanitized Actions/job evidence and all 245 expected slots for 2026-10-02 through 2026-10-08. There were 36 scheduled arrivals, 29 actual scheduled deployments, seven successful no-ops and one manual publication. Only 25/245 wakes had a new scheduled publication in their preceding half-hour (26 including manual); 220 arrival buckets were empty. Morning 2026-10-09 had no new publication before Jeremy's ~08:00 reset: the 04:34 run skipped publication and the prior deploy step finished 2026-10-08 21:05:35 MDT.
+
+Jeremy selected Google Cloud Scheduler in this chat's preference reply. Prepared exact two-job HTTP dispatch/PAT/billing/verification/rollback instructions in `docs/t21-reliability.md` and the runbook. Corrected external dispatches at 04:47–04:59 so the selected scheduler can prepare the first wake; preserved overnight rejection and built-in schedule's late-evening grace. Recorded the pending path in scope, decisions, plan and orchestration state. No external jobs were activated and no device operation or frame change occurred.
+
+### Verification
+- `python3 -m unittest discover -s tools -p 'test_cron_drift.py' -v` → seven tests passed (missing/no-op/multiple arrivals, deadline/manual distinction, cross-midnight age, DST, unknown evidence and duplicate pages).
+- Bundled Node `--test server/test/publish-window.test.js` → four tests passed, including external-dispatch prepublish boundaries, winter and both DST transitions.
+- `python3 tools/cron-drift.py --runs docs/evidence/t21/runs.json --start 2026-10-02 --end 2026-10-08 --out /tmp/weather-t21-root-reproduced` → summary and CSV compare byte for byte with committed evidence. Independent QA also reproduced all three files and independently recalculated every slot.
+- `git diff --check` → passed. Required PR CI will check pinned build/PASS/zero-diff/fixture/firmware gates before any merge. Independent `t21_qa` preparation review passed; whole server suite 360/360 using bundled Node/Python. Required CI outcome is reported on the PR/card; no passing CI is inferred at this preparation record.
+
+### Decisions
+- Replace the failing GitHub scheduling trigger with Google Cloud Scheduler; retain pinned renderer/Pages and existing cron fallback during a real seven-day trial. Two jobs fit the ongoing free allowance if unused; billing account required.
+- True per-trigger lateness cannot be derived from GitHub timestamps because intended event slots are absent. Report observed gaps, missing buckets and actual deploy-step completion instead. Success/no-op runs do not count as publications.
+- One actual workflow-arrival-to-publish duration exceeded the 13-minute lead (max21.75min,p959.9min); external delivery is not an end-to-end deadline guarantee. Move rendering to Cloud Run only if the trial shows it is needed, with a full measured cost/frame-identity proposal.
+
+### Problems
+Primary checkout is behind production with an unrelated .gitignore edit; used a managed worktree from origin/main. GITHUB_TOKEN override is invalid; used saved authentication with it unset. Host Node16 lacks --test; used bundled Node24. System Pillow is incompatible with two unchanged server checks; pinned/bundled Python is the correct verification environment. No Google Cloud CLI/session or scoped scheduler credential is available.
+
+### Needs Jeremy
+Review/authorize merging the concrete PR with green required CI. Create/select Google Cloud project with billing/free Scheduler allowance, create weather-epaper-only Actions-write fine-grained PAT, privately enter it in two Scheduler job headers, and activate/test as specified in docs/t21-reliability.md. Do not paste credentials into chat. Record activation and seven full days of actual publications before wakes; T21 cannot be marked Done before that evidence and acceptance.
+
+### Next
+Remain on T21's service/observation gate. No other card started; T16's hardware/acceptance/merge remains pending independently. Freeze prepared code for independent QA and PR CI; follow-up changes need affected verification.
+
+---
+
 ## Session — T24 acceptance, merge and publication
 
 - **Task:** https://app.notion.com/p/3f2d9adbacad81af943af1a0f1cb24fb

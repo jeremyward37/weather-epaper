@@ -152,3 +152,10 @@ Setup is drawn only when entering provisioning, after checked removal of the pri
 ## T24 daily low/high display correction — 2026-10-07
 
 Jeremy requested T24 now and authorized changing only the three daily temperature pairs from `H°/L°` to `L°/H°` on normal and low-battery frames. The fields retain their NWS meaning: high from the daytime period, low from the following night; day labels, dates, condition and chance still use the same periods. No sorting or normalization change. Preserve Lato Regular 20 px, x=303, centers y=126/178/230, slash without spaces, signed whole values, and every other pixel. Setup remains byte-identical. The pinned pipeline generates the references and 3× previews; concrete re-baseline acceptance, independent QA, merge and deployment gates remain pending.
+
+
+## Publishing reliability follow-up — 2026-10-09 (T21)
+
+- Jeremy requested a repeat reliability check after an approximately 08:00 reset retrieved the previous evening's frame. The complete Oct 2–8 week showed only 36 scheduled runs and 29 real scheduled deployments against 245 expected opportunities. Only 25 wakes had a new scheduled deployment in the prior half-hour. Successful no-ops were excluded; missing arrival buckets were measured separately from timing of observed runs.
+- Jeremy selected **Google Cloud Scheduler** in this chat: two HTTP jobs fit the ongoing free allowance if unused, with a billing account required. Proposed schedules remain 04:47 then :17/:47 from 05–21, America/Denver. Retain the pinned renderer, Pages URL and existing GitHub cron fallback. Detailed evidence, tradeoffs and activation steps: `docs/t21-reliability.md`.
+- Prepare external dispatches for 04:47–04:59; the old guard would skip the first-wake job. No frame/layout, firmware or DNS change. External jobs are not active yet; credentials, reviewed merge and seven days of actual post-change evidence remain required. This choice does not claim that the new end-to-end path has been proven reliable.

@@ -127,3 +127,8 @@ The handoff items from the scope review were resolved in the planning session wi
 | `design/review-instructions.md` | Pass/fail protocol for the implementation |
 | `docs/scope-review.md` | Dated log of the 2026-09-25 scope review; superseded by this file where they differ |
 | `docs/design-brief.md`, `docs/context.md` | Historical background |
+
+
+## Publishing reliability follow-up — 2026-10-09
+
+T21 confirmed inadequate scheduled publication. Jeremy selected Google Cloud Scheduler to send two HTTP workflow dispatch schedules (04:47, then :17/:47 from 05–21, America/Denver). This is a pending activation change: production still uses the existing Actions cron/Pages pipeline until reviewed merge and external credential/job setup. The pinned renderer, raw frames and device URL remain the contract. Keep Actions cron as fallback during a seven-day publication-before-wake trial. See `docs/t21-reliability.md` for evidence, ongoing free-allowance conditions, exact setup and rollback. T21 remains In progress; no reliability sign-off is inferred from this selection.

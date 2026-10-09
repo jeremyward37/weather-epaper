@@ -6,8 +6,8 @@
 through 9 PM in `America/Denver`. These 35 runs prepare the 5:00 AM through
 10:00 PM device wakes. GitHub may start a scheduled run late. The job checks
 the local publish window before rendering; a scheduled run may finish shortly
-after 10 PM to serve the last wake. A manual dispatch outside 5 AM–10 PM
-skips publication.
+after 10 PM to serve the last wake. External/manual dispatches are allowed at 4:47–4:59 AM to prepare the first
+wake, as well as 5 AM–10 PM. Overnight dispatches still skip publication.
 
 The `render` job uses the pinned renderer container and uploads `public/` only
 after `server/bin/render.js` exits successfully. The `deploy` job depends on
@@ -50,8 +50,11 @@ no repository activity. In **Actions → Publish weather frame**, choose
 again; do it during the local publish window.
 
 Scheduled runs can arrive late or be dropped. Compare run creation times with
-the expected local slots and check `meta.json`. If repeated delays make the
-device miss frames, T21 can add an external trigger using cron-job.org to call
-GitHub's `workflow_dispatch` API. Keep its token in the external service, not
-in this repository, and check the added trigger's reliability before relying
-on it.
+the expected local slots and check `meta.json`. The 2026-10-02–2026-10-08 T21 measurement confirmed only 29 scheduled
+deployments against 245 expected opportunities. Jeremy selected Google Cloud
+Scheduler to trigger `workflow_dispatch`, retaining GitHub cron as fallback.
+The external jobs are **not yet active**. Follow the exact credential, two-job
+setup, rollback and seven-day acceptance procedure in
+[docs/t21-reliability.md](t21-reliability.md). Keep the scoped PAT in the private
+Scheduler job headers, never in this repository. A successful HTTP dispatch is
+not evidence of a completed publication: verify the deploy job and live metadata.
