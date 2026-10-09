@@ -5,7 +5,7 @@
 - **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7
 - **Started / finished:** 2026-10-09 16:52 MDT / 2026-10-09 16:59 MDT (preparation; activation pending)
 - **Model:** Primary GPT-6 runtime, setting unavailable; delegated implementation and independent QA inherited primary runtime. Current future recommendation GPT-6.1 Sol · High verified against official model documentation and host availability.
-- **Branch / PR:** `codex/t21-publish-reliability` / PR creation pending at this record
+- **Branch / PR:** `codex/t21-publish-reliability` / https://github.com/jeremyward37/weather-epaper/pull/24
 - **Status at end:** In progress
 
 ### Result
