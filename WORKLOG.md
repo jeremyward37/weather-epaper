@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T21 activation verification and dispatch test
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7
+- **Started / finished:** 2026-10-09 23:56 MDT / 2026-10-09 23:58 MDT
+- **Model:** Current primary runtime; reviewed T21 configuration unchanged.
+- **Branch / PR:** `codex/t21-merge-record` / https://github.com/jeremyward37/weather-epaper/pull/25
+- **Status at end:** In progress
+
+### Result
+Jeremy privately entered credentials and created both approved Scheduler jobs. Verified both Enabled and successfully force-dispatched each to GitHub without reading saved headers.
+
+### Verification
+Arc list shows both Enabled in us-central1, America/Denver; first 47 4 * * * next 2026-10-10 04:47 MDT; daytime 17,47 5-21 * * * next 2026-10-10 05:17 MDT. First updated 2026-10-09 23:51:24 MDT, second 23:55:55 MDT; both correct GitHub dispatch URL, Initial read showed neither run yet. Force tests subsequently showed Scheduler Success for both: first last run 23:56:52 MDT → workflow_dispatch38029230652 created23:56:53; daytime23:57:17 → workflow_dispatch38029254654 created23:57:18. gh run view confirms both completed success with render/upload/deploy explicitly skipped overnight. Screenshot /tmp/weather-epaper-scheduler-active.png contains job list, no headers. Fresh publication remains unverified. Independent t21_qa read-only review Pass for connectivity only: both dispatches on merged4954df5 completed success, render/upload/deploy skipped, production publish-window returns false at both test timestamps. Existing code/configuration unchanged.
+
+### Decisions
+Test each Scheduler-to-GitHub dispatch now. After 22:00, expected workflow behavior is successful overnight skip, so this does not establish fresh publication.
+
+### Problems
+Fresh-frame publication and full seven-day reliability evidence remain pending.
+
+### Needs Jeremy
+Observe morning device footer; no token sharing, DNS change or flash needed.
+
+### Next
+Verify dispatch responses and corresponding workflow runs; record live setup and remaining daytime publication/seven-day acceptance criteria. Remain on T21.
+
+---
+
 ## Session — T21 daytime scheduler preparation
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7

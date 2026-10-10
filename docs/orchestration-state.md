@@ -120,3 +120,19 @@ Jeremy selected Google Cloud Scheduler in the async preference reply: ongoing fr
 Jeremy replied “Approve and let me know what I need to do” to the request to merge PR24. Accepted head197983206b86d6066351768565072e1fef67c9d0 rechecked unchanged/CLEAN with both required build/firmware checks SUCCESS in CI38002245677. Authorized squash merge completed as4954df5262e0ac2e2a51cb80e3c6fa086c3c8b7e at18:39:34MDT; GitHub reports MERGED. No implementation change after QA/approval. Documentation-only acceptance record is on codex/t21-merge-record. Main-branch CI is a subsequent run and is not implied passed by accepted-head CI.
 
 T21 stays In progress. Remaining gate: Google project/billing/Cloud Scheduler enablement, Jeremy's repository-only Actions-write PAT entered privately into both jobs, activation test, then seven full local days of actual publication-before-wake evidence and final reliability acceptance. No Google jobs created/activated, firmware flash, DNS change or new card started. Setup packet docs/t21-reliability.md now reflects the merged software. Previous T16 physical/acceptance/merge gates remain independent and pending.
+
+
+## Activation and connection verification — 2026-10-09 23:57 MDT
+
+Jeremy completed project/billing/API setup and created the repository-scoped GitHub credential. He privately entered it and submitted both jobs in Arc. The agent did not read or copy the saved Authorization values.
+
+Both jobs in project `weather-epaper`, region `us-central1`, are **Enabled**, with timezone **America/Denver** and the correct GitHub `publish.yml` dispatch target:
+
+| Job | Frequency | Created/last updated, MDT | Next run preview, MDT |
+| --- | --- | --- | --- |
+| `weather-epaper-first-wake` | `47 4 * * *` | 2026-10-09 23:51:24 | 2026-10-10 04:47:02 |
+| `weather-epaper-half-hour` | `17,47 5-21 * * *` | 2026-10-09 23:55:55 | 2026-10-10 05:17:02 |
+
+Force-run connection tests both showed **Success** in Scheduler. The early job's last-run time 23:56:52 MDT corresponds to [workflow_dispatch 38029230652](https://github.com/jeremyward37/weather-epaper/actions/runs/38029230652), created 23:56:53 and completed successfully 23:57:05. The daytime job's 23:57:17 test corresponds to [workflow_dispatch 38029254654](https://github.com/jeremyward37/weather-epaper/actions/runs/38029254654), created 23:57:18 and completed successfully 23:57:28. Both explicitly skipped render/upload/deploy outside the local publish window. This proves credential/dispatch connectivity only, **not a fresh publication**. Next-run previews are observations, not timing guarantees.
+
+First scheduled fresh-publication verification remains pending on 2026-10-10. The earliest possible full observation week is October 10–16 (245 wake opportunities); preserve the actual evidence before any reliability acceptance. T21 remains **In progress**. Existing GitHub cron fallback remains active. No firmware, DNS or design change.

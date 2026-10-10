@@ -1,6 +1,21 @@
 # T21 — publishing reliability and Google Cloud Scheduler
 
-Investigated 2026-10-09; production base `a0ca889f`. Jeremy selected Google Cloud Scheduler in this chat on 2026-10-09. Jeremy approved PR24, merged 2026-10-09 at 18:39 MDT as `4954df5262e0ac2e2a51cb80e3c6fa086c3c8b7e`; both required checks passed on accepted head `1979832`. The software preparation is merged; external jobs are not active yet.
+Investigated 2026-10-09; production base `a0ca889f`. Jeremy selected Google Cloud Scheduler in this chat on 2026-10-09. Jeremy approved PR24, merged 2026-10-09 at 18:39 MDT as `4954df5262e0ac2e2a51cb80e3c6fa086c3c8b7e`; both required checks passed on accepted head `1979832`. The software preparation is merged. Both external jobs are now enabled and connection tests passed; fresh-frame publication and seven-day reliability verification remain pending.
+
+## Activation and connection verification — 2026-10-09 23:57 MDT
+
+Jeremy completed project/billing/API setup and created the repository-scoped GitHub credential. He privately entered it and submitted both jobs in Arc. The agent did not read or copy the saved Authorization values.
+
+Both jobs in project `weather-epaper`, region `us-central1`, are **Enabled**, with timezone **America/Denver** and the correct GitHub `publish.yml` dispatch target:
+
+| Job | Frequency | Created/last updated, MDT | Next run preview, MDT |
+| --- | --- | --- | --- |
+| `weather-epaper-first-wake` | `47 4 * * *` | 2026-10-09 23:51:24 | 2026-10-10 04:47:02 |
+| `weather-epaper-half-hour` | `17,47 5-21 * * *` | 2026-10-09 23:55:55 | 2026-10-10 05:17:02 |
+
+Force-run connection tests both showed **Success** in Scheduler. The early job's last-run time 23:56:52 MDT corresponds to [workflow_dispatch 38029230652](https://github.com/jeremyward37/weather-epaper/actions/runs/38029230652), created 23:56:53 and completed successfully 23:57:05. The daytime job's 23:57:17 test corresponds to [workflow_dispatch 38029254654](https://github.com/jeremyward37/weather-epaper/actions/runs/38029254654), created 23:57:18 and completed successfully 23:57:28. Both explicitly skipped render/upload/deploy outside the local publish window. This proves credential/dispatch connectivity only, **not a fresh publication**. Next-run previews are observations, not timing guarantees.
+
+First scheduled fresh-publication verification remains pending on 2026-10-10. The earliest possible full observation week is October 10–16 (245 wake opportunities); preserve the actual evidence before any reliability acceptance. T21 remains **In progress**. Existing GitHub cron fallback remains active. No firmware, DNS or design change.
 
 ## Finding
 
@@ -89,7 +104,7 @@ Current [OpenAI model documentation](https://learn.chatgpt.com/docs/models) was 
 | Full-week missing slots, starts and deployment before wakes measured | Measurement/tool/evidence in this PR; independent QA Pass |
 | Decision recorded | Jeremy selected Google Cloud Scheduler on 2026-10-09 |
 | Readiness fix verified | Four local boundary tests and independent QA Pass; accepted-head required CI build/firmware SUCCESS |
-| External trigger implemented/live | Pending Jeremy credentials and activation |
+| External trigger implemented/live | Both jobs Enabled; both dispatch connection tests passed on 2026-10-09 23:57 MDT; first scheduled publication pending |
 | Week of post-change on-time publications | Pending, cannot be simulated or inferred from local tests |
 | Required CI / acceptance / merge | Accepted-head CI SUCCESS, Jeremy approved and PR24 merged; activation/trial acceptance pending |
 
@@ -98,4 +113,4 @@ T21 stays **In progress**. T16's hardware/merge criteria remain pending independ
 
 ## Independent preparation QA
 
-Separate `t21_qa` agent reviewed the completed preparation. Seven measurement tests, four prepublish tests and the complete 360-test server suite passed with bundled Node24/Python. QA reproduced all three evidence files byte for byte and independently recalculated every one of the 245 slots. Pricing conditions, scoped-PAT/API configuration, retries and local/DST schedules match official documentation. No blocking preparation defects found. Accepted-head CI and authorized merge completed. Activation, seven actual post-change days and final reliability acceptance remain pending; this is not a production reliability verdict.
+Separate `t21_qa` agent reviewed the completed preparation. Seven measurement tests, four prepublish tests and the complete 360-test server suite passed with bundled Node24/Python. QA reproduced all three evidence files byte for byte and independently recalculated every one of the 245 slots. Pricing conditions, scoped-PAT/API configuration, retries and local/DST schedules match official documentation. No blocking preparation defects found. Accepted-head CI and authorized merge completed. Subsequent activation/connection evidence is recorded above. First fresh publication, seven actual post-change days and final reliability acceptance remain pending; this is not a production reliability verdict.
