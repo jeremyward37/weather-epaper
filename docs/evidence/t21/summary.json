@@ -1,0 +1,144 @@
+{
+  "period": {
+    "start_local_date": "2026-10-02",
+    "end_local_date": "2026-10-08",
+    "timezone": "America/Denver"
+  },
+  "source_run_count": 66,
+  "week_run_count": 37,
+  "expected_slots": 245,
+  "scheduled_runs": 36,
+  "manual_runs": 1,
+  "scheduled_run_count_deficit": 209,
+  "scheduled_outcomes": {
+    "successful_noop": 7,
+    "deployment_success": 29
+  },
+  "manual_outcomes": {
+    "deployment_success": 1
+  },
+  "occupied_arrival_buckets": 25,
+  "empty_arrival_buckets": 220,
+  "multiple_arrival_buckets": 4,
+  "scheduled_arrivals_outside_buckets": 7,
+  "wakes_with_new_scheduled_deployment": 25,
+  "wakes_with_new_any_deployment": 26,
+  "week_successful_deployments": 30,
+  "publication_gap_minutes": {
+    "count": 29,
+    "max": 1107.1666666666667,
+    "p95": 991.9
+  },
+  "scheduled_arrival_gap_minutes": {
+    "count": 35,
+    "max": 702.2,
+    "p95": 618.3166666666667
+  },
+  "creation_to_deploy_minutes": {
+    "count": 30,
+    "max": 21.75,
+    "p95": 9.9,
+    "count_over_13_minutes": 1
+  },
+  "max_deployment_age_at_wake_minutes": 1091.467,
+  "daily": [
+    {
+      "date": "2026-10-02",
+      "expected_slots": 35,
+      "scheduled_runs": 6,
+      "manual_runs": 0,
+      "scheduled_outcomes": {
+        "successful_noop": 2,
+        "deployment_success": 4
+      },
+      "empty_arrival_buckets": 32,
+      "wakes_without_new_scheduled_deployment": 31,
+      "wakes_without_new_any_deployment": 31
+    },
+    {
+      "date": "2026-10-03",
+      "expected_slots": 35,
+      "scheduled_runs": 5,
+      "manual_runs": 0,
+      "scheduled_outcomes": {
+        "deployment_success": 5
+      },
+      "empty_arrival_buckets": 31,
+      "wakes_without_new_scheduled_deployment": 30,
+      "wakes_without_new_any_deployment": 30
+    },
+    {
+      "date": "2026-10-04",
+      "expected_slots": 35,
+      "scheduled_runs": 6,
+      "manual_runs": 0,
+      "scheduled_outcomes": {
+        "successful_noop": 1,
+        "deployment_success": 5
+      },
+      "empty_arrival_buckets": 30,
+      "wakes_without_new_scheduled_deployment": 31,
+      "wakes_without_new_any_deployment": 31
+    },
+    {
+      "date": "2026-10-05",
+      "expected_slots": 35,
+      "scheduled_runs": 4,
+      "manual_runs": 0,
+      "scheduled_outcomes": {
+        "successful_noop": 1,
+        "deployment_success": 3
+      },
+      "empty_arrival_buckets": 33,
+      "wakes_without_new_scheduled_deployment": 33,
+      "wakes_without_new_any_deployment": 33
+    },
+    {
+      "date": "2026-10-06",
+      "expected_slots": 35,
+      "scheduled_runs": 5,
+      "manual_runs": 0,
+      "scheduled_outcomes": {
+        "successful_noop": 1,
+        "deployment_success": 4
+      },
+      "empty_arrival_buckets": 32,
+      "wakes_without_new_scheduled_deployment": 31,
+      "wakes_without_new_any_deployment": 31
+    },
+    {
+      "date": "2026-10-07",
+      "expected_slots": 35,
+      "scheduled_runs": 5,
+      "manual_runs": 1,
+      "scheduled_outcomes": {
+        "successful_noop": 1,
+        "deployment_success": 4
+      },
+      "empty_arrival_buckets": 31,
+      "wakes_without_new_scheduled_deployment": 32,
+      "wakes_without_new_any_deployment": 31
+    },
+    {
+      "date": "2026-10-08",
+      "expected_slots": 35,
+      "scheduled_runs": 5,
+      "manual_runs": 0,
+      "scheduled_outcomes": {
+        "successful_noop": 1,
+        "deployment_success": 4
+      },
+      "empty_arrival_buckets": 31,
+      "wakes_without_new_scheduled_deployment": 32,
+      "wakes_without_new_any_deployment": 32
+    }
+  ],
+  "limitations": [
+    "GitHub created_at does not identify the intended cron slot. Empty arrival buckets are missing observations, not proof that a particular trigger was dropped; true trigger lateness is unmeasurable here.",
+    "The count deficit compares all schedule-event runs created during the week with intended slots. It cannot distinguish dropped, coalesced, disabled, or out-of-period delayed triggers.",
+    "Publication time is successful Pages deploy-step completion (job completion fallback). It does not prove CDN visibility, framebuffer weather freshness, or a physical device download.",
+    "Before-wake delivery means a deployment completed after the previous half-hour wake and by the current wake. First daily wake uses 04:30 as the lower bound. Manual publications are counted separately and only included in any-deployment coverage.",
+    "Gap percentiles include overnight gaps and only successive deployments/arrivals within the selected period; wake coverage separately measures the approved daytime schedule.",
+    "All timestamps are offset-aware and expected schedule is generated in the chosen local timezone. Source history must include the latest deployment before the week to calculate initial age."
+  ]
+}

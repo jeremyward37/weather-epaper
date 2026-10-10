@@ -17,13 +17,12 @@ export function shouldPublish(now, eventName) {
   const { inWindow } = refreshWindow(instant);
   if (inWindow) return true;
 
-  // The 4:47 run prepares the 5:00 wake. The 21:47 run may start late,
-  // so allow its scheduled deployment shortly after the 22:00 wake.
-  if (eventName !== 'schedule') return false;
+  // Both built-in and external dispatches at 4:47 prepare the 5:00 wake.
+  // A late built-in 21:47 run retains its short grace after the 22:00 wake.
   const parts = Object.fromEntries(clock.formatToParts(instant).map(({ type, value }) => [type, value]));
   const minutes = Number(parts.hour) * 60 + Number(parts.minute);
   return (minutes >= 4 * 60 + 47 && minutes < 5 * 60)
-    || (minutes > 22 * 60 && minutes < 22 * 60 + 30);
+    || (eventName === 'schedule' && minutes > 22 * 60 && minutes < 22 * 60 + 30);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {

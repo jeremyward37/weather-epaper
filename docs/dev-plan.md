@@ -69,7 +69,7 @@ Order is the recommended sequence; **Depends On** is the hard constraint. Cards 
 | T18 [PD] | End-to-end verification and sign-off report | [card](https://app.notion.com/p/3e7d9adbacad816cbd40ea5020c63d90) | T11, T13, T16, T17, T24 | GPT-6.1 Sol · High | Med |
 | T19 [PD] | **Jeremy:** battery-life measurement (runs for weeks) | [card](https://app.notion.com/p/3e7d9adbacad81bd8d66fa5c6d5ac2dd) | T17, T18 | — | — |
 | T20 | Runbook and documentation closeout | [card](https://app.notion.com/p/3e7d9adbacad81e0be24ec5156dc4c34) | T18, T19 | GPT-6 Luna · High | Low |
-| T21 | Optional: external trigger fallback for late GitHub cron runs | [card](https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7) | T12 | GPT-6 Luna · High | Low |
+| T21 | External trigger: Google Cloud Scheduler reliability trial | [card](https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7) | T12 | GPT-6.1 Sol · High (QA High) | Low |
 
 ### Phase E — Project tracking
 
@@ -109,3 +109,8 @@ Recorded here so no task has to rediscover them; each card repeats the subset it
 ## Changing this plan
 
 Add a card in Notion (next Task Order), link its dependencies, and add a row here in the same pull request. Removing or re-scoping a card: update the card, this file, and `design/decisions.md` if the change touches the rendering contract.
+
+
+## T21 selected path — 2026-10-09
+
+Jeremy selected Google Cloud Scheduler after the complete-week investigation. Two HTTP jobs replace the unreliable GitHub scheduling trigger while retaining renderer/Pages and GitHub cron fallback. Read `t21-reliability.md` for the measured evidence and exact activation steps. T21 is In progress until credentials, reviewed merge, actual activation and a week of on-time publications pass. Use GPT-6.1 Sol · High for implementation and independent QA, GPT-6 Luna · High for bounded measurement summaries; current model documentation was fetched 2026-10-09 (see the report). No other card is started by T21.
