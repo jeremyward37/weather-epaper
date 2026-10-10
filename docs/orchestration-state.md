@@ -113,3 +113,26 @@ PR22 merged as28ca02a9e41ffc540438a09dee4abedf5d683a22 after both accepted-head 
 Jeremy requested another check of the spotty updates and a reliable preferably free replacement. This authorizes the separate T21 investigation/preparation run. Branch codex/t21-publish-reliability in the managed t21-publish-reliability worktree, from a0ca889f; Notion In progress. T16 checkout/artifacts/device remain untouched. Full week Oct2–8:245 expected slots,36 scheduled arrivals,29 scheduled deployments,7 successful no-ops;25/245 wakes received a new scheduled deployment in the prior half-hour. Independent t21_qa preparation QA Pass (7 measurement,4 prepublish,360 server tests; all245 slots independently checked and evidence reproduced). PR24 https://github.com/jeremyward37/weather-epaper/pull/24 opened; prepared implementation acb4aeb, CI38002176415 in progress at this record. Evidence summary SHA-256 c81fc5479fd42d0bbdc7c789174f45c3754f304b544be4f539d6ecdb31f0c8a3. Latest PR revision/CI must be verified before authorized merge.
 
 Jeremy selected Google Cloud Scheduler in the async preference reply: ongoing free allowance with billing account required. Prepare two HTTP dispatch jobs and the 04:47 external-dispatch window correction. Google account/billing and scoped PAT require Jeremy; no external job creation, new publication/firmware/DNS change, merge or T21 acceptance has occurred. Exact review/setup/rollback and seven-day evidence requirements are in docs/t21-reliability.md. This is the active T21 preparation gate; earlier T24 completion/approval facts and T16 pending gates remain valid.
+
+
+## T21 merge authorization and completion — 2026-10-09 18:39 MDT
+
+Jeremy replied “Approve and let me know what I need to do” to the request to merge PR24. Accepted head197983206b86d6066351768565072e1fef67c9d0 rechecked unchanged/CLEAN with both required build/firmware checks SUCCESS in CI38002245677. Authorized squash merge completed as4954df5262e0ac2e2a51cb80e3c6fa086c3c8b7e at18:39:34MDT; GitHub reports MERGED. No implementation change after QA/approval. Documentation-only acceptance record is on codex/t21-merge-record. Main-branch CI is a subsequent run and is not implied passed by accepted-head CI.
+
+T21 stays In progress. Remaining gate: Google project/billing/Cloud Scheduler enablement, Jeremy's repository-only Actions-write PAT entered privately into both jobs, activation test, then seven full local days of actual publication-before-wake evidence and final reliability acceptance. No Google jobs created/activated, firmware flash, DNS change or new card started. Setup packet docs/t21-reliability.md now reflects the merged software. Previous T16 physical/acceptance/merge gates remain independent and pending.
+
+
+## Activation and connection verification — 2026-10-09 23:57 MDT
+
+Jeremy completed project/billing/API setup and created the repository-scoped GitHub credential. He privately entered it and submitted both jobs in Arc. The agent did not read or copy the saved Authorization values.
+
+Both jobs in project `weather-epaper`, region `us-central1`, are **Enabled**, with timezone **America/Denver** and the correct GitHub `publish.yml` dispatch target:
+
+| Job | Frequency | Created/last updated, MDT | Next run preview, MDT |
+| --- | --- | --- | --- |
+| `weather-epaper-first-wake` | `47 4 * * *` | 2026-10-09 23:51:24 | 2026-10-10 04:47:02 |
+| `weather-epaper-half-hour` | `17,47 5-21 * * *` | 2026-10-09 23:55:55 | 2026-10-10 05:17:02 |
+
+Force-run connection tests both showed **Success** in Scheduler. The early job's last-run time 23:56:52 MDT corresponds to [workflow_dispatch 38029230652](https://github.com/jeremyward37/weather-epaper/actions/runs/38029230652), created 23:56:53 and completed successfully 23:57:05. The daytime job's 23:57:17 test corresponds to [workflow_dispatch 38029254654](https://github.com/jeremyward37/weather-epaper/actions/runs/38029254654), created 23:57:18 and completed successfully 23:57:28. Both explicitly skipped render/upload/deploy outside the local publish window. This proves credential/dispatch connectivity only, **not a fresh publication**. Next-run previews are observations, not timing guarantees.
+
+First scheduled fresh-publication verification remains pending on 2026-10-10. The earliest possible full observation week is October 10–16 (245 wake opportunities); preserve the actual evidence before any reliability acceptance. T21 remains **In progress**. Existing GitHub cron fallback remains active. No firmware, DNS or design change.

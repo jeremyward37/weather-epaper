@@ -1,5 +1,117 @@
 # Work log
 
+## Session — T21 activation verification and dispatch test
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7
+- **Started / finished:** 2026-10-09 23:56 MDT / 2026-10-09 23:58 MDT
+- **Model:** Current primary runtime; reviewed T21 configuration unchanged.
+- **Branch / PR:** `codex/t21-merge-record` / https://github.com/jeremyward37/weather-epaper/pull/25
+- **Status at end:** In progress
+
+### Result
+Jeremy privately entered credentials and created both approved Scheduler jobs. Verified both Enabled and successfully force-dispatched each to GitHub without reading saved headers.
+
+### Verification
+Arc list shows both Enabled in us-central1, America/Denver; first 47 4 * * * next 2026-10-10 04:47 MDT; daytime 17,47 5-21 * * * next 2026-10-10 05:17 MDT. First updated 2026-10-09 23:51:24 MDT, second 23:55:55 MDT; both correct GitHub dispatch URL, Initial read showed neither run yet. Force tests subsequently showed Scheduler Success for both: first last run 23:56:52 MDT → workflow_dispatch38029230652 created23:56:53; daytime23:57:17 → workflow_dispatch38029254654 created23:57:18. gh run view confirms both completed success with render/upload/deploy explicitly skipped overnight. Screenshot /tmp/weather-epaper-scheduler-active.png contains job list, no headers. Fresh publication remains unverified. Independent t21_qa read-only review Pass for connectivity only: both dispatches on merged4954df5 completed success, render/upload/deploy skipped, production publish-window returns false at both test timestamps. Existing code/configuration unchanged.
+
+### Decisions
+Test each Scheduler-to-GitHub dispatch now. After 22:00, expected workflow behavior is successful overnight skip, so this does not establish fresh publication.
+
+### Problems
+Fresh-frame publication and full seven-day reliability evidence remain pending.
+
+### Needs Jeremy
+Observe morning device footer; no token sharing, DNS change or flash needed.
+
+### Next
+Verify dispatch responses and corresponding workflow runs; record live setup and remaining daytime publication/seven-day acceptance criteria. Remain on T21.
+
+---
+
+## Session — T21 daytime scheduler preparation
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7
+- **Started / finished:** 2026-10-09 23:52 MDT / 2026-10-09 23:55 MDT
+- **Model:** Current primary runtime; previously independently reviewed configuration.
+- **Branch / PR:** `codex/t21-merge-record` / https://github.com/jeremyward37/weather-epaper/pull/25
+- **Status at end:** In progress
+
+### Result
+Jeremy privately entered the token and created the first job. Prepared the second unsaved job weather-epaper-half-hour with blank focused Authorization value for Jeremy to enter the same token privately and submit Create.
+
+### Verification
+Scheduler list confirms weather-epaper-first-wake Enabled in us-central1, frequency 47 4 * * *, America/Denver, correct dispatch target, next run 2026-10-10 04:47 MDT, last updated 2026-10-09 23:51:24 MDT; has not run yet. Token not inspected. Second-job UI verified: us-central1, 17,47 5-21 * * *, exact Denver option, correct POST endpoint/main body/public API headers; retries 3, duration 0s, backoff 30s/120s, doublings 2, deadline 30s. Saved blank-token handoff screenshot /tmp/weather-epaper-daytime-handoff.png. No code/frame change or tests required.
+
+### Decisions
+Prepare second job independently to avoid opening/copying the saved private Authorization header.
+
+### Problems
+No execution/publication evidence yet. Current local time is after 22:00.
+
+### Needs Jeremy
+Privately enter token and submit daytime job when preparation is complete.
+
+### Next
+Verify both jobs, test dispatch and actual publication within allowed window, collect seven full local days. Remain on T21.
+
+---
+
+## Session — T21 Google Cloud activation preparation in Arc
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7
+- **Started / finished:** 2026-10-09 23:46 MDT / 2026-10-09 23:51 MDT
+- **Model:** Current primary runtime; existing independently reviewed T21 configuration.
+- **Branch / PR:** `codex/t21-merge-record` / https://github.com/jeremyward37/weather-epaper/pull/25
+- **Status at end:** In progress
+
+### Result
+Prepared the first unsaved job weather-epaper-first-wake in Jeremy's authenticated Arc session. Jeremy reports billing/API setup and scoped GitHub token creation complete and supplied project ID weather-epaper. Authorization value is blank and focused for his private entry and submission. Daytime job remains pending; no jobs created or activated.
+
+### Verification
+Arc displays Cloud Scheduler in project weather-epaper with no existing jobs. Verified first-job fields: us-central1; 47 4 * * *; exact Denver timezone selected; HTTP POST to publish.yml dispatch; main body; Accept/Content-Type/API-version headers; retries 3, duration 0s, backoff 30s/120s, doublings 2, deadline 30s. Blank Authorization field screenshot saved /tmp/weather-epaper-scheduler-handoff.png. No token read or recorded. Activation and end-to-end publication remain unverified; no software/frame changes or tests needed.
+
+### Decisions
+Use existing Arc session at Jeremy's request after the Codex browser sign-in failed. Jeremy privately enters the token in Google Cloud. Keep the reviewed schedules and fallback unchanged.
+
+### Problems
+Codex browser was not authenticated. Native Arc initially omitted page accessibility; raising its window exposed page controls.
+
+### Needs Jeremy
+Privately enter GitHub token in Google's Authorization header and submit the prepared job. Full publication test must occur during allowed local window; current time is after 22:00.
+
+### Next
+Finish job preparation, verify both jobs after private credential entry, then collect seven actual full local days. Remain on T21.
+
+---
+
+## Session — T21 approved merge and activation handoff
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7
+- **Started / finished:** 2026-10-09 18:39 MDT / 2026-10-09 18:40 MDT
+- **Model:** Current primary runtime; implementation unchanged from independent QA.
+- **Branch / PR:** `codex/t21-merge-record` / merged implementation https://github.com/jeremyward37/weather-epaper/pull/24; documentation https://github.com/jeremyward37/weather-epaper/pull/25
+- **Status at end:** In progress
+
+### Result
+Jeremy replied “Approve and let me know what I need to do”, authorizing merge of the presented PR24. Accepted head 197983206b86d6066351768565072e1fef67c9d0 rechecked unchanged and mergeable CLEAN with required build/firmware SUCCESS in CI38002245677. PR24 squash-merged at 2026-10-09 18:39:34 MDT as 4954df5262e0ac2e2a51cb80e3c6fa086c3c8b7e. The external-dispatch prepublish correction is now on main; no Google jobs are active yet.
+
+### Verification
+Exact-head GitHub PR/CI readback passed; post-action readback confirms state MERGED, accepted head and merge commit; checkout was clean before this append. Prior independent preparation QA remains bound to unchanged code/evidence; no implementation changes in this resumed run. Independent t21_qa reviewed the four-file documentation record and confirmed consistency and exact merged-tree identity with approved1979832; Pass, no defects or tests rerun.
+
+### Decisions
+Execute the authorized PR24 merge. Keep T21 In progress until external activation and seven actual post-change days pass; credential creation remains Jeremy's.
+
+### Problems
+No configured Google Cloud CLI/connector or scoped scheduler credential is available for activation.
+
+### Needs Jeremy
+Create/select Google Cloud project with billing, enable Cloud Scheduler, create weather-epaper-only Actions-write fine-grained GitHub PAT and privately enter it in the two scheduled jobs. Exact setup is in docs/t21-reliability.md; do not paste tokens into chat. No DNS or device flash needed.
+
+### Next
+Provide the exact account/credential/job setup; the implementation merge gate is satisfied. Remain on T21; no other card started.
+
+---
+
 ## Session — T21 Scheduled publishing reliability investigation
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7
