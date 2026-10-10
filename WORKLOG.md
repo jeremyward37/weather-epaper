@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T21 Google Cloud activation preparation in Arc
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7
+- **Started / finished:** 2026-10-09 23:46 MDT / 2026-10-09 23:51 MDT
+- **Model:** Current primary runtime; existing independently reviewed T21 configuration.
+- **Branch / PR:** `codex/t21-merge-record` / https://github.com/jeremyward37/weather-epaper/pull/25
+- **Status at end:** In progress
+
+### Result
+Prepared the first unsaved job weather-epaper-first-wake in Jeremy's authenticated Arc session. Jeremy reports billing/API setup and scoped GitHub token creation complete and supplied project ID weather-epaper. Authorization value is blank and focused for his private entry and submission. Daytime job remains pending; no jobs created or activated.
+
+### Verification
+Arc displays Cloud Scheduler in project weather-epaper with no existing jobs. Verified first-job fields: us-central1; 47 4 * * *; exact Denver timezone selected; HTTP POST to publish.yml dispatch; main body; Accept/Content-Type/API-version headers; retries 3, duration 0s, backoff 30s/120s, doublings 2, deadline 30s. Blank Authorization field screenshot saved /tmp/weather-epaper-scheduler-handoff.png. No token read or recorded. Activation and end-to-end publication remain unverified; no software/frame changes or tests needed.
+
+### Decisions
+Use existing Arc session at Jeremy's request after the Codex browser sign-in failed. Jeremy privately enters the token in Google Cloud. Keep the reviewed schedules and fallback unchanged.
+
+### Problems
+Codex browser was not authenticated. Native Arc initially omitted page accessibility; raising its window exposed page controls.
+
+### Needs Jeremy
+Privately enter GitHub token in Google's Authorization header and submit the prepared job. Full publication test must occur during allowed local window; current time is after 22:00.
+
+### Next
+Finish job preparation, verify both jobs after private credential entry, then collect seven actual full local days. Remain on T21.
+
+---
+
 ## Session — T21 approved merge and activation handoff
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7
