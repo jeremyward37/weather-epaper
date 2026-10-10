@@ -1,6 +1,6 @@
 # T21 — publishing reliability and Google Cloud Scheduler
 
-Investigated 2026-10-09; production base `a0ca889f`. Jeremy selected Google Cloud Scheduler in this chat on 2026-10-09. This is the proposed delivery and activation packet; the external jobs are not active yet.
+Investigated 2026-10-09; production base `a0ca889f`. Jeremy selected Google Cloud Scheduler in this chat on 2026-10-09. Jeremy approved PR24, merged 2026-10-09 at 18:39 MDT as `4954df5262e0ac2e2a51cb80e3c6fa086c3c8b7e`; both required checks passed on accepted head `1979832`. The software preparation is merged; external jobs are not active yet.
 
 ## Finding
 
@@ -44,15 +44,15 @@ Sources checked 2026-10-09: [Scheduler pricing](https://cloud.google.com/schedul
 
 Once a run arrived, the measured p95 to publication was 9.9 minutes, but one took 21.75 minutes. The 13-minute lead therefore still needs actual post-change verification. Google documents at-least-once delivery and configurable retries; this is a stronger scheduling contract than the current trigger, not a guarantee that GitHub's runner, NWS or Pages always completes before a wake. A successful dispatch acknowledgement means accepted work, not a fresh deployed frame. We will assess actual deployment and served metadata for seven complete days before T21 can be Done. Existing GitHub cron stays as fallback during the trial. Duplicate dispatches can create redundant renders; the existing Pages concurrency group serializes publication. No DNS change or firmware flash is needed for this selected path.
 
-## Proposed software correction
+## Merged software correction
 
-`server/bin/publish-window.js` must admit `workflow_dispatch` at 04:47–04:59 as well as `schedule`, so Google's early job can prepare the 05:00 wake. Preserve overnight skipping and the schedule-only grace period after 22:00. Tests cover the boundary and Mountain summer/winter/DST. This correction alone does not activate the scheduler and does not change frame layout or files served to the board.
+`server/bin/publish-window.js` now admits `workflow_dispatch` at 04:47–04:59 as well as `schedule`, so Google's early job can prepare the 05:00 wake. Preserve overnight skipping and the schedule-only grace period after 22:00. Tests cover the boundary and Mountain summer/winter/DST. This correction alone does not activate the scheduler and does not change frame layout or files served to the board.
 
 ## Needs Jeremy — credentials and activation
 
 The card requires Jeremy to create credentials. No Google Cloud CLI/session is available in this environment. Do not paste tokens into chat, Git, screenshots or logs.
 
-1. Review/authorize merging the T21 PR once both required CI jobs are green. The 04:47 dispatch correction must be on `main` before activation. The current publisher continues meanwhile.
+1. Complete: Jeremy authorized PR24 merge and it is on `main` with green required checks on the accepted revision. The current publisher continues while the external jobs are prepared.
 2. Sign in to [Google Cloud Console](https://console.cloud.google.com/), choose/create a project and attach a billing account. Confirm fewer than two of the three free Scheduler job slots are already used across that billing account; otherwise the additional job charge is $0.10/month each. Enable Cloud Scheduler. A budget alert may be added; it is an alert, not a hard spending cap.
 3. Create a fine-grained GitHub PAT owned by `jeremyward37`, selected repository **weather-epaper only**, repository permission **Actions: Read and write**, with an explicit expiration you will renew. Store it in a password manager and in the Scheduler Authorization header. Restrict who can view/edit Scheduler jobs because the stored header contains this credential. Google's OIDC service-account token is not a GitHub PAT substitute. GitHub's [dispatch endpoint](https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event) documents the required permission.
 4. In Cloud Scheduler, create two HTTP jobs in `us-central1`, both timezone **America/Denver**:
@@ -88,14 +88,14 @@ Current [OpenAI model documentation](https://learn.chatgpt.com/docs/models) was 
 | --- | --- |
 | Full-week missing slots, starts and deployment before wakes measured | Measurement/tool/evidence in this PR; independent QA Pass |
 | Decision recorded | Jeremy selected Google Cloud Scheduler on 2026-10-09 |
-| Readiness fix verified | Four local boundary tests pass, independent QA Pass; required CI pending |
+| Readiness fix verified | Four local boundary tests and independent QA Pass; accepted-head required CI build/firmware SUCCESS |
 | External trigger implemented/live | Pending Jeremy credentials and activation |
 | Week of post-change on-time publications | Pending, cannot be simulated or inferred from local tests |
-| Required CI / acceptance / merge | PR CI, Jeremy review and authorized merge pending |
+| Required CI / acceptance / merge | Accepted-head CI SUCCESS, Jeremy approved and PR24 merged; activation/trial acceptance pending |
 
 T21 stays **In progress**. T16's hardware/merge criteria remain pending independently; this packet does not claim a device test or start another card.
 
 
 ## Independent preparation QA
 
-Separate `t21_qa` agent reviewed the completed preparation. Seven measurement tests, four prepublish tests and the complete 360-test server suite passed with bundled Node24/Python. QA reproduced all three evidence files byte for byte and independently recalculated every one of the 245 slots. Pricing conditions, scoped-PAT/API configuration, retries and local/DST schedules match official documentation. No blocking preparation defects found. Activation, seven actual post-change days, required CI and Jeremy acceptance/merge remain pending; this is not a production reliability verdict.
+Separate `t21_qa` agent reviewed the completed preparation. Seven measurement tests, four prepublish tests and the complete 360-test server suite passed with bundled Node24/Python. QA reproduced all three evidence files byte for byte and independently recalculated every one of the 245 slots. Pricing conditions, scoped-PAT/API configuration, retries and local/DST schedules match official documentation. No blocking preparation defects found. Accepted-head CI and authorized merge completed. Activation, seven actual post-change days and final reliability acceptance remain pending; this is not a production reliability verdict.

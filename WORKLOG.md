@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T21 approved merge and activation handoff
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7
+- **Started / finished:** 2026-10-09 18:39 MDT / 2026-10-09 18:40 MDT
+- **Model:** Current primary runtime; implementation unchanged from independent QA.
+- **Branch / PR:** `codex/t21-merge-record` / implementation https://github.com/jeremyward37/weather-epaper/pull/24; documentation PR pending
+- **Status at end:** In progress
+
+### Result
+Jeremy replied “Approve and let me know what I need to do”, authorizing merge of the presented PR24. Accepted head 197983206b86d6066351768565072e1fef67c9d0 rechecked unchanged and mergeable CLEAN with required build/firmware SUCCESS in CI38002245677. PR24 squash-merged at 2026-10-09 18:39:34 MDT as 4954df5262e0ac2e2a51cb80e3c6fa086c3c8b7e. The external-dispatch prepublish correction is now on main; no Google jobs are active yet.
+
+### Verification
+Exact-head GitHub PR/CI readback passed; post-action readback confirms state MERGED, accepted head and merge commit; checkout was clean before this append. Prior independent preparation QA remains bound to unchanged code/evidence; no implementation changes in this resumed run.
+
+### Decisions
+Execute the authorized PR24 merge. Keep T21 In progress until external activation and seven actual post-change days pass; credential creation remains Jeremy's.
+
+### Problems
+No configured Google Cloud CLI/connector or scoped scheduler credential is available for activation.
+
+### Needs Jeremy
+Create/select Google Cloud project with billing, enable Cloud Scheduler, create weather-epaper-only Actions-write fine-grained GitHub PAT and privately enter it in the two scheduled jobs. Exact setup is in docs/t21-reliability.md; do not paste tokens into chat. No DNS or device flash needed.
+
+### Next
+Provide the exact account/credential/job setup; the implementation merge gate is satisfied. Remain on T21; no other card started.
+
+---
+
 ## Session — T21 Scheduled publishing reliability investigation
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7
