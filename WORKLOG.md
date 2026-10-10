@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T21 daytime scheduler preparation
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7
+- **Started / finished:** 2026-10-09 23:52 MDT / 2026-10-09 23:55 MDT
+- **Model:** Current primary runtime; previously independently reviewed configuration.
+- **Branch / PR:** `codex/t21-merge-record` / https://github.com/jeremyward37/weather-epaper/pull/25
+- **Status at end:** In progress
+
+### Result
+Jeremy privately entered the token and created the first job. Prepared the second unsaved job weather-epaper-half-hour with blank focused Authorization value for Jeremy to enter the same token privately and submit Create.
+
+### Verification
+Scheduler list confirms weather-epaper-first-wake Enabled in us-central1, frequency 47 4 * * *, America/Denver, correct dispatch target, next run 2026-10-10 04:47 MDT, last updated 2026-10-09 23:51:24 MDT; has not run yet. Token not inspected. Second-job UI verified: us-central1, 17,47 5-21 * * *, exact Denver option, correct POST endpoint/main body/public API headers; retries 3, duration 0s, backoff 30s/120s, doublings 2, deadline 30s. Saved blank-token handoff screenshot /tmp/weather-epaper-daytime-handoff.png. No code/frame change or tests required.
+
+### Decisions
+Prepare second job independently to avoid opening/copying the saved private Authorization header.
+
+### Problems
+No execution/publication evidence yet. Current local time is after 22:00.
+
+### Needs Jeremy
+Privately enter token and submit daytime job when preparation is complete.
+
+### Next
+Verify both jobs, test dispatch and actual publication within allowed window, collect seven full local days. Remain on T21.
+
+---
+
 ## Session — T21 Google Cloud activation preparation in Arc
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7
