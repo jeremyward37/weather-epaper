@@ -28,6 +28,14 @@ Jeremy confirmed the first no-flash BOOT press was USB-connected, then repeated 
 
 Jeremy reports “yes wifi screen showed up” in response to the unplugged five-second BOOT reset/setup check. Setup-screen appearance is observed; actual hold time, persisted erase, portal operation and recovery are unverified. Private phone re-provisioning instructions sent; awaiting whether weather returns. No home credentials requested/recorded, USB capture, new source/frame/artifact or agent device operation. This supersedes “awaiting reset/setup”; subsequent genuine short press, deferred Wi-Fi failure/recovery, full-hour trace and final acceptance remain Pending.
 
+### Weather restored after private setup — 2026-10-19 21:39 MDT
+
+Jeremy replied “worked as you described” to the USB-unplugged phone re-provisioning/weather-return prompt. Functional weather recovery is user-confirmed; no exact transition/footer, trace or persistent credential readback supplied. Awaiting one subsequent genuine brief BOOT press and panel/footer observation. Earlier “awaiting weather return” superseded; full-hour trace, deferred outage/recovery, final independent reconciliation and acceptance/authorized merge remain Pending. No credentials, source/frame/artifact change, capture or device action by the agent.
+
+### Latest evening handoff — 2026-10-19
+
+After weather recovery, Jeremy reports “no flash, change or timestamp adjustment noted” for the subsequent genuine short BOOT/weather-retention prompt; no setup return reported. Visible button/setup sequence recorded, without inferring a successful fetch/SHA skip. No further button repetition requested. Still Pending: original complete production-hour trace, explicitly deferred Wi-Fi outage/recovery, final independent reconciliation and Jeremy acceptance/authorized merge. No three-slot window remains before tonight's22:00 cutoff. Next capture needs a fresh70-minute active-window run with USB/Mac awake, clearly labeled USB-connected rather than battery-only. No observer, automation, new firmware, hosting change or later-card start.
+
 ## Historical T16 handoff — 2026-10-07
 
 - **Updated:** 2026-10-07 21:07 MDT

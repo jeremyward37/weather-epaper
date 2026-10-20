@@ -80,6 +80,14 @@ Jeremy answered the unplugged five-second BOOT reset/setup prompt: “yes wifi s
 
 For trace-backed rows also preserve: source/app identity verification status, host timestamp, wake cause, `target_epoch` and local conversion, join duration/outcome, NTP outcome, fetch duration/outcome, display/SHA outcome, sleep seconds/next target and capture gaps. Keep generic application logs sanitized. Record the precise start/end of each battery-only and USB-connected interval.
 
+### Re-provision/weather recovery report — 2026-10-19
+
+Jeremy answered the unplugged phone re-provisioning/weather-return prompt “worked as you described”. Record functional setup-to-weather recovery as user-confirmed, received21:39MDT; exact transition time and footer were not supplied. No private credentials, serial trace or persistent-erase/readback evidence supplied. Subsequent genuine short BOOT observation requested; full reset/re-provision/button reconciliation and original full-hour/outage gates remain open.
+
+### Subsequent short BOOT report — 2026-10-19
+
+After confirming weather recovery, Jeremy answered the subsequent genuine short BOOT/weather-retention prompt “no flash, change or timestamp adjustment noted”. No return to setup reported. Exact footer value, press/observation times and a serial trace were not supplied. This completes the user-reported visible sequence for this round; it does not prove a successful fetch or SHA skip, full-hour timing, persistent-erase readback or deferred network-failure/recovery. No further button repetition requested now. At the late-evening handoff, no three-slot production window remains before22:00; collect a fresh70-minute serial run during a later active window, with ordinary USB-connected power labeled separately.
+
 ## Known passes and pending gates before these checks
 
 | Item | Evidence/status entering this run |

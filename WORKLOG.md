@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T16 re-provisioning restored weather
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
+- **Started / finished:** 2026-10-19 21:39 MDT / 2026-10-19 21:41 MDT (visible sequence recorded; trace/outage gates pending)
+- **Model:** Primary runtime (identifier unavailable); existing independent T16 QA for evidence reconciliation.
+- **Branch / PR:** codex/t16-battery-validation / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress
+
+### Result
+Jeremy replied “worked as you described” to the phone/private Wi-Fi re-provisioning and weather-return check with USB unplugged. Record the setup-to-weather recovery as user-confirmed. Asked for one subsequent genuine brief BOOT press and whether weather stays visible without returning to setup, including any flash/change/footer, he replied “no flash, change or timestamp adjustment noted”. No setup return reported. No credentials requested or recorded.
+
+### Verification
+User-confirmed functional setup/re-provision/weather-return flow and unchanged panel after subsequent brief BOOT prompt. Actual timing, fetched bytes, saved-credential persistence across a later power cycle and wake cause are not independently measured. No new footer value, photo or serial trace supplied. git diff --check and documentation-only source invariant Pass; independent t16_battery_qa evidence reconciliation Pass, preserving visual/trace/power distinctions and remaining physical gates. No build or device operation by the agent. No successful-fetch or SHA-skip claim inferred from no flash.
+
+### Decisions
+Preserve the reported visible reset/setup/weather recovery and subsequent short-press result separately from trace-backed firmware outcomes. T16 stays In progress; no source/frame/artifact, hosting, merge or later-card change. At the evening handoff there is no complete three-slot production window left before22:00; plan a fresh70-minute USB-connected capture during a later active window, clearly separate from battery-only observations.
+
+### Problems
+None reported in private re-provisioning or weather recovery.
+
+### Needs Jeremy
+No further button repetition requested now. A complete production-hour capture needs Jeremy to connect USB and leave the Mac awake, with three consecutive targets30minutes apart inside05:00–22:00, starting five minutes before the first and ending five after the third. Ordinary USB changes power/charging; label it as a separate run. Wi-Fi outage/recovery remains deferred until it will not disrupt others.
+
+### Next
+Arrange complete production-hour trace and the Wi-Fi loss/recovery test when feasible, then final independent reconciliation and Jeremy acceptance/authorized merge. Existing outage deferral stands; no precise battery runtime or calibrated-voltage claim. No serial observer or automation is running.
+
+---
+
 ## Session — T16 long BOOT reached setup
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
