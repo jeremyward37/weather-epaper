@@ -16,6 +16,10 @@ Jeremy requested the remaining firmware checks while running on battery and agai
 - **Authorization:** Jeremy's request covers continuing existing firmware checks. It does not authorize a new firmware image, merge, deployment, next-card start or claiming pending physical criteria passed.
 - **Independent preparation QA:** t16_battery_qa (GPT-6.1 Sol · High), source/procedure review and git diff --check Pass. No new physical observations or full-hour trace returned. First USER observation requested; waiting for Jeremy. Final documentation-head CI must be read after publication; prior93acc72 checks are green.
 
+### USER report received — 2026-10-19 21:01 MDT
+
+Jeremy reports a USER press caused no flash or visible change; footer8:47PM before and after. The prompt requested battery-only operation away from scheduled updates; actual press time, press/observation duration and schedule offset are unknown. This is expected visual behavior, not traced proof of no wake. It supersedes the earlier “first USER observation requested” waiting state. Independent t16_battery_qa evidence review and git diff --check Pass. Short BOOT observation requested next with USB unplugged and Wi-Fi available; full-hour trace, offline/recovery, long-reset/private provisioning and final acceptance remain Pending. No serial capture or agent device operation.
+
 ## Historical T16 handoff — 2026-10-07
 
 - **Updated:** 2026-10-07 21:07 MDT

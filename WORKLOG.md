@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T16 USER observation on battery
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
+- **Started / finished:** 2026-10-19 21:01 MDT / 2026-10-19 21:02 MDT (observation recorded; next physical check pending)
+- **Model:** Primary runtime (identifier unavailable); existing independent T16 QA requested for evidence reconciliation.
+- **Branch / PR:** codex/t16-battery-validation / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress
+
+### Result
+Jeremy answered the battery-only USER check: “pressed it and nothing happened. Time stamp says 8:47pm and did before. No flash”. Added this exact reported observation to docs/t16-battery-checks.md and the current handoff. Requested the next brief BOOT observation with USB unplugged and Wi-Fi available.
+
+### Verification
+USER visual result matches the expected no visible response: footer8:47PM before/after, no flash. Exact press time, press/observation duration and offset from a scheduled wake were not supplied. The prompt requested USB unplugged and a quiet interval; no serial capture, wake cause or current was measured. No USER no-wake or complete physical acceptance pass inferred. git diff --check Pass; independent t16_battery_qa evidence reconciliation Pass, with wording corrected to avoid assuming press duration. No builds rerun for observation-only documentation.
+
+### Decisions
+Preserve this as reported visual evidence. Do not substitute the rendered footer time for the actual press time, or combine it with old partial timer logs to claim a full-hour pass. No firmware/source/frame or hardware change by the agent.
+
+### Problems
+None reported for the USER press; evidence remains limited to Jeremy's observation.
+
+### Needs Jeremy
+Brief BOOT press/release (about0.5seconds) with USB unplugged and Wi-Fi available, away from a scheduled wake; observe for up to one minute and report flicker/change/footer. Do not hold for five seconds during this check. Identical bytes can correctly cause no redraw, so an unchanged screen alone cannot prove a successful fetch or failed button.
+
+### Next
+Continue T16 Wi-Fi loss/recovery and final deliberate reset/private provisioning after this observation. Full-hour trace and independent final reconciliation, acceptance and authorized merge remain pending. No later card started.
+
+---
+
 ## Session — T16 resume physical checks on battery
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03

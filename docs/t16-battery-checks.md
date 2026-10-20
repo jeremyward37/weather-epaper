@@ -56,6 +56,10 @@ Stop acceptance and report the exact observation if the panel is cropped/inverte
 
 ## Observation record
 
+### Reported USER result — 2026-10-19
+
+Jeremy replied to the battery-only USER prompt: “pressed it and nothing happened. Time stamp says 8:47pm and did before. No flash”. Footer8:47PM before and after; no visible response or flicker reported. This matches the expected visual result. The prompt requested USB unplugged and an interval away from scheduled updates, but the exact press time, duration of observation and schedule offset were not supplied. Recorded at21:01MDT; this is the report-receipt time, not the press time. No serial trace was collected, so USER no-wake remains unproven and no complete physical gate is closed. Next: short BOOT observation.
+
 Use one row per action/target. Times below are actual observations, never copied from the footer. Mark unknown values explicitly.
 
 | Local date/time + zone | Action / nominal target | Footer before | Footer after | Flicker / panel result + observed time | Power (USB/pack; changes) | Network off/on times and availability | Photo/video/trace reference; limitation |
