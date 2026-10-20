@@ -2,6 +2,22 @@
 
 This is the durable handoff ledger; update it with each run and approval. WORKLOG remains the append-only session history; Notion cards hold acceptance/status. Never store secrets.
 
+## Current T16 resume — 2026-10-19
+
+Jeremy requested the remaining firmware checks while running on battery and again confirmed no multimeter is available. This resumes T16 only. Status remains In progress; T17 calibration and T19 formal battery-life measurement have not started.
+
+- **Working branch / checkout:** codex/t16-battery-validation / /private/tmp/weather-epaper-t16-battery-validation, from existing PR21 head93acc72. Canonical checkout's user .gitignore edit and original T16 checkout preserved.
+- **GitHub reconciliation:** PR21 OPEN at93acc72bcff6e91ca9e26a2c8b664c1205d15aa2; build and firmware SUCCESS in run37721329785, read2026-10-19. Documentation-only resumption; no source, approved frame, artifact, publisher or device change.
+- **Power evidence:** Jeremy reports installed Easylander630,3.7V,600mAh,2.2Wh, charged about10hours until red changed to green. He reports a subsequent weather update with USB unplugged. Exact charge/unplug/update times, voltage and current were not supplied; do not infer precise charge percentage or life.
+- **Installed artifact:** last verified source3fc1e59/app4d9e35cf from2026-10-07; not read back from the device during this session. No USB port opened, capture started or new upload performed.
+- **Current gate:** collect USER/BOOT and coordinated offline/recovery panel observations on battery using docs/t16-battery-checks.md. Deliberate long BOOT reset requires private Wi-Fi re-provisioning; do it last. Full-hour production timer-cause/target evidence remains pending; battery-only photos/timestamps alone do not replace that trace. A normal USB serial connection changes the supply/charging conditions.
+- **Meter limitation:** the existing documented-reason alternative for T16 is satisfied. Do not repeat the request for a meter. T17 thresholds and ADC calibration remain provisional.
+- **Cross-card reconciliation:** later accepted main records T24 completed and published; earlier T24-deferred references below are historical. Preserve that accepted LO/HI baseline during any eventual T16 merge. No other card is started or changed by this run.
+- **Authorization:** Jeremy's request covers continuing existing firmware checks. It does not authorize a new firmware image, merge, deployment, next-card start or claiming pending physical criteria passed.
+- **Independent preparation QA:** t16_battery_qa (GPT-6.1 Sol · High), source/procedure review and git diff --check Pass. No new physical observations or full-hour trace returned. First USER observation requested; waiting for Jeremy. Final documentation-head CI must be read after publication; prior93acc72 checks are green.
+
+## Historical T16 handoff — 2026-10-07
+
 - **Updated:** 2026-10-07 21:07 MDT
 - **Active card:** T16 wake, sync time, fetch frame, display and deep sleep
 - **Stage:** Corrected production approved and uploaded after green CI. Actual startup/SHA save, brief BOOT no-redraw and first corrected TIMER cycle Pass in independent partial QA. Previous observer is no longer running; partial log contains17:30 and18:00 TIMER cycles, with no18:30 record; full-hour/offline/remaining button and acceptance/merge gates pending; photographed visual fidelity Pass.

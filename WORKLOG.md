@@ -1,5 +1,36 @@
 # Work log
 
+## Session — T16 resume physical checks on battery
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
+- **Started / finished:** 2026-10-19 20:22 MDT / 2026-10-19 20:26 MDT (procedure ready; awaiting physical observation)
+- **Model:** Primary runtime (model identifier unavailable); procedure implementer and independent QA GPT-6.1 Sol · High, verified available in current collaboration runtime.
+- **Branch / PR:** codex/t16-battery-validation, based on PR21 head93acc72 / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress
+
+### Result
+Resumed T16 at Jeremy's request while the device operates from its installed battery. Added docs/t16-battery-checks.md with staged USER/short BOOT, coordinated Wi-Fi failure/recovery, three production slots and deliberate last reset/private re-provision checks, an observation template and Pass/Pending table. Opened the handoff state and matching Notion notes. Requested the first USER observation with USB unplugged; no answer received before this handoff. No firmware change or new flash.
+
+### Verification
+GitHub readback: PR21 OPEN at93acc72bcff6e91ca9e26a2c8b664c1205d15aa2; build and firmware SUCCESS in run37721329785. git diff --check Pass. Independent t16_battery_qa (GPT-6.1 Sol · High) source/procedure review Pass: USER/ext0 BOOT, bounded join, outage timing/retention/recovery, sampled reset/private provisioning and all evidence limitations match deployed source. No builds rerun for this documentation-only change; no source/frame/artifact edits. New documentation-head CI readback is recorded on Notion/GitHub after publication. No new physical check is marked passed.
+
+### Decisions
+- Jeremy explicitly requested the remaining firmware checks while running on battery. This resumes T16, without starting T17 or T19.
+- Jeremy reports Easylander630,3.7V,600mAh,2.2Wh installed, charged for about10hours until the indicator changed red to green, and a later weather update with USB unplugged. These are user reports, not calibrated voltage/current or a timer trace. Exact charge/unplug/update times were not supplied.
+- No suitable multimeter remains available. T16's existing documented-reason alternative remains satisfied; T17 voltage calibration and thresholds remain provisional.
+- Keep USB disconnected for the requested battery-only observations. Full-hour timer-cause traces, join timing and sleep cannot be established from an unchanged image alone.
+
+### Problems
+Canonical checkout is still the design baseline with a user .gitignore modification. Preserve it; use an isolated worktree from the existing T16 PR. The initial sandboxed GitHub read failed; approved network readback succeeded. No device port opened or serial capture started.
+
+### Needs Jeremy
+First: at a quiet point at least five minutes before a scheduled target, note the footer, briefly press/release USER and watch for one minute; report timestamp and whether it flashes or changes. Keep USB unplugged. Then short BOOT and coordinated Wi-Fi loss/recovery; deliberate long BOOT last, with private credentials ready. No suitable meter is requested again. Full-hour actual TIMER/target/fetch/SHA/sleep trace remains pending; ordinary USB capture must be labeled as a different power condition. No observer or automation is running.
+
+### Next
+Finish only T16 physical evidence and independent reconciliation. Record T17 pack details/calibration in that later card when it is started; no precise capacity-derived runtime claim without current measurements.
+
+---
+
 ## Session — T16 evening photo and capture reconciliation
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
