@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T16 long BOOT reached setup
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
+- **Started / finished:** 2026-10-19 21:36 MDT / 2026-10-19 21:36 MDT (setup observed; private re-provisioning pending)
+- **Model:** Primary runtime (identifier unavailable); existing independent T16 QA for evidence reconciliation.
+- **Branch / PR:** codex/t16-battery-validation / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress
+
+### Result
+In reply to the unplugged five-second BOOT reset/setup check, Jeremy reported “yes wifi screen showed up”. Record the expected setup-screen transition as observed. Sent the existing phone/setup-network instructions for private re-provisioning and asked whether weather returns after save. No home Wi-Fi credentials requested or recorded.
+
+### Verification
+Reported setup appearance matches the deliberate reset UI. Actual hold duration, transition time, persisted credential erasure, portal operation and successful weather recovery are not independently observed. No photo, serial trace or device-byte readback. git diff --check Pass; independent t16_battery_qa evidence reconciliation Pass with all physical limits preserved. No source/frame change or build required.
+
+### Decisions
+Keep the full reset/re-provision/subsequent-short-press check Pending until remaining evidence returns. USB-unplugged condition was requested and previously confirmed for the repeated short press; no intervening power change reported. Do not infer full-hour coverage or continuous battery runtime. Wi-Fi outage/recovery remains explicitly deferred.
+
+### Problems
+None reported for the long-press setup transition.
+
+### Needs Jeremy
+Keep USB unplugged. Join the displayed setup network from a phone, use the public setup instructions, open 192.168.4.1 if necessary, select home Wi-Fi and enter its credentials privately. Report whether weather returns after saving. Never send home Wi-Fi credentials to the agent. Subsequent genuine short BOOT check follows recovery.
+
+### Next
+Reconcile re-provision/weather recovery and subsequent short press, then collect a fresh complete production-hour trace when feasible. Wi-Fi failure/recovery, independent final reconciliation and acceptance/authorized merge remain Pending; no later card started.
+
+---
+
 ## Session — T16 BOOT observations and deferred Wi-Fi outage
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03

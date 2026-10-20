@@ -70,6 +70,10 @@ Asked to unplug and repeat, Jeremy replied “okay unplugged this time and press
 
 Jeremy chose to defer the saved-Wi-Fi-unavailable test because it would disrupt others. Failure/recovery stays Pending, without waiver. Next: deliberate five-second BOOT reset/private setup flow with the home Wi-Fi password ready, then weather recovery and a subsequent genuine short press. No new firmware, USB capture or device operation by the agent.
 
+### Long BOOT setup report — 2026-10-19
+
+Jeremy answered the unplugged five-second BOOT reset/setup prompt: “yes wifi screen showed up”. Expected setup transition observed by the user; report received21:36MDT, not the measured transition time. Actual hold duration and persisted credential erasure are unverified. Phone re-provisioning instructions sent; actual portal operation, weather recovery and subsequent genuine short press remain Pending. No private credentials, photo or serial trace supplied, and no new hardware/firmware/hosting operation by the agent. Wi-Fi outage/recovery remains deferred.
+
 | Local date/time + zone | Action / nominal target | Footer before | Footer after | Flicker / panel result + observed time | Power (USB/pack; changes) | Network off/on times and availability | Photo/video/trace reference; limitation |
 |---|---|---|---|---|---|---|---|
 | | | | | | | | |

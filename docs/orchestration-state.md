@@ -24,6 +24,10 @@ Jeremy reports a USER press caused no flash or visible change; footer8:47PM befo
 
 Jeremy confirmed the first no-flash BOOT press was USB-connected, then repeated with USB explicitly unplugged and again reported no flash/change. New footer/press times and traces not supplied. Earlier USER power arrangement remains unconfirmed. These are visual reports, not successful-fetch/no-wake or full-hour proof. USB interrupted the battery-only interval; do not claim uninterrupted runtime. Jeremy explicitly deferred the Wi-Fi outage/recovery test because it would disrupt others; keep it Pending. Next is the previously scoped deliberate five-second BOOT reset and private re-provisioning check with home credentials ready. No new flash, serial observer, source/frame change, merge or later-card start. This latest handoff supersedes earlier “awaiting short BOOT” text.
 
+### Setup observed — 2026-10-19 21:36 MDT
+
+Jeremy reports “yes wifi screen showed up” in response to the unplugged five-second BOOT reset/setup check. Setup-screen appearance is observed; actual hold time, persisted erase, portal operation and recovery are unverified. Private phone re-provisioning instructions sent; awaiting whether weather returns. No home credentials requested/recorded, USB capture, new source/frame/artifact or agent device operation. This supersedes “awaiting reset/setup”; subsequent genuine short press, deferred Wi-Fi failure/recovery, full-hour trace and final acceptance remain Pending.
+
 ## Historical T16 handoff — 2026-10-07
 
 - **Updated:** 2026-10-07 21:07 MDT
