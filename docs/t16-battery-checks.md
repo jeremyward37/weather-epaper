@@ -62,6 +62,14 @@ Jeremy replied to the battery-only USER prompt: “pressed it and nothing happen
 
 Use one row per action/target. Times below are actual observations, never copied from the footer. Mark unknown values explicitly.
 
+### BOOT reports and power clarification — 2026-10-19
+
+Jeremy's first short-BOOT report was “no flash or change” plus a Mac accessory-connection prompt. He then confirmed “USB cable was connected”. Label that attempt USB-connected with battery installed, not battery-only. The accessory prompt alone does not establish its cause, a successful fetch or a TIMER/BOOT wake log.
+
+Asked to unplug and repeat, Jeremy replied “okay unplugged this time and pressed and waited. No change or flash”. Record this as an explicitly USB-unplugged BOOT visual observation. Exact press time/duration, footer value and observed duration were not supplied. The earlier USER connection condition was asked about but not answered; retain it as unconfirmed. No-flicker does not prove a successful identical fetch. Ordinary USB interrupted the battery-only interval; do not infer uninterrupted battery runtime.
+
+Jeremy chose to defer the saved-Wi-Fi-unavailable test because it would disrupt others. Failure/recovery stays Pending, without waiver. Next: deliberate five-second BOOT reset/private setup flow with the home Wi-Fi password ready, then weather recovery and a subsequent genuine short press. No new firmware, USB capture or device operation by the agent.
+
 | Local date/time + zone | Action / nominal target | Footer before | Footer after | Flicker / panel result + observed time | Power (USB/pack; changes) | Network off/on times and availability | Photo/video/trace reference; limitation |
 |---|---|---|---|---|---|---|---|
 | | | | | | | | |

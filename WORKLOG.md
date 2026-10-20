@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T16 BOOT observations and deferred Wi-Fi outage
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03
+- **Started / finished:** 2026-10-19 21:04 MDT / 2026-10-19 21:06 MDT (awaiting reset/setup observation)
+- **Model:** Primary runtime (identifier unavailable); existing independent T16 QA for evidence reconciliation.
+- **Branch / PR:** codex/t16-battery-validation / https://github.com/jeremyward37/weather-epaper/pull/21
+- **Status at end:** In progress
+
+### Result
+Jeremy first reported short BOOT caused “no flash or change” and the Mac displayed an accessory-connection prompt. Asked about the connection, he confirmed “USB cable was connected”. After being asked to unplug and repeat he replied “okay unplugged this time and pressed and waited. No change or flash”. First BOOT observation is USB-connected; repeated observation explicitly unplugged. No new footer value, exact press time/duration or serial output was supplied. Earlier USER power connection remains unconfirmed; do not retrospectively assume battery-only.
+
+### Verification
+Both reported BOOT outcomes are visual observations consistent with an identical frame, without proving a successful fetch or wake cause. No trace/current or device-byte readback. git diff --check Pass; independent t16_battery_qa evidence reconciliation Pass, including explicit USB distinction, unknown USER power, no unsupported runtime/wake/fetch claim, and Wi-Fi test Pending. No source/frame change or new build needed.
+
+### Decisions
+Jeremy explicitly deferred making saved Wi-Fi unavailable because it would disrupt others. Wi-Fi outage/recovery remains Pending, not passed, failed or waived. Continue with the existing deliberate reset/private setup test; it affects the device credentials, with the home password ready. Ordinary USB interrupted the battery-only interval; no continuous-runtime claim.
+
+### Problems
+The USB-connected first BOOT attempt did not meet the requested unplugged condition. Repeated unplugged observation recorded separately. A Mac accessory prompt does not prove a weather fetch; its cause was not independently diagnosed.
+
+### Needs Jeremy
+Keep USB unplugged. With private home Wi-Fi credentials ready, hold BOOT continuously at least five seconds and release; bounded work may finish before reset applies. Allow up to one minute and report whether the setup screen appears. Do not press RESET or reconnect power while holding BOOT. Re-provision through WeatherStation-Setup/192.168.4.1 privately, then confirm weather returns and a later genuine short press behaves normally. Wi-Fi outage/recovery can be scheduled when it will not disrupt others; no repeat meter request.
+
+### Next
+Reconcile reset/provisioning observations; full-hour production trace, deferred network-failure/recovery, final independent reconciliation and Jeremy acceptance/authorized merge remain pending. T16 stays In progress; no later card started.
+
+---
+
 ## Session — T16 USER observation on battery
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad8159a797d88686a8ee03

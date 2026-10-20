@@ -20,6 +20,10 @@ Jeremy requested the remaining firmware checks while running on battery and agai
 
 Jeremy reports a USER press caused no flash or visible change; footer8:47PM before and after. The prompt requested battery-only operation away from scheduled updates; actual press time, press/observation duration and schedule offset are unknown. This is expected visual behavior, not traced proof of no wake. It supersedes the earlier “first USER observation requested” waiting state. Independent t16_battery_qa evidence review and git diff --check Pass. Short BOOT observation requested next with USB unplugged and Wi-Fi available; full-hour trace, offline/recovery, long-reset/private provisioning and final acceptance remain Pending. No serial capture or agent device operation.
 
+### Latest T16 physical handoff — 2026-10-19 21:06 MDT
+
+Jeremy confirmed the first no-flash BOOT press was USB-connected, then repeated with USB explicitly unplugged and again reported no flash/change. New footer/press times and traces not supplied. Earlier USER power arrangement remains unconfirmed. These are visual reports, not successful-fetch/no-wake or full-hour proof. USB interrupted the battery-only interval; do not claim uninterrupted runtime. Jeremy explicitly deferred the Wi-Fi outage/recovery test because it would disrupt others; keep it Pending. Next is the previously scoped deliberate five-second BOOT reset and private re-provisioning check with home credentials ready. No new flash, serial observer, source/frame change, merge or later-card start. This latest handoff supersedes earlier “awaiting short BOOT” text.
+
 ## Historical T16 handoff — 2026-10-07
 
 - **Updated:** 2026-10-07 21:07 MDT
