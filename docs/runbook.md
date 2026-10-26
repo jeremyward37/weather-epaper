@@ -2,8 +2,13 @@
 
 ## Schedule and output
 
-`.github/workflows/publish.yml` runs at 4:47 AM and at :17/:47 from 5 AM
-through 9 PM in `America/Denver`. These 35 runs prepare the 5:00 AM through
+Google Cloud Scheduler dispatches `.github/workflows/publish.yml` on `main`;
+GitHub Actions fetches NWS data, renders, and publishes to GitHub Pages. GitHub
+cron remains fallback. Last verified Enabled on 2026-10-09: project
+`weather-epaper`, region `us-central1`, timezone `America/Denver`, jobs
+`weather-epaper-first-wake` (`47 4 * * *`) and
+`weather-epaper-half-hour` (`17,47 5-21 * * *`). These run at 4:47 AM and
+:17/:47 from 5 AM through 9 PM. These 35 expected publications prepare the 5:00 AM through
 10:00 PM device wakes. GitHub may start a scheduled run late. The job checks
 the local publish window before rendering; a scheduled run may finish shortly
 after 10 PM to serve the last wake. External/manual dispatches are allowed at 4:47–4:59 AM to prepare the first
@@ -53,8 +58,13 @@ Scheduled runs can arrive late or be dropped. Compare run creation times with
 the expected local slots and check `meta.json`. The 2026-10-02–2026-10-08 T21 measurement confirmed only 29 scheduled
 deployments against 245 expected opportunities. Jeremy selected Google Cloud
 Scheduler to trigger `workflow_dispatch`, retaining GitHub cron as fallback.
-The external jobs are **not yet active**. Follow the exact credential, two-job
-setup, rollback and seven-day acceptance procedure in
+Both jobs were activated and last verified Enabled on **2026-10-09**. Their
+force-run tests reached GitHub successfully but skipped overnight publication.
+No live Cloud check was performed in the 2026-10-26 documentation reconciliation.
+The October 11 single-job suggestion has no confirmed application; retain the
+two-job schedule as the last verified configuration. Fresh-publication and
+seven-day reliability acceptance remain unverified; T21 stays In progress.
+Follow the recorded configuration, rollback and remaining acceptance procedure in
 [docs/t21-reliability.md](t21-reliability.md). Keep the scoped PAT in the private
 Scheduler job headers, never in this repository. A successful HTTP dispatch is
 not evidence of a completed publication: verify the deploy job and live metadata.

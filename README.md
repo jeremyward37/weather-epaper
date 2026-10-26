@@ -4,6 +4,8 @@ A 4.2″ black-and-white e-paper display (RockBase NM-EPD-420-BW, 400 × 300 px,
 
 This repository holds the **approved design** (mockups, a pixel-exact handoff spec, and the pipeline that renders and verifies them) and, as development proceeds, the **server** and **firmware** that implement it. Architecture decided 2026-09-25: a **scheduled job renders the frame** with this same pipeline and publishes a raw 1-bit framebuffer to static hosting; the device only downloads and displays it. Weather data comes from the **National Weather Service API**. The development plan is [docs/dev-plan.md](docs/dev-plan.md); progress is logged in [WORKLOG.md](WORKLOG.md).
 
+**Weather publishing, last verified 2026-10-09:** Google Cloud Scheduler triggers the existing GitHub Actions NWS fetch/render workflow on `main`, which publishes to GitHub Pages; GitHub cron remains fallback. The two jobs run at **04:47**, then **:17/:47 from 05–21**, in `America/Denver`, preparing 35 device wakes from 05:00–22:00. T21 remains In progress: activation/dispatch connectivity is recorded, while seven-day publication reliability is unverified. An October 11 single-job suggestion has no confirmed application. See [scope](docs/scope.md#7-refresh-schedule-and-power) and [T21 evidence](docs/t21-reliability.md). Documentation reconciled 2026-10-26; no live Cloud check was performed.
+
 ## Status (as of 2026-10-07)
 
 - **Design approved.** Normal state at checkpoint 2 (concept E3, four fixed 3-hour marks, three days); setup and low-battery screens at checkpoint 3 on 2026-09-25. Physical legibility verified by Jeremy the same day.

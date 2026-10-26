@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T21 reconcile scheduling scope with project chats
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7
+- **Started / finished:** 2026-10-26 09:24 MDT / 2026-10-26 09:27 MDT
+- **Model:** Current primary runtime; documentation and independent QA subagents.
+- **Branch / PR:** codex/t21-merge-record / https://github.com/jeremyward37/weather-epaper/pull/25
+- **Status at end:** In progress
+
+### Result
+Reconciled README, scope, development-plan architecture, runbook, T21 report and decision log with the project chat and T21 activation notes. Updated existing PR25; documentation only, no service configuration or device action.
+
+### Verification
+Read chat “Investigate spotty device updates” (01a122db-8780-74f1-8f1d-ad9e7c27b56e), T21 Notion card and PR25 activation records. Independent docs_qa Pass: source chat/card checked, workflow and guard agree; evaluated 04:17=false, 04:47=true, 21:47=true, 22:17=false, 22:47=false. git diff --check passed; all local Markdown link file targets in eight changed documents exist. Only Markdown files changed; no design build required. Required PR CI will run after push and must pass before merge.
+
+### Decisions
+Google Cloud Scheduler was activated on 2026-10-09, with two jobs preparing 35 daily device wakes. Later one-job consolidation was recommended but no application is recorded. Keep confirmed setup separate from that unverified proposal and retain the seven-day evidence gate.
+
+### Problems
+Canonical local main is still the original design baseline (0dff72a); fetched origin/main is 4954df5. Existing open documentation PR25 already contains activation evidence. Use its latest head in an isolated checkout; preserve the unrelated local .gitignore change.
+
+### Needs Jeremy
+None for the authorized documentation correction. Merge/reliability acceptance remain subject to existing review gates.
+
+### Next
+Review PR25 documentation correction. T21 remains In progress pending real publication-before-wake evidence and acceptance; single-job consolidation has no confirmed application. No next card started.
+
+---
+
 ## Session — T21 activation verification and dispatch test
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7

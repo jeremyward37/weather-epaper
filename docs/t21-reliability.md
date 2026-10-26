@@ -1,12 +1,12 @@
 # T21 — publishing reliability and Google Cloud Scheduler
 
-Investigated 2026-10-09; production base `a0ca889f`. Jeremy selected Google Cloud Scheduler in this chat on 2026-10-09. Jeremy approved PR24, merged 2026-10-09 at 18:39 MDT as `4954df5262e0ac2e2a51cb80e3c6fa086c3c8b7e`; both required checks passed on accepted head `1979832`. The software preparation is merged. Both external jobs are now enabled and connection tests passed; fresh-frame publication and seven-day reliability verification remain pending.
+Investigated 2026-10-09; production base `a0ca889f`. Jeremy selected Google Cloud Scheduler in this chat on 2026-10-09. Jeremy approved PR24, merged 2026-10-09 at 18:39 MDT as `4954df5262e0ac2e2a51cb80e3c6fa086c3c8b7e`; both required checks passed on accepted head `1979832`. The software preparation is merged. Both external jobs were last verified Enabled on 2026-10-09 and connection tests passed; fresh-frame publication and seven-day reliability verification remain unverified. Documentation reconciled from chat and T21 card evidence on 2026-10-26; no live Cloud console check was performed.
 
 ## Activation and connection verification — 2026-10-09 23:57 MDT
 
 Jeremy completed project/billing/API setup and created the repository-scoped GitHub credential. He privately entered it and submitted both jobs in Arc. The agent did not read or copy the saved Authorization values.
 
-Both jobs in project `weather-epaper`, region `us-central1`, are **Enabled**, with timezone **America/Denver** and the correct GitHub `publish.yml` dispatch target:
+Both jobs in project `weather-epaper`, region `us-central1`, were verified **Enabled on 2026-10-09**, with timezone **America/Denver** and the correct GitHub `publish.yml` dispatch target:
 
 | Job | Frequency | Created/last updated, MDT | Next run preview, MDT |
 | --- | --- | --- | --- |
@@ -15,7 +15,11 @@ Both jobs in project `weather-epaper`, region `us-central1`, are **Enabled**, wi
 
 Force-run connection tests both showed **Success** in Scheduler. The early job's last-run time 23:56:52 MDT corresponds to [workflow_dispatch 38029230652](https://github.com/jeremyward37/weather-epaper/actions/runs/38029230652), created 23:56:53 and completed successfully 23:57:05. The daytime job's 23:57:17 test corresponds to [workflow_dispatch 38029254654](https://github.com/jeremyward37/weather-epaper/actions/runs/38029254654), created 23:57:18 and completed successfully 23:57:28. Both explicitly skipped render/upload/deploy outside the local publish window. This proves credential/dispatch connectivity only, **not a fresh publication**. Next-run previews are observations, not timing guarantees.
 
-First scheduled fresh-publication verification remains pending on 2026-10-10. The earliest possible full observation week is October 10–16 (245 wake opportunities); preserve the actual evidence before any reliability acceptance. T21 remains **In progress**. Existing GitHub cron fallback remains active. No firmware, DNS or design change.
+At activation, first scheduled fresh-publication verification was pending for 2026-10-10. The earliest possible full observation week was October 10–16 (245 wake opportunities); the passage of those dates does not establish that verification occurred. No first fresh-publication or complete post-change week evidence was established during the 2026-10-26 reconciliation; preserve actual evidence before reliability acceptance. T21 remains **In progress**. Existing GitHub cron fallback remains active. No firmware, DNS or design change.
+
+## Single-job discussion — 2026-10-11 (application unconfirmed)
+
+Jeremy proposed consolidating the jobs into `17,47 4-22 * * *`. The assistant recommended `17,47 4-21 * * *`, verifying the next-run preview and delivery before removing the separate first-wake job. Neither edit nor job removal is confirmed by the reviewed chat/card evidence. The two jobs verified on October 9 remain the last verified configuration. The suggested 04:17 run would skip publication under the existing guard; the user-proposed 22:17/22:47 external dispatches would also skip. Consolidation must not be described as deployed without fresh evidence.
 
 ## Finding
 
@@ -63,11 +67,11 @@ Once a run arrived, the measured p95 to publication was 9.9 minutes, but one too
 
 `server/bin/publish-window.js` now admits `workflow_dispatch` at 04:47–04:59 as well as `schedule`, so Google's early job can prepare the 05:00 wake. Preserve overnight skipping and the schedule-only grace period after 22:00. Tests cover the boundary and Mountain summer/winter/DST. This correction alone does not activate the scheduler and does not change frame layout or files served to the board.
 
-## Needs Jeremy — credentials and activation
+## Historical setup procedure and remaining verification
 
-The card requires Jeremy to create credentials. No Google Cloud CLI/session is available in this environment. Do not paste tokens into chat, Git, screenshots or logs.
+The following setup procedure was written before activation. PR24 merge, credential creation and both job activations were subsequently completed as recorded above; do not recreate the jobs from this checklist. The in-window publication test and seven-day evidence in steps 5–6 remain unverified. No Google Cloud CLI/session was used for the 2026-10-26 reconciliation. Do not paste tokens into chat, Git, screenshots or logs.
 
-1. Complete: Jeremy authorized PR24 merge and it is on `main` with green required checks on the accepted revision. The current publisher continues while the external jobs are prepared.
+1. Complete: Jeremy authorized PR24 merge and it is on `main` with green required checks on the accepted revision. The original publisher remained active during external job preparation.
 2. Sign in to [Google Cloud Console](https://console.cloud.google.com/), choose/create a project and attach a billing account. Confirm fewer than two of the three free Scheduler job slots are already used across that billing account; otherwise the additional job charge is $0.10/month each. Enable Cloud Scheduler. A budget alert may be added; it is an alert, not a hard spending cap.
 3. Create a fine-grained GitHub PAT owned by `jeremyward37`, selected repository **weather-epaper only**, repository permission **Actions: Read and write**, with an explicit expiration you will renew. Store it in a password manager and in the Scheduler Authorization header. Restrict who can view/edit Scheduler jobs because the stored header contains this credential. Google's OIDC service-account token is not a GitHub PAT substitute. GitHub's [dispatch endpoint](https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event) documents the required permission.
 4. In Cloud Scheduler, create two HTTP jobs in `us-central1`, both timezone **America/Denver**:
@@ -104,9 +108,9 @@ Current [OpenAI model documentation](https://learn.chatgpt.com/docs/models) was 
 | Full-week missing slots, starts and deployment before wakes measured | Measurement/tool/evidence in this PR; independent QA Pass |
 | Decision recorded | Jeremy selected Google Cloud Scheduler on 2026-10-09 |
 | Readiness fix verified | Four local boundary tests and independent QA Pass; accepted-head required CI build/firmware SUCCESS |
-| External trigger implemented/live | Both jobs Enabled; both dispatch connection tests passed on 2026-10-09 23:57 MDT; first scheduled publication pending |
+| External trigger activated | Both jobs last verified Enabled; both dispatch connection tests passed on 2026-10-09 23:57 MDT; current live configuration and first scheduled publication unverified in this reconciliation |
 | Week of post-change on-time publications | Pending, cannot be simulated or inferred from local tests |
-| Required CI / acceptance / merge | Accepted-head CI SUCCESS, Jeremy approved and PR24 merged; activation/trial acceptance pending |
+| Required CI / acceptance / merge | Accepted-head CI SUCCESS, Jeremy approved and PR24 merged; activation recorded; trial acceptance pending |
 
 T21 stays **In progress**. T16's hardware/merge criteria remain pending independently; this packet does not claim a device test or start another card.
 
