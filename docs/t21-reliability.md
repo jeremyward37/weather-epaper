@@ -1,6 +1,14 @@
 # T21 — publishing reliability and Google Cloud Scheduler
 
-Investigated 2026-10-09; production base `a0ca889f`. Jeremy selected Google Cloud Scheduler in this chat on 2026-10-09. Jeremy approved PR24, merged 2026-10-09 at 18:39 MDT as `4954df5262e0ac2e2a51cb80e3c6fa086c3c8b7e`; both required checks passed on accepted head `1979832`. The software preparation is merged. Both external jobs were last verified Enabled on 2026-10-09 and connection tests passed; fresh-frame publication and seven-day reliability verification remain unverified. Documentation reconciled from chat and T21 card evidence on 2026-10-26; no live Cloud console check was performed.
+Investigated 2026-10-09; production base `a0ca889f`. Jeremy selected Google Cloud Scheduler in this chat on 2026-10-09. Jeremy approved PR24, merged 2026-10-09 at 18:39 MDT as `4954df5262e0ac2e2a51cb80e3c6fa086c3c8b7e`; both required checks passed on accepted head `1979832`. The software preparation is merged. The original two external jobs were verified Enabled on 2026-10-09 and connection tests passed; fresh-frame publication and seven-day reliability verification remain unverified. Documentation reconciled from chat and T21 card evidence on 2026-10-26; no live Cloud console check was performed.
+
+## Current schedule — Jeremy’s screenshot, 2026-10-26
+
+Jeremy confirmed an adjustment and supplied a Cloud Scheduler list screenshot showing one listed **Enabled** job, `weather-epaper-half-hour`, region `us-central1`, frequency **`25,55 4-22 * * *`**, timezone **America/Denver**. Its last-updated timestamp is **2026-10-26 09:23:28 AM** and next execution preview **09:25 AM**. The displayed last execution **Success at 09:17:07 AM** predates this update; it is evidence from the previous schedule and does not verify delivery under the new schedule. Source: `codex-clipboard-96b91ef4-e2d1-4876-be93-b46a9bc884d6.png` (user-provided screenshot; no direct Cloud console read).
+
+The current job dispatches **38 times/day**, 04:25–22:55. The unchanged publish guard skips **04:25, 22:25 and 22:55**, leaving **35 eligible dispatches**, **04:55, then 05:25/05:55 through 21:55**, for device wakes **05:00–22:00**. The lead is now **five minutes**, replacing the original 13-minute lead. Dispatch success does not establish a deployed frame or publication before a wake; reliability remains unverified and T21 stays **In progress**. GitHub cron fallback is unchanged at `47 4 * * *` and `17,47 5-21 * * *`, `America/Denver`. The original two-job activation and October 11 discussion below are historical and superseded for current scheduling.
+
+The guard evaluates actual workflow execution time, not the intended cron time. Slot eligibility and the 35/3 publication/skip counts above assume on-time workflow starts; a delayed 04:25 run can enter the publish window, and a delayed 21:55 dispatch can miss it.
 
 ## Activation and connection verification — 2026-10-09 23:57 MDT
 
@@ -17,9 +25,9 @@ Force-run connection tests both showed **Success** in Scheduler. The early job's
 
 At activation, first scheduled fresh-publication verification was pending for 2026-10-10. The earliest possible full observation week was October 10–16 (245 wake opportunities); the passage of those dates does not establish that verification occurred. No first fresh-publication or complete post-change week evidence was established during the 2026-10-26 reconciliation; preserve actual evidence before reliability acceptance. T21 remains **In progress**. Existing GitHub cron fallback remains active. No firmware, DNS or design change.
 
-## Single-job discussion — 2026-10-11 (application unconfirmed)
+## Historical single-job discussion — 2026-10-11
 
-Jeremy proposed consolidating the jobs into `17,47 4-22 * * *`. The assistant recommended `17,47 4-21 * * *`, verifying the next-run preview and delivery before removing the separate first-wake job. Neither edit nor job removal is confirmed by the reviewed chat/card evidence. The two jobs verified on October 9 remain the last verified configuration. The suggested 04:17 run would skip publication under the existing guard; the user-proposed 22:17/22:47 external dispatches would also skip. Consolidation must not be described as deployed without fresh evidence.
+Jeremy proposed consolidating the jobs into `17,47 4-22 * * *`. The assistant recommended `17,47 4-21 * * *`, verifying the next-run preview and delivery before removing the separate first-wake job. The later October 26 screenshot confirms consolidation to one listed job with a different schedule, `25,55 4-22 * * *`, superseding these suggestions and the October 9 schedule. The suggested 04:17 run would skip publication under the existing guard; the user-proposed 22:17/22:47 external dispatches would also skip. The screenshot does not establish delivery reliability.
 
 ## Finding
 
@@ -61,7 +69,7 @@ This establishes inadequate server publication independent of the device. It doe
 
 Sources checked 2026-10-09: [Scheduler pricing](https://cloud.google.com/scheduler/pricing), [delivery/retries](https://docs.cloud.google.com/scheduler/docs/overview), [cron-job.org FAQ](https://cron-job.org/en/faq/), [Cloud Run pricing](https://cloud.google.com/run/pricing), [Artifact Registry pricing](https://cloud.google.com/artifact-registry/pricing), [EventBridge pricing](https://aws.amazon.com/eventbridge/pricing/), [Lambda pricing](https://aws.amazon.com/lambda/pricing/), [Lambda container adapter](https://docs.aws.amazon.com/lambda/latest/dg/images-create.html), [Workers limits](https://developers.cloudflare.com/workers/platform/limits/).
 
-Once a run arrived, the measured p95 to publication was 9.9 minutes, but one took 21.75 minutes. The 13-minute lead therefore still needs actual post-change verification. Google documents at-least-once delivery and configurable retries; this is a stronger scheduling contract than the current trigger, not a guarantee that GitHub's runner, NWS or Pages always completes before a wake. A successful dispatch acknowledgement means accepted work, not a fresh deployed frame. We will assess actual deployment and served metadata for seven complete days before T21 can be Done. Existing GitHub cron stays as fallback during the trial. Duplicate dispatches can create redundant renders; the existing Pages concurrency group serializes publication. No DNS change or firmware flash is needed for this selected path.
+Once a run arrived, the measured p95 to publication was 9.9 minutes, but one took 21.75 minutes. These measurements predate the October 26 adjustment, whose five-minute lead needs actual post-change verification. Google documents at-least-once delivery and configurable retries; this is a stronger scheduling contract than the current trigger, not a guarantee that GitHub's runner, NWS or Pages always completes before a wake. A successful dispatch acknowledgement means accepted work, not a fresh deployed frame. We will assess actual deployment and served metadata for seven complete days before T21 can be Done. Existing GitHub cron stays as fallback during the trial. Duplicate dispatches can create redundant renders; the existing Pages concurrency group serializes publication. No DNS change or firmware flash is needed for this selected path.
 
 ## Merged software correction
 
@@ -69,7 +77,7 @@ Once a run arrived, the measured p95 to publication was 9.9 minutes, but one too
 
 ## Historical setup procedure and remaining verification
 
-The following setup procedure was written before activation. PR24 merge, credential creation and both job activations were subsequently completed as recorded above; do not recreate the jobs from this checklist. The in-window publication test and seven-day evidence in steps 5–6 remain unverified. No Google Cloud CLI/session was used for the 2026-10-26 reconciliation. Do not paste tokens into chat, Git, screenshots or logs.
+The following setup procedure was written before activation. PR24 merge, credential creation and both job activations were subsequently completed as recorded above; do not recreate the jobs from this checklist. The October 26 consolidated schedule above supersedes the two-job setup table. The in-window publication test and seven-day evidence in steps 5–6 remain unverified. No Google Cloud CLI/session was used for the 2026-10-26 reconciliation. Do not paste tokens into chat, Git, screenshots or logs.
 
 1. Complete: Jeremy authorized PR24 merge and it is on `main` with green required checks on the accepted revision. The original publisher remained active during external job preparation.
 2. Sign in to [Google Cloud Console](https://console.cloud.google.com/), choose/create a project and attach a billing account. Confirm fewer than two of the three free Scheduler job slots are already used across that billing account; otherwise the additional job charge is $0.10/month each. Enable Cloud Scheduler. A budget alert may be added; it is an alert, not a hard spending cap.
@@ -97,7 +105,7 @@ Use the private Console header fields to enter the PAT. Do not put the token in 
 5. Use **Force run** during the allowed publish window and confirm an accepted 2xx response, a new **workflow_dispatch** Actions run, successful render and deploy, and advanced `meta.json` with a current epoch query (`?t=<current-epoch-seconds>`). Then inspect the two jobs' next-run previews: the early job at 04:47 and the daytime job at 05:17/05:47 etc., ending at 21:47. A 2xx dispatch response alone is insufficient.
 6. Record activation time, job names/project (no secret), test-run URL and live `renderedAt` on this card. Capture seven full local days afterward: 245 expected pre-wake opportunities, dispatch arrival/completion, successful deploy completion, and cache-busted live metadata before each wake. Track skipped/failed/duplicate runs and gaps. Save evidence daily: do not rely on a scheduler's short UI history. Recheck 04:47 delivery and 22:00 final wake explicitly. Hardware confirmation remains Jeremy's.
 
-If runner/render/deploy still misses the 13-minute lead time under the external trigger, escalate within T21 to a concrete Cloud Run/storage migration proposal with byte-identity checks and estimated total charges. Rollback: pause the two external jobs and revoke their scoped PAT; existing GitHub cron and deployed frame remain. Reverting the prepublish correction is not needed to pause the service.
+If runner/render/deploy misses the current five-minute lead time under the external trigger, escalate within T21 to a concrete Cloud Run/storage migration proposal with byte-identity checks and estimated total charges. Rollback: pause the current external Scheduler job and revoke its scoped PAT; existing GitHub cron and deployed frame remain. Reverting the prepublish correction is not needed to pause the service.
 
 ## Execution recommendations and gates
 
@@ -108,7 +116,7 @@ Current [OpenAI model documentation](https://learn.chatgpt.com/docs/models) was 
 | Full-week missing slots, starts and deployment before wakes measured | Measurement/tool/evidence in this PR; independent QA Pass |
 | Decision recorded | Jeremy selected Google Cloud Scheduler on 2026-10-09 |
 | Readiness fix verified | Four local boundary tests and independent QA Pass; accepted-head required CI build/firmware SUCCESS |
-| External trigger activated | Both jobs last verified Enabled; both dispatch connection tests passed on 2026-10-09 23:57 MDT; current live configuration and first scheduled publication unverified in this reconciliation |
+| External trigger activated | Original two jobs and dispatch connectivity verified October 9; Jeremy’s October 26 screenshot confirms one listed Enabled job at `25,55 4-22 * * *`. Successful fresh publication under that schedule remains unverified |
 | Week of post-change on-time publications | Pending, cannot be simulated or inferred from local tests |
 | Required CI / acceptance / merge | Accepted-head CI SUCCESS, Jeremy approved and PR24 merged; activation recorded; trial acceptance pending |
 

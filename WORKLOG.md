@@ -1,5 +1,33 @@
 # Work log
 
+## Session — T21 record Jeremy's revised Scheduler schedule
+
+- **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7
+- **Started / finished:** 2026-10-26 09:32 MDT / 2026-10-26 (documentation complete)
+- **Model:** Current primary runtime; documentation and independent QA subagents.
+- **Branch / PR:** codex/t21-merge-record / https://github.com/jeremyward37/weather-epaper/pull/25
+- **Status at end:** In progress
+
+### Result
+Recording Jeremy's schedule change from his supplied Google Cloud Scheduler screenshot. One listed Enabled job, weather-epaper-half-hour, now uses 25,55 4-22 * * * in America/Denver, us-central1. Documentation update only.
+
+### Verification
+Screenshot codex-clipboard-96b91ef4-e2d1-4876-be93-b46a9bc884d6.png shows last updated 2026-10-26 09:23:28 AM and next run 09:25 AM. Last success 09:17:07 AM predates the edit and does not verify the new schedule. Independent schedule_qa verified screenshot, 38/35/3 nominal slot arithmetic, unchanged fallback, links and git diff --check. QA identified that eligibility depends on actual workflow execution time; documentation now qualifies nominal counts as assuming on-time starts and explains delayed-run behavior. No frame/code change; no design build required.
+
+### Decisions
+38 dispatches per day from 04:25–22:55; on-time execution gives 35 eligible runs from 04:55–21:55 and skips 04:25/22:25/22:55. The guard uses actual execution time. New nominal lead is 5 minutes before 05:00–22:00 device wakes. GitHub cron fallback unchanged. Supersedes earlier unconfirmed-consolidation text; no claim of live API inspection or completed reliability trial.
+
+### Problems
+Five-minute lead leaves less time for Actions render/deploy; on-time served freshness under this schedule remains unverified.
+
+### Needs Jeremy
+None for recording his change. Existing reliability evidence and merge review gates remain.
+
+### Next
+Update only T21 documentation/notes, preserve screenshot provenance and original acceptance criteria; no cloud, firmware or design changes.
+
+---
+
 ## Session — T21 reconcile scheduling scope with project chats
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7
