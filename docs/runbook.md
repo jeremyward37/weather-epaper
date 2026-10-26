@@ -2,12 +2,18 @@
 
 ## Schedule and output
 
-`.github/workflows/publish.yml` runs at 4:47 AM and at :17/:47 from 5 AM
-through 9 PM in `America/Denver`. These 35 runs prepare the 5:00 AM through
-10:00 PM device wakes. GitHub may start a scheduled run late. The job checks
-the local publish window before rendering; a scheduled run may finish shortly
-after 10 PM to serve the last wake. External/manual dispatches are allowed at 4:47–4:59 AM to prepare the first
-wake, as well as 5 AM–10 PM. Overnight dispatches still skip publication.
+Google Cloud Scheduler dispatches `.github/workflows/publish.yml` on `main`;
+GitHub Actions fetches NWS data, renders, and publishes to GitHub Pages. GitHub
+cron remains fallback at 04:47, then :17/:47 from 05–21, `America/Denver`.
+Jeremy’s 2026-10-26 screenshot confirms one listed Enabled job in `us-central1`:
+`weather-epaper-half-hour`, `25,55 4-22 * * *`, `America/Denver`.
+It dispatches 38 times daily from 04:25 through 22:55. Assuming on-time workflow starts, the current guard skips
+04:25, 22:25 and 22:55, leaving 35 eligible publications at 04:55 and
+05:25/05:55 through 21:55. This leaves five minutes before device wakes
+05:00–22:00; delivery reliability remains unverified. External/manual dispatches
+are allowed at 04:47–04:59 and 05:00–22:00; overnight dispatches skip publication.
+The fallback's scheduled events retain the existing final-run grace after 22:00.
+Evidence is user-provided; no direct Cloud console read was performed.
 
 The `render` job uses the pinned renderer container and uploads `public/` only
 after `server/bin/render.js` exits successfully. The `deploy` job depends on
@@ -53,8 +59,12 @@ Scheduled runs can arrive late or be dropped. Compare run creation times with
 the expected local slots and check `meta.json`. The 2026-10-02–2026-10-08 T21 measurement confirmed only 29 scheduled
 deployments against 245 expected opportunities. Jeremy selected Google Cloud
 Scheduler to trigger `workflow_dispatch`, retaining GitHub cron as fallback.
-The external jobs are **not yet active**. Follow the exact credential, two-job
-setup, rollback and seven-day acceptance procedure in
+The original two jobs activated October 9; Jeremy’s October 26 screenshot now
+confirms a consolidated Enabled job at :25/:55 during 04–22. The screenshot’s
+09:17:07 Success predates the 09:23:28 update and does not prove execution under
+the new schedule. Fresh-publication and seven-day reliability acceptance remain
+unverified; T21 stays In progress. See the report for screenshot attribution.
+Follow the recorded configuration, rollback and remaining acceptance procedure in
 [docs/t21-reliability.md](t21-reliability.md). Keep the scoped PAT in the private
 Scheduler job headers, never in this repository. A successful HTTP dispatch is
 not evidence of a completed publication: verify the deploy job and live metadata.

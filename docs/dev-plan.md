@@ -6,14 +6,17 @@
 
 The remaining project is coordinated by a Codex orchestrator under [orchestration.md](orchestration.md), with the current gate in [orchestration-state.md](orchestration-state.md). One card per implementation run; a persistent chat may resume or coordinate later runs only after applicable approval. The orchestrator reads the card, sets In progress, opens a WORKLOG entry, delegates bounded implementation and separate QA, and prepares a `codex/tNN-slug` PR with green required CI. It then stops for Jeremy's review and hardware evidence. Agent delivery cards require every acceptance criterion, independent QA, Jeremy acceptance, and authorized merge for Done. Jeremy-only cards stay with him and close from their required evidence and acceptance.
 
-**Progress reconciled 2026-10-07:** T01–T15, T22, T23 and T24 are Done. T24 PR22 merged as28ca02a and published after independent QA, green accepted-head CI and Jeremy's acceptance/merge/publication authorization; [live release verification](t24-release.md) passed. T16 In progress in PR21 with corrected production installed, two actual TIMER slots/initial fidelity/BOOT no-redraw recorded, but full-hour/offline/remaining button criteria and acceptance/merge Pending; observer stopped. T24 completed independently from accepted main with T11 as technical prerequisite (stage7); T18's T24 prerequisite is satisfied. T17–T21 remain Not started. Continuous USB until battery arrives early November; no calibrated battery/life claim.
+**Progress reconciled 2026-10-07:** T01–T15, T22, T23 and T24 are Done. T24 PR22 merged as28ca02a and published after independent QA, green accepted-head CI and Jeremy's acceptance/merge/publication authorization; [live release verification](t24-release.md) passed. T16 In progress in PR21 with corrected production installed, two actual TIMER slots/initial fidelity/BOOT no-redraw recorded, but full-hour/offline/remaining button criteria and acceptance/merge Pending; observer stopped. T24 completed independently from accepted main with T11 as technical prerequisite (stage7); T18's T24 prerequisite is satisfied. At that reconciliation T17–T21 were Not started. **T21 update (2026-10-26 user screenshot):** In progress; one listed Enabled Google Cloud Scheduler job now uses `25,55 4-22 * * *`, `America/Denver`. Fresh-publication/seven-day reliability acceptance remains unverified. Continuous USB until battery arrives early November; no calibrated battery/life claim.
 
 Token bands are historical planning estimates: Low under 300k, Med 300k–1M, High over 1M for a whole session. They are not budgets or observed usage. Re-check current account limits rather than using the old quota assumptions. Current role recommendations (checked 2026-10-07): orchestrator and independent QA GPT-6.1 Sol · High, documentation/measurement analysis GPT-6 Luna · High; GPT-6 Sol is the fallback when 6.1 Sol is unavailable. See [official models](https://learn.chatgpt.com/docs/models) and [subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents). Completed task rows retain their historical model recommendations; remaining rows below use the refreshed recommendations.
 
 ## Architecture the tasks build
 
 ```
-NWS api.weather.gov ──► GitHub Actions cron (America/Denver, 4:47 AM then :17/:47, 5–9 PM)
+Google Cloud Scheduler (America/Denver, :25/:55, 04–22)
+                          │ workflow_dispatch: publish.yml on main
+                          ▼
+NWS api.weather.gov ──► GitHub Actions (cron fallback: 04:47, then :17/:47, 05–21)
                           runs server/bin/render.js inside the pinned render container
                           = design/lib renderer → 1-bit PNG → 15,000-byte framebuffer
                           publishes frame.bin + frame-lowbat.bin + PNGs + meta.json
@@ -24,6 +27,8 @@ NWS api.weather.gov ──► GitHub Actions cron (America/Denver, 4:47 AM then 
                                    ▼
         ESP32-S3 RockBase NM-EPD-420-BW: wake on schedule → NTP → fetch → write panel if changed → deep sleep
 ```
+
+Jeremy’s 2026-10-26 screenshot confirms one listed Enabled job, `weather-epaper-half-hour`, in `us-central1`, using `25,55 4-22 * * *`, `America/Denver`. This dispatches 38 times daily from 04:25–22:55; assuming on-time workflow starts, the guard skips 04:25/22:25/22:55, leaving 35 eligible publications from 04:55 through 21:55, five minutes before device wakes 05:00–22:00. This supersedes the October 9 two-job record. Evidence is user-provided, with no direct Cloud console read; see `t21-reliability.md`.
 
 ## Phases and tasks
 
@@ -111,6 +116,6 @@ Recorded here so no task has to rediscover them; each card repeats the subset it
 Add a card in Notion (next Task Order), link its dependencies, and add a row here in the same pull request. Removing or re-scoping a card: update the card, this file, and `design/decisions.md` if the change touches the rendering contract.
 
 
-## T21 selected path — 2026-10-09
+## T21 selected path — 2026-10-09; reconciled 2026-10-26
 
-Jeremy selected Google Cloud Scheduler after the complete-week investigation. Two HTTP jobs replace the unreliable GitHub scheduling trigger while retaining renderer/Pages and GitHub cron fallback. Read `t21-reliability.md` for the measured evidence and exact activation steps. T21 is In progress until credentials, reviewed merge, actual activation and a week of on-time publications pass. Use GPT-6.1 Sol · High for implementation and independent QA, GPT-6 Luna · High for bounded measurement summaries; current model documentation was fetched 2026-10-09 (see the report). No other card is started by T21.
+Jeremy selected Google Cloud Scheduler after the complete-week investigation; the original two jobs activated October 9. Jeremy’s October 26 screenshot confirms the current consolidated job `weather-epaper-half-hour` at `25,55 4-22 * * *`, `America/Denver`, in `us-central1`; this supersedes the original schedule and October 11 suggestions. GitHub Actions still renders/publishes to Pages, with unchanged GitHub cron fallback. Read `t21-reliability.md` for screenshot metadata, historical evidence and remaining verification. T21 is In progress: PR24 merge, activation and initial dispatch connectivity are recorded, while publication-before-wake and seven-day reliability acceptance remain unverified. The current eligible slots provide only a five-minute lead before wakes. No direct Cloud console read was performed. Use GPT-6.1 Sol · High for implementation and independent QA, GPT-6 Luna · High for bounded measurement summaries; current model documentation was fetched 2026-10-09 (see the report). No other card is started by T21.
