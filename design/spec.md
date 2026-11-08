@@ -72,7 +72,7 @@ There is **no stale indicator** (decided 2026-09-25; the outlined `DATA STALE` b
 - **Server cannot get weather** (NWS down or invalid data): the server does not publish a new frame. The device downloads the previous frame, whose timestamp is unchanged.
 - **Device cannot reach the server** (Wi-Fi or hosting outage): the device keeps the frame already on the panel. It may skip the redraw entirely, since e-paper holds the image without power and a redraw would only cost battery.
 - Never print an attempted fetch time as a success. The timestamp changes only when a fresh frame was rendered from fresh weather data.
-- With the 5:00 AM to 10:00 PM refresh schedule (`../docs/scope.md` §7), the 10:00 PM timestamp stays on the panel overnight by design.
+- Updates are attempted every half hour around the clock (`../docs/scope.md` §7, updated 2026-11-08). Failed fetches keep the prior frame and timestamp.
 
 ### Wi-Fi setup / first boot
 

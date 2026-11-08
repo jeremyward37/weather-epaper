@@ -1,5 +1,11 @@
 # Work log
 
+## Session — continuous half-hour weather updates, 2026-11-08
+
+Jeremy requested all-day updates with the weather display ready for USB. Prepare server and firmware changes on codex/all-day-updates, restoring 13-minute publishing lead. The old canonical folder is missing; fresh checkout is /private/tmp/weather-epaper-all-day. Main lacks the installed T16 runtime, so integrate firmware/tests from PR21 source04b8cd9 without overwriting main's renderer. No earlier task acceptance is inferred. Native policy/runtime/network tests pass. All 358 server tests pass with bundled Python/Pillow. Initial host run had three environment failures because system Python lacked Pillow; corrected the runtime, with no test weakening. Production firmware build, deployment, external Google edit and flash pending.
+
+---
+
 ## Session — T21 Scheduled publishing reliability investigation
 
 - **Task:** https://app.notion.com/p/3e7d9adbacad81549a5bea0cf471bbc7

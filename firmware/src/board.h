@@ -23,6 +23,7 @@ constexpr int codecEnable = 44;  // ES8311, HIGH on.
 constexpr int loraEnable = 47;  // LoRa supply, HIGH on.
 constexpr int sdCs = 7;
 constexpr int loraCs = 8;
+constexpr int loraReset = 12; // Vendor sleep pattern holds LoRa in reset.
 constexpr uint16_t width = 400;
 constexpr uint16_t height = 300;
 constexpr uint32_t frameBytes = width * height / 8;

@@ -100,17 +100,7 @@ export function footerTimestamp(instant) {
 
 export function refreshWindow(now) {
   const instant = requireInstant(now);
-  const parts = localParts(instant);
-  const minutes = parts.hour * 60 + parts.minute + parts.second / 60 + instant.getMilliseconds() / 60000;
-  const inWindow = minutes >= 5 * 60 && minutes <= 22 * 60;
-  let candidate = Math.floor(instant.getTime() / 1800000) * 1800000 + 1800000;
-  while (true) {
-    const slot = new Date(candidate);
-    const local = localParts(slot);
-    const slotMinutes = local.hour * 60 + local.minute;
-    if (local.minute % 30 === 0 && slotMinutes >= 5 * 60 && slotMinutes <= 22 * 60) {
-      return { inWindow, nextSlot: slot };
-    }
-    candidate += 1800000;
-  }
+  // Retain the public shape; publishing is allowed at every hour of the day.
+  const nextSlot = new Date(Math.floor(instant.getTime() / 1800000) * 1800000 + 1800000);
+  return { inWindow: true, nextSlot };
 }

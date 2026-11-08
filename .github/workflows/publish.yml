@@ -2,9 +2,7 @@ name: Publish weather frame
 
 on:
   schedule:
-    - cron: '47 4 * * *'
-      timezone: America/Denver
-    - cron: '17,47 5-21 * * *'
+    - cron: '17,47 * * * *'
       timezone: America/Denver
   workflow_dispatch:
 
