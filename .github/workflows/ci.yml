@@ -26,16 +26,19 @@ jobs:
       - name: Install pinned firmware build tools
         run: python -m pip install -r firmware/build-requirements.txt
 
-      - name: Test deployed provisioning and BOOT controller
+      - name: Test deployed provisioning, BOOT and failure policy
         run: sh firmware/test/run-native.sh
 
+      - name: Test native Mountain schedule and frame failure cases
+        run: pio test -d firmware -e native
+
       # Deliberately no PlatformIO cache: verify dependency resolution from clean.
-      - name: Build Wi-Fi provisioning firmware and bounded persistence harness
-        run: pio run -d firmware -e nm-epd-420-bw -e provisioning-persistence-test
+      - name: Build production wake loop, debug cadence and persistence harness
+        run: pio run -d firmware -e nm-epd-420-bw -e wake-debug -e provisioning-persistence-test
 
       - name: Record firmware artifact hashes and source revision
         run: |
-          for environment in nm-epd-420-bw provisioning-persistence-test; do
+          for environment in nm-epd-420-bw wake-debug provisioning-persistence-test; do
             (
               cd "firmware/.pio/build/$environment"
               cp "$HOME/.platformio/packages/framework-arduinoespressif32/tools/partitions/boot_app0.bin" .
@@ -48,7 +51,7 @@ jobs:
       - name: Upload firmware and flash components
         uses: actions/upload-artifact@v4
         with:
-          name: t15-provisioning-and-persistence-${{ github.sha }}
+          name: t16-wake-debug-and-persistence-${{ github.sha }}
           if-no-files-found: error
           path: |
             firmware/.pio/build/nm-epd-420-bw/firmware.bin
@@ -67,6 +70,15 @@ jobs:
             firmware/.pio/build/provisioning-persistence-test/SHA256SUMS
             firmware/.pio/build/provisioning-persistence-test/SOURCE_REVISION
             firmware/.pio/build/provisioning-persistence-test/BUILD_VERSION
+
+            firmware/.pio/build/wake-debug/firmware.bin
+            firmware/.pio/build/wake-debug/firmware.elf
+            firmware/.pio/build/wake-debug/bootloader.bin
+            firmware/.pio/build/wake-debug/partitions.bin
+            firmware/.pio/build/wake-debug/boot_app0.bin
+            firmware/.pio/build/wake-debug/SHA256SUMS
+            firmware/.pio/build/wake-debug/SOURCE_REVISION
+            firmware/.pio/build/wake-debug/BUILD_VERSION
 
   build:
     name: build

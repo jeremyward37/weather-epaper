@@ -2,12 +2,22 @@
 
 ## Schedule and output
 
-`.github/workflows/publish.yml` runs at 4:47 AM and at :17/:47 from 5 AM
-through 9 PM in `America/Denver`. These 35 runs prepare the 5:00 AM through
-10:00 PM device wakes. GitHub may start a scheduled run late. The job checks
-the local publish window before rendering; a scheduled run may finish shortly
-after 10 PM to serve the last wake. External/manual dispatches are allowed at 4:47–4:59 AM to prepare the first
-wake, as well as 5 AM–10 PM. Overnight dispatches still skip publication.
+Google Cloud Scheduler job `weather-epaper-half-hour` should use
+`15,45 * * * *` with timezone `America/Denver`: :17 and :47 every hour,
+24 hours a day. GitHub Actions uses the same cron as fallback.
+The server accepts publication at any hour. The display wakes for :00/:30,
+also 24 hours a day; the nominal publishing lead is 15 minutes.
+Normally there are 48 opportunities per day, 46/50 on spring/fall DST days.
+A dispatch acknowledgement does not establish that rendering/deployment finished;
+verify fresh live metadata before the target wake. The previous :25/:55
+Google schedule gave only five minutes of lead.
+
+To update the external job: in Google Cloud Console, project `weather-epaper`,
+Cloud Scheduler → `weather-epaper-half-hour` (us-central1) → Edit, set Frequency
+to `15,45 * * * *` and timezone to `America/Denver`. Preserve the existing HTTP
+POST target, body, authorization header and retries. Save and verify the next
+run preview. Do not recreate or expose the private token. This setting is external
+to Git; record completion separately from the software deployment.
 
 The `render` job uses the pinned renderer container and uploads `public/` only
 after `server/bin/render.js` exits successfully. The `deploy` job depends on

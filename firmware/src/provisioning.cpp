@@ -1,6 +1,7 @@
 #include "provisioning.h"
 #include "button.h"
 #include "board.h"
+#include "config.h"
 #include <Arduino.h>
 #include <WiFi.h>
 #include <WiFiManager.h>
@@ -13,7 +14,7 @@
 
 namespace provisioning {
 namespace {
-constexpr uint32_t connectMs = 20000;
+constexpr uint32_t connectMs = config::joinMs;
 Preferences preferences;
 BootButton button;
 Hook setupHook = nullptr, refreshHook = nullptr;
@@ -55,22 +56,25 @@ bool storeConnected() {
 }
 bool invalidateFrame() {
   if (!storageReady) return false;
-  if (preferences.isKey("lastFrameSha")) {
-    preferences.remove("lastFrameSha");
-    // Check persisted absence, rather than trust an unchecked removal result.
-    if (preferences.isKey("lastFrameSha")) return false;
+  for (const char* key : {"lastFrameSha", "everShown", "framePending", "joinFailures", "lastLow"}) {
+    if (preferences.isKey(key)) {
+      preferences.remove(key);
+      // Check persisted absence, rather than trust an unchecked removal result.
+      if (preferences.isKey(key)) return false;
+    }
   }
   return true;
 }
 void sampleDuringConnection() {
-  if (sampleButton() == ButtonEvent::Reset) resetRequested = true;
-  // Short press during setup/reconnect is covered by that connection attempt.
+  const auto event = sampleButton();
+  if (event == ButtonEvent::Reset) resetRequested = true;
+  else if (event == ButtonEvent::Refresh && refreshHook) refreshHook();
+  // Main coalesces the short press with this attempt; ext0 release suppression
+  // must consume the real debounced event even during reconnect/portal waits.
 }
 }
 void initialize(Hook drawSetup, Hook immediateRefresh) {
   setupHook = drawSetup; refreshHook = immediateRefresh;
-  storageReady = preferences.begin("weather", false);
-  if (!storageReady) Serial.println("[T15] Metadata storage unavailable");
 #ifdef ARDUINO_ARCH_ESP32
   // Independent sampling keeps a five-second hold latched even while the
   // library handles its captive-response/save delays. No I/O in this callback.
@@ -87,6 +91,8 @@ void initialize(Hook drawSetup, Hook immediateRefresh) {
 #else
   sampleButton();
 #endif
+  storageReady = preferences.begin("weather", false);
+  if (!storageReady) Serial.println("[T15] Metadata storage unavailable");
 }
 bool hasCredentials() {
   WiFi.persistent(true);
@@ -133,7 +139,7 @@ bool reconnectSaved() {
     delay(5);
   }
   WiFi.disconnect(false, false);
-  Serial.println("[T15] Saved Wi-Fi unavailable; entering setup"); return false;
+  Serial.println("[T15] Saved Wi-Fi unavailable; panel retained"); return false;
 }
 void runPortalBlocking() {
   bool reportedStorageFailure = false;

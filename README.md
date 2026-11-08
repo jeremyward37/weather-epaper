@@ -1,6 +1,6 @@
 # ePaper Weather Station
 
-A 4.2″ black-and-white e-paper display (RockBase NM-EPD-420-BW, 400 × 300 px, 1-bit) that hangs in a closet and shows the current temperature, the next four 3-hour forecast marks, the next three days, the next civil dawn/dusk, and a slim footer. Location: Marriott-Slaterville, UT. Battery powered; refreshes every 30 minutes from 5 AM to 10 PM.
+A 4.2″ black-and-white e-paper display (RockBase NM-EPD-420-BW, 400 × 300 px, 1-bit) that hangs in a closet and shows the current temperature, the next four 3-hour forecast marks, the next three days, the next civil dawn/dusk, and a slim footer. Location: Marriott-Slaterville, UT. Battery powered; refreshes on the hour and half hour, 24 hours a day.
 
 This repository holds the **approved design** (mockups, a pixel-exact handoff spec, and the pipeline that renders and verifies them) and, as development proceeds, the **server** and **firmware** that implement it. Architecture decided 2026-09-25: a **scheduled job renders the frame** with this same pipeline and publishes a raw 1-bit framebuffer to static hosting; the device only downloads and displays it. Weather data comes from the **National Weather Service API**. The development plan is [docs/dev-plan.md](docs/dev-plan.md); progress is logged in [WORKLOG.md](WORKLOG.md).
 

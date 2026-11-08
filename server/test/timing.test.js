@@ -86,25 +86,26 @@ test('civil twilight agrees with the published Ogden almanac within three minute
   }
 });
 
-test('refresh window includes 5 AM through 10 PM and finds the next real slot', () => {
-  const before = refreshWindow('2026-07-15T04:59:00-06:00');
-  assert.equal(before.inWindow, false);
-  assert.equal(before.nextSlot.toISOString(), '2026-07-15T11:00:00.000Z');
-  assert.equal(refreshWindow('2026-07-15T05:00:00-06:00').inWindow, true);
-  assert.equal(refreshWindow('2026-07-15T21:59:00-06:00').nextSlot.toISOString(),
-    '2026-07-16T04:00:00.000Z');
-  const last = refreshWindow('2026-07-15T22:00:00-06:00');
-  assert.equal(last.inWindow, true);
-  assert.equal(last.nextSlot.toISOString(), '2026-07-16T11:00:00.000Z');
-  assert.equal(refreshWindow('2026-07-15T22:00:01-06:00').inWindow, false);
-  assert.equal(refreshWindow('2026-07-15T22:01:00-06:00').inWindow, false);
-  const spring = refreshWindow('2026-03-08T01:30:00-07:00');
-  assert.equal(spring.inWindow, false);
-  assert.equal(spring.nextSlot.toISOString(), '2026-03-08T11:00:00.000Z');
-  const fall = refreshWindow('2026-11-01T00:30:00-06:00');
-  assert.equal(fall.inWindow, false);
-  assert.equal(fall.nextSlot.toISOString(), '2026-11-01T12:00:00.000Z');
-  const repeatedHour = refreshWindow('2026-11-01T01:30:00-07:00');
-  assert.equal(repeatedHour.inWindow, false);
-  assert.equal(repeatedHour.nextSlot.toISOString(), '2026-11-01T12:00:00.000Z');
+test('refreshes continue every half hour through overnight, rollover and DST', () => {
+  for (const value of [
+    '2026-07-15T22:00:00-06:00', '2026-07-15T23:59:59-06:00',
+    '2026-01-15T00:00:00-07:00', '2026-07-15T04:59:00-06:00',
+    '2026-03-08T01:30:00-07:00', '2026-11-01T01:30:00-06:00',
+    '2026-11-01T01:30:00-07:00', '2026-12-31T23:59:59-07:00',
+  ]) {
+    const now = new Date(value);
+    const result = refreshWindow(now);
+    assert.equal(result.inWindow, true);
+    assert.equal(result.nextSlot.getTime(), Math.floor(now.getTime() / 1800000) * 1800000 + 1800000);
+  }
+  for (const [start, end, count] of [
+    ['2026-07-15T00:00:00-06:00', '2026-07-16T00:00:00-06:00', 48],
+    ['2026-03-08T00:00:00-07:00', '2026-03-09T00:00:00-06:00', 46],
+    ['2026-11-01T00:00:00-06:00', '2026-11-02T00:00:00-07:00', 50],
+  ]) {
+    let slots = 0;
+    for (let slot = new Date(start); slot < new Date(end); slot = refreshWindow(slot).nextSlot) slots++;
+    assert.equal(slots, count);
+  }
+  assert.throws(() => refreshWindow('invalid'), /Invalid instant/);
 });

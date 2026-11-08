@@ -30,8 +30,14 @@ int main(int argc,char**argv){
    assert(metadata["lastFrameSha"]=="accepted-sha");
  } else if(scenario=="reset"){
    saved=true;eraseFails=true;metadata["lastFrameSha"]="accepted-sha";
+   metadata["everShown"]="1";metadata["framePending"]="1";metadata["joinFailures"]="19";metadata["lastLow"]="1";
    clearCredentials();assert(metadata["resetPending"]=="1");assert(!hasCredentials());
-   assert(!metadata.count("lastFrameSha")); // failed erase cannot resurrect credentials
+   assert(!metadata.count("lastFrameSha"));
+   assert(!metadata.count("framePending") && !metadata.count("everShown") && !metadata.count("joinFailures") && !metadata.count("lastLow")); // failed erase cannot resurrect credentials
+ } else if(scenario=="held-release"){
+   saved=true;held=[](uint32_t n){return n<100;};
+   onDelay=[] {if(clockMs>=1000)connected=true;};
+   assert(reconnectSaved());assert(refreshes==1); // Real release hook survives reconnect.
  } else if(scenario=="held-wake"){
    saved=true;held=[](uint32_t){return true;};
    assert(!reconnectSaved());assert(clockMs==5000);assert(!saved);
@@ -62,6 +68,12 @@ int main(int argc,char**argv){
    onProcess=[] {if(clockMs==6000)intent=true;if(clockMs>=6005)connected=true;};
    runPortalBlocking();assert(clockMs>=6005);assert(draws==1);
    assert(metadata["lastFrameSha"].empty());assert(!metadata.count("resetPending"));
+ } else if(scenario=="pending-invalidation"){
+   saved=true;metadata["framePending"]="1";removeFails=true;
+   onDelay=[] {if(clockMs<6000){assert(draws==0);assert(metadata.count("framePending"));}
+     if(clockMs>=6000)removeFails=false;};
+   onProcess=[] {if(clockMs==6000)intent=true;if(clockMs>=6005)connected=true;};
+   runPortalBlocking();assert(clockMs>=6005&&draws==1&&!metadata.count("framePending"));
  } else if(scenario=="metadata-failure"){
    saved=true;connected=true;prefsFail=true;assert(!reconnectSaved());assert(draws==0);
  } else return 2;

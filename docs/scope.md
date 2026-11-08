@@ -1,6 +1,6 @@
 # ePaper Weather Station — project scope
 
-**Status:** live. This is the single reference for what the project is, what is in and out of scope, and what has been decided. `design/spec.md` holds the pixel-level design contract; this document holds everything else. Where an older document disagrees with this one, this one wins. Last updated 2026-10-07 (orchestration handoff and progress reconciliation).
+**Status:** live. This is the single reference for what the project is, what is in and out of scope, and what has been decided. `design/spec.md` holds the pixel-level design contract; this document holds everything else. Where an older document disagrees with this one, this one wins. Last updated 2026-11-08 (all-day update schedule requested by Jeremy).
 
 **Design phase: complete.** All frames are approved (checkpoint 3 closed 2026-09-25), including the setup-screen hotspot password `firstlight`. **Development phase: server complete; firmware and physical verification remain.** The task-by-task plan is `docs/dev-plan.md`; each task is a card in Jeremy's Notion *Dev Tasks* database, and agents log their work in `WORKLOG.md`. §9 records the decisions that plan was built on.
 
@@ -42,7 +42,7 @@ Consequences:
 - **Pixel identity across machines (decided 2026-09-25):** the renderer runs inside a pinned container image (Node, `sharp`, librsvg, fontconfig, freetype all fixed) so a laptop and the CI runner produce identical bytes. The exports in `design/exports/` are the reference. If the pinned environment cannot reproduce them exactly, the exports are re-baselined from the container **once**, with Jeremy's explicit re-approval, and that becomes the new reference.
 - The device asks only for Wi-Fi during setup. Location, units, and schedule are fixed for Jeremy's closet and live in the renderer's configuration.
 - **Wake scheduling (decided 2026-09-25):** the device syncs NTP on every wake and computes the next half-hour slot itself using a fixed `America/Denver` POSIX TZ rule. The server does not tell the device when to wake.
-- **Hosting (decided 2026-09-25):** GitHub Actions on a cron schedule renders and publishes to GitHub Pages, served at a subdomain of `builtbyjer.com`. The repository is public so Actions minutes are unlimited.
+- **Hosting (updated 2026-11-08):** Google Cloud Scheduler triggers the GitHub Actions renderer, with GitHub cron as fallback; Actions publishes to GitHub Pages under `builtbyjer.com`. The repository is public so Actions minutes are unlimited.
 
 ## 4. Data
 
@@ -83,8 +83,8 @@ Re-entering setup (**decided 2026-09-25**): the **BOOT button (GPIO 0)** is the 
 
 ## 7. Refresh schedule and power
 
-- Refresh every 30 minutes, on the hour and half hour, from **5:00 AM through 10:00 PM** local time (35 refreshes per day).
-- No refreshes overnight. The 10:00 PM frame stays up until 5:00 AM. Its first two hourly marks are in the past by morning; accepted.
+- Refresh every 30 minutes, on the hour and half hour, **24 hours a day** in America/Denver. Normally 48 attempts daily; 46/50 on spring/fall DST transition days.
+- Google Cloud Scheduler dispatches at :15/:45 every hour (`15,45 * * * *`, America/Denver), preparing the next :30/:00 wake with a nominal 15-minute lead. GitHub Actions uses the same cron as fallback. Server publication accepts all hours. Failed fetches preserve the last successful frame.
 - Deep sleep between refreshes.
 
 ## 8. Out of scope
@@ -101,7 +101,7 @@ The handoff items from the scope review were resolved in the planning session wi
 | 2 | NWS condition mapping | A documented table from NWS icon codes / `shortForecast` / `probabilityOfPrecipitation` to the 30 icon semantics, with test vectors, is its own task before the fetch client is written. |
 | 3 | Low-battery threshold | Two frames published per slot (normal, low-battery); the device picks by voltage with a hysteresis band. Threshold and band are set once the battery pack is known (Jeremy task). |
 | 4 | Battery life | In scope: measured over weeks after first deployment, and used to size the pack. |
-| 5 | Hosting | GitHub Actions cron → GitHub Pages at `weather.builtbyjer.com` (DNS CNAME added by Jeremy). The local-time schedule runs at 4:47 AM and :17/:47 from 5 AM through 9 PM `America/Denver`, preparing all 35 device wakes through 10 PM. The job checks the window, allows a delayed final scheduled run shortly after 10 PM, and never publishes on a failed fetch, so the previous frame stays live. Jeremy approved the extra 4:47 AM publish on 2026-09-27 to serve the 5:00 AM wake. |
+| 5 | Hosting | Google Cloud Scheduler HTTP dispatch to GitHub Actions at :15/:45 every hour, America/Denver, plus identical GitHub cron fallback; render and publish to GitHub Pages at `weather.builtbyjer.com`. All-day policy replaces the former daytime-only schedule as requested 2026-11-08. Publication-before-wake reliability still needs actual observation. |
 | 6 | Wire format | Raw 15,000-byte, 1 bit per pixel, row-major, 50 bytes per row, MSB first, `1 = white` as GxEPD2 expects. T14 setup photo from Jeremy on 2026-10-07, matching embedded-byte checks and independent visual QA, confirms this default on the actual panel without inversion/repacking. See `firmware/HARDWARE.md`. Button evidence passed; Jeremy accepted T14 and authorized its merge and T15 start on 2026-10-07. PR #19 merged as `08be1ac`; T15 is In progress. |
 | 7 | Wake scheduling | Device: NTP each wake, compute next slot locally, deep sleep. |
 | 8 | Setup hotspot | Captive portal at `192.168.4.1`, SSID `WeatherStation-Setup`, password `firstlight`; BOOT held five seconds clears credentials (USER cannot wake from deep sleep). Setup screen bytes are embedded in firmware. |
@@ -131,4 +131,4 @@ The handoff items from the scope review were resolved in the planning session wi
 
 ## Publishing reliability follow-up — 2026-10-09
 
-T21 confirmed inadequate scheduled publication. Jeremy selected Google Cloud Scheduler to send two HTTP workflow dispatch schedules (04:47, then :17/:47 from 05–21, America/Denver). This is a pending activation change: production still uses the existing Actions cron/Pages pipeline until reviewed merge and external credential/job setup. The pinned renderer, raw frames and device URL remain the contract. Keep Actions cron as fallback during a seven-day publication-before-wake trial. See `docs/t21-reliability.md` for evidence, ongoing free-allowance conditions, exact setup and rollback. T21 remains In progress; no reliability sign-off is inferred from this selection.
+T21 confirmed inadequate scheduled publication. Jeremy selected Google Cloud Scheduler to send two HTTP workflow dispatch schedules (04:47, then :15/:45 from 05–21, America/Denver). This is a pending activation change: production still uses the existing Actions cron/Pages pipeline until reviewed merge and external credential/job setup. The pinned renderer, raw frames and device URL remain the contract. Keep Actions cron as fallback during a seven-day publication-before-wake trial. See `docs/t21-reliability.md` for evidence, ongoing free-allowance conditions, exact setup and rollback. T21 remains In progress; no reliability sign-off is inferred from this selection.
