@@ -3,10 +3,10 @@
 ## Schedule and output
 
 Google Cloud Scheduler job `weather-epaper-half-hour` should use
-`17,47 * * * *` with timezone `America/Denver`: :17 and :47 every hour,
+`15,45 * * * *` with timezone `America/Denver`: :17 and :47 every hour,
 24 hours a day. GitHub Actions uses the same cron as fallback.
 The server accepts publication at any hour. The display wakes for :00/:30,
-also 24 hours a day; the nominal publishing lead is 13 minutes.
+also 24 hours a day; the nominal publishing lead is 15 minutes.
 Normally there are 48 opportunities per day, 46/50 on spring/fall DST days.
 A dispatch acknowledgement does not establish that rendering/deployment finished;
 verify fresh live metadata before the target wake. The previous :25/:55
@@ -14,7 +14,7 @@ Google schedule gave only five minutes of lead.
 
 To update the external job: in Google Cloud Console, project `weather-epaper`,
 Cloud Scheduler → `weather-epaper-half-hour` (us-central1) → Edit, set Frequency
-to `17,47 * * * *` and timezone to `America/Denver`. Preserve the existing HTTP
+to `15,45 * * * *` and timezone to `America/Denver`. Preserve the existing HTTP
 POST target, body, authorization header and retries. Save and verify the next
 run preview. Do not recreate or expose the private token. This setting is external
 to Git; record completion separately from the software deployment.
